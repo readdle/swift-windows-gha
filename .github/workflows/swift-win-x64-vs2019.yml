@@ -20,16 +20,13 @@ jobs:
       - name: Prepare for CMake
         run: copy cmake\ICU\CMakeLists.txt icu\icu4c
         shell: cmd
-      - name: Check Path Before
-        run: path
+      - name: Check CMake After
+        run: cmake
         shell: cmd
       - name: Setup VS Build Environment
-        run: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64'
+        run: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=x64'
         shell: cmd
-      - name: Check Path After
-        run: path
-        shell: cmd
-      - name: Check CMake
+      - name: Check CMake After
         run: cmake
         shell: cmd
 
