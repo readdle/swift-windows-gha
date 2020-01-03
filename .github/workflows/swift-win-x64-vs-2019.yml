@@ -30,30 +30,34 @@ jobs:
     needs: [zlib]
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Checkout curl
-      uses: actions/checkout@v2
-      with:
-        repository: 'curl/curl'
-        ref: 'master'
-        fetch-depth: 1
-        path: 'curl'
-    - name: Run a one-line script
-      run: echo Hello, world!
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout curl
+        uses: actions/checkout@v2
+        with:
+          repository: 'curl/curl'
+          ref: 'master'
+          fetch-depth: 1
+          path: 'curl'
+      - name: Run a one-line script
+        run: echo Hello, world!
         
-  xml2:
+  libxml2:
     
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Checkout libxml2
+        uses: actions/checkout@v2
+        with:
+          repository: 'compnerd/libxml2'
+          ref: 'cmake'
+          fetch-depth: 1
+          path: 'libxml2'
+      - name: Run a one-line script
+        run: echo Hello, world!
         
   zlib:
     
@@ -63,10 +67,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
         
   toolchain:
     
@@ -77,21 +77,14 @@ jobs:
     - uses: actions/checkout@v1
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
         
   sdk:
     
-    needs: [icu, curl, toolchain, xml2]
+    needs: [icu, curl, libxml2, toolchain]
     runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+
