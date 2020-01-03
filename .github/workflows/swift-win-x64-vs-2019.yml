@@ -27,15 +27,20 @@ jobs:
   curl:
     
     runs-on: windows-latest
+    needs: [zlib]
     
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Checkout curl
+      uses: actions/checkout@v2
+      with:
+        repository: 'curl/curl'
+        ref: 'master'
+        fetch-depth: 1
+        path: 'curl'
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
         
   xml2:
     
@@ -50,7 +55,6 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
         
-          
   zlib:
     
     runs-on: windows-latest
@@ -66,7 +70,7 @@ jobs:
         
   toolchain:
     
-    needs: [icu, curl, xml2, zlib]
+    needs: [icu]
     runs-on: windows-latest
     
     steps:
@@ -80,7 +84,7 @@ jobs:
         
   sdk:
     
-    needs: [toolchain]
+    needs: [icu, curl, toolchain, xml2]
     runs-on: windows-latest
     
     steps:
