@@ -16,6 +16,7 @@ jobs:
           repository: 'unicode-org/icu'
           ref: 'maint/maint-64'
           fetch-depth: 1
+          path: 'icu'
       - name: Run a one-line script
         run: echo Hello, world!
       - name: Run a multi-line script
