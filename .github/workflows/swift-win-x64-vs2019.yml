@@ -25,10 +25,10 @@ jobs:
           echo test, and deploy your project.
 
   curl:
-    
+
     runs-on: windows-latest
     needs: [zlib]
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,11 +41,11 @@ jobs:
           path: 'curl'
       - name: Run a one-line script
         run: echo Hello, world!
-        
+
   libxml2:
-    
+
     runs-on: windows-latest
-    
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -58,11 +58,11 @@ jobs:
           path: 'libxml2'
       - name: Run a one-line script
         run: echo Hello, world!
-        
+
   zlib:
-    
+
     runs-on: windows-latest
-    
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -75,21 +75,52 @@ jobs:
           path: 'zlib'
       - name: Run a one-line script
         run: echo Hello, world!
-        
+
   toolchain:
-    
-    needs: [icu]
+
     runs-on: windows-latest
+    needs: [icu]
     
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-        
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+      - name: Checkout LLVM
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/llvm-project'
+          ref: 'swift/master'
+          fetch-depth: 1
+          path: 's/toolchain' 
+      - name: Checkout cmark
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift-cmark'
+          ref: 'master'
+          fetch-depth: 1
+          path: 's/toolchain/cmark' 
+      - name: Checkout libdispatch
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift-corelibs-libdispatch'
+          ref: 'master'
+          fetch-depth: 1
+          path: 's/swift-corelibs-libdispatch' 
+      - name: Checkout swift
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift'
+          ref: 'master'
+          fetch-depth: 1
+          path: 's/toolchain/swift'
+
   sdk:
     
-    needs: [icu, curl, libxml2, toolchain]
     runs-on: windows-latest
+    needs: [icu, curl, libxml2, toolchain]
     
     steps:
     - uses: actions/checkout@v1
