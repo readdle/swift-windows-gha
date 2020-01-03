@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 1
           path: 'icu'
       - name: Prepare for CMake
-        run: copy cmake/ICU/CMakeLists.txt icu/icu4c
+        run: copy cmake\ICU\CMakeLists.txt icu\icu4c
         shell: cmd
         
   curl:
