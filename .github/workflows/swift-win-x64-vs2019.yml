@@ -21,7 +21,7 @@ jobs:
         run: copy cmake\ICU\CMakeLists.txt icu\icu4c
         shell: cmd
       - name: Setup VS Build Environment
-        run: "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x86_64
+        run: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x86_64'
         shell: cmd
       - name: Check Path
         run: path
