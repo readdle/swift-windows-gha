@@ -25,7 +25,7 @@ jobs:
           echo kvarrr
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64
           path
-          echo kvrrr
+          @echo kvrrr
         shell: cmd
       - name: Test Echoes
         run: |
