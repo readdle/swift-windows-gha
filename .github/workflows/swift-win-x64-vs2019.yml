@@ -17,12 +17,6 @@ jobs:
           ref: 'maint/maint-64'
           fetch-depth: 1
           path: 'icu'
-      - name: Run a one-line script
-        run: echo Hello, world!
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
 
   curl:
 
@@ -39,8 +33,6 @@ jobs:
           ref: 'master'
           fetch-depth: 1
           path: 'curl'
-      - name: Run a one-line script
-        run: echo Hello, world!
 
   libxml2:
 
@@ -56,8 +48,6 @@ jobs:
           ref: 'cmake'
           fetch-depth: 1
           path: 'libxml2'
-      - name: Run a one-line script
-        run: echo Hello, world!
 
   zlib:
 
@@ -73,8 +63,6 @@ jobs:
           ref: 'refs/tags/v1.2.11'
           fetch-depth: 1
           path: 'zlib'
-      - name: Run a one-line script
-        run: echo Hello, world!
 
   toolchain:
 
@@ -88,6 +76,7 @@ jobs:
         run: |
           git config --global --add core.autocrlf false
           git config --global --add core.symlinks true
+        shell: cmd
       - name: Checkout LLVM
         uses: actions/checkout@v2
         with:
@@ -118,12 +107,10 @@ jobs:
           path: 's/toolchain/swift'
 
   sdk:
-    
+
     runs-on: windows-latest
     needs: [icu, curl, libxml2, toolchain]
-    
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
