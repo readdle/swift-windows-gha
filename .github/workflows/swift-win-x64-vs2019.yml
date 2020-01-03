@@ -64,9 +64,17 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Checkout zlib
+        uses: actions/checkout@v2
+        with:
+          repository: 'madler/zlib'
+          ref: 'refs/tags/v1.2.11'
+          fetch-depth: 1
+          path: 'zlib'
+      - name: Run a one-line script
+        run: echo Hello, world!
         
   toolchain:
     
