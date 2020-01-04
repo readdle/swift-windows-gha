@@ -158,7 +158,6 @@ jobs:
       - name: Configure Build Environment
         shell: cmd
         run: |
-          tree a
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
@@ -200,6 +199,7 @@ jobs:
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+          
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
         with:
@@ -214,8 +214,7 @@ jobs:
           echo ::set-env name=LLVM_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\llvm-tblgen.exe
           echo ::set-env name=CLANG_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\clang-tblgen.exe
           echo ::set-env name=LLDB_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\lldb-tblgen.exe
-           
-           
+          
       - name: Configure Toolchain
         shell: cmd
         working-directory: 'b/toolchain'
