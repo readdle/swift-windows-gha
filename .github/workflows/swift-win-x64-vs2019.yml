@@ -15,8 +15,8 @@ jobs:
         run: |
            set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%
            set SW_INSTALL_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%\usr
-           echo "::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%"
-           echo "::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%"
+           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
+           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
       - name: Check Environment
         shell: cmd
         run: |
