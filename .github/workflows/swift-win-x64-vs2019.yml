@@ -22,14 +22,14 @@ jobs:
         shell: cmd
       - name: Setup VS Build Environment
         run: |
-          echo kvarrr
+          echo %DevEnvDir%
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64
           path
           @echo kvrrr
         shell: cmd
       - name: Test Echoes
         run: |
-          echo kve
+          echo %DevEnvDir%
           echo kva
         shell: cmd
       - name: Check Path After
