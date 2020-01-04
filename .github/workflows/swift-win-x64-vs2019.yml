@@ -9,7 +9,7 @@ jobs:
 
     runs-on: windows-latest
     env:
-      ARTIFACTS_PATH: ${{ GITHUB_WORKSPACE }}\a
+      ARTIFACTS_PATH: ${{ env.GITHUB_WORKSPACE }}\a
       INSTALL_PATH: ${{ ARTIFACTS_PATH }}\Library\icu-${{ ICU_VERSION }}\usr
       
     steps:
