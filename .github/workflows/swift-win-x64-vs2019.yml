@@ -32,7 +32,6 @@ jobs:
       - name: Prepare CMake Environment
         shell: cmd
         run: |
-          echo %INSTALL_PATH%
           copy cmake\ICU\CMakeLists.txt icu\icu4c
           mkdir b
       - name: Configure ICU
@@ -154,6 +153,35 @@ jobs:
       - name: Configure x64 Build Environment
         shell: cmd
         run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+      - name: Prepare CMake Environment
+        shell: cmd
+        run: |
+          mkdir b
+          mkdir b\llvm-tools
+      - name: Configure LLVM Build Tools
+        shell: cmd
+        working-directory: 'b/llvm-tools'
+        run: |
+          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja %GITHUB_WORKSPACE%\s\toolchain\llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=NO -DLLVM_ENABLE_PROJECTS="clang;lldb" -DLLDB_DISABLE_PYTHON=YES -DLLDB_INCLUDE_TESTS=NO
+      - name: Build LLVM Build Tools
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target llvm-tblgen
+      - name: Build Clang Build Tool
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target clang-tblgen
+      - name: Build LLDB Build Tools
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target lldb-tblgen
+      - name: Configure SDK
+        shell: cmd
+        run: |
+          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
+          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
+          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
+          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
 
   sdk:
 
