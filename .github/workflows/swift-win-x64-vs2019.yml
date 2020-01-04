@@ -150,38 +150,76 @@ jobs:
           ref: 'master'
           fetch-depth: 1
           path: 's/toolchain/swift'
-      - name: Configure x64 Build Environment
-        shell: cmd
-        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-      - name: Prepare CMake Environment
+      - name: Download ICU
+        uses: actions/download-artifact@v1
+        with:
+          name: icu
+          path: 'a'
+      - name: Configure Build Environment
         shell: cmd
         run: |
-          mkdir b
-          mkdir b\llvm-tools
+          .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+          
+           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
+           set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
+           set SW_BINARIES_PATH=%GITHUB_WORKSPACE%\b
+           set SW_INSTALL_PATH=%SW_ARTIFACTS_PATH%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
+           set SW_ICU_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%
+           
+           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
+           echo ::set-env name=SW_SOURCES_PATH::%SW_SOURCES_PATH%
+           echo ::set-env name=SW_BINARIES_PATH::%SW_BINARIES_PATH%
+           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+           echo ::set-env name=SW_ICU_PATH::%SW_ICU_PATH%
+           
+           mkdir b
+           mkdir b\llvm-tools
+           mkdir b\toolchain
       - name: Configure LLVM Build Tools
         shell: cmd
         working-directory: 'b/llvm-tools'
         run: |
-          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja %GITHUB_WORKSPACE%\s\toolchain\llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=NO -DLLVM_ENABLE_PROJECTS="clang;lldb" -DLLDB_DISABLE_PYTHON=YES -DLLDB_INCLUDE_TESTS=NO
+          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja %SW_SOURCES_PATH%\toolchain\llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=NO -DLLVM_ENABLE_PROJECTS="clang;lldb" -DLLDB_DISABLE_PYTHON=YES -DLLDB_INCLUDE_TESTS=NO
       - name: Build LLVM Build Tools
         shell: cmd
         run: |
-          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target llvm-tblgen
+          cmake --build %SW_BINARIES_PATH%\llvm-tools --target llvm-tblgen
       - name: Build Clang Build Tool
         shell: cmd
         run: |
-          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target clang-tblgen
+          cmake --build %SW_BINARIES_PATH%\llvm-tools --target clang-tblgen
       - name: Build LLDB Build Tools
         shell: cmd
         run: |
-          cmake --build %GITHUB_WORKSPACE%\b\llvm-tools --target lldb-tblgen
+          cmake --build %SW_BINARIES_PATH%\llvm-tools --target lldb-tblgen
       - name: Configure SDK
         shell: cmd
         run: |
-          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
-          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
-          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
-          copy %GITHUB_WORKSPACE%\s\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
+          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
+          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
+          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+      - name: Expose Build Tools
+        shell: cmd
+        run: |
+          FOR /F "tokens=*" %%g IN ('where python') do (SET SW_PYTHON_PATH=%%g)
+          
+          echo ::set-env name=SW_PYTHON_PATH::%SW_PYTHON_PATH%
+          
+          echo ::set-env name=LLVM_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\llvm-tblgen.exe
+          echo ::set-env name=CLANG_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\clang-tblgen.exe
+          echo ::set-env name=LLDB_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\lldb-tblgen.exe
+           
+           
+      - name: Configure Toolchain
+        shell: cmd
+        working-directory: 'b/toolchain'
+        run: |
+          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake -G Ninja %SW_SOURCES_PATH%\toolchain\llvm -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%\usr -DLLDB_FRAMEWORK_INSTALL_DIR=%SW_INSTALL_PATH%\Library\PrivateFrameworks -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc -DLLVM_USE_HOST_TOOLS=NO -DLLVM_TABLEGEN=%LLVM_TABLEGEN% -DCLANG_TABLEGEN=%CLANG_TABLEGEN% -DLLDB_TABLEGEN=%LLDB_TABLEGEN% -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=%SW_SOURCES_PATH%\swift-corelibs-libdispatch -DLLVM_ENABLE_LIBEDIT=NO -DLLVM_PARALLEL_LINK_JOBS=2 -DPYTHON_EXECUTABLE=%SW_PYTHON_PATH% -DLLDB_DISABLE_PYTHON=YES -DSWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode -DSWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib -DSWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include -DSWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib -DSWIFT_PARALLEL_LINK_JOBS=2 -DSWIFT_BUILD_DYNAMIC_STDLIB=YES -DSWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
 
   sdk:
 
