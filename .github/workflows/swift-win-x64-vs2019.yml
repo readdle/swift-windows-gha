@@ -29,9 +29,16 @@ jobs:
         shell: cmd
         working-directory: b
         run: |
-          echo %GITHUB_WORKSPACE%
           cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja %GITHUB_WORKSPACE%\icu\icu4c -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\Library\icu\usr -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
-
+      - name: Build ICU
+        shell: cmd
+        run: |
+          cmake --build b\icu
+      - name: Install ICU
+        shell: cmd
+        run: |
+          cmake --build b\icu --target install
+          
   curl:
 
     runs-on: windows-latest
