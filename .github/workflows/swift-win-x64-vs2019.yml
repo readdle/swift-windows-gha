@@ -22,7 +22,7 @@ jobs:
         shell: cmd
       - name: Setup VS Build Environment
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64
           for /f "delims== tokens=1,2" %%a in ('set') do (
             echo ::set-env name=%%a::%%b
           )
