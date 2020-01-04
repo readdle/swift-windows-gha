@@ -13,15 +13,10 @@ jobs:
       - name: Setup Environment
         shell: cmd
         run: |
-           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%
+           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
            set SW_INSTALL_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%\usr
            echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
            echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
-      - name: Check Environment
-        shell: cmd
-        run: |
-           set SW_ARTIFACTS_PATH
-           set SW_INSTALL_PATH
       - name: Checkout 
         uses: actions/checkout@v2
       - name: Checkout ICU
@@ -45,7 +40,7 @@ jobs:
         working-directory: b
         run: |
           subst T: "%GITHUB_WORKSPACE%\icu\icu4c"
-          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja T:\ -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\Library\icu\usr -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
+          cmake -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake -G Ninja T:\ -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH% -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
       - name: Build ICU
         shell: cmd
         run: |
@@ -54,6 +49,11 @@ jobs:
         shell: cmd
         run: |
           cmake --build %GITHUB_WORKSPACE%\b --target install
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: icu
+          path: a
 
   curl:
 
