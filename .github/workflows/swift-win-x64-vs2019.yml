@@ -20,13 +20,12 @@ jobs:
       - name: Prepare for CMake
         shell: cmd
         run: copy cmake\ICU\CMakeLists.txt icu\icu4c
-      - name: Setup VS Build Environment
+      - name: Configure x64 Build Environment
         shell: cmd
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64
-          for /f "delims== tokens=1,2" %%a in ('set') do (
-            echo ::set-env name=%%a::%%b
-          )
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+      - name: Check Environment
+        shell: cmd
+        run: set DevEnvDir
 
   curl:
 
