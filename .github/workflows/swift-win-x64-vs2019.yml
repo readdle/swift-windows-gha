@@ -25,8 +25,9 @@ jobs:
         run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
       - name: Configure ICU
         shell: cmd
-        working-directory: b
+        working-directory: ./b
         run: |
+          echo %GITHUB_WORKSPACE%
           cmake -C ../cmake/caches/windows-x86_64.cmake -G Ninja ../icu/icu4c -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../Library/icu/usr -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
 
   curl:
