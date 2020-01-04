@@ -27,7 +27,7 @@ jobs:
         shell: cmd
         working-directory: b
         run: |
-          cmake -C %GITHUB_WORKSPACE%/cmake/caches/windows-x86_64.cmake -G Ninja %GITHUB_WORKSPACE%/icu/icu4c -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%/Library/icu/usr -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
+          cmake -C ../cmake/caches/windows-x86_64.cmake -G Ninja ../icu/icu4c -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../Library/icu/usr -DBUILD_SHARED_LIBS=YES -DBUILD_TOOLS=YES
 
   curl:
 
