@@ -23,9 +23,6 @@ jobs:
       - name: Configure x64 Build Environment
         shell: cmd
         run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-      - name: Check Environment
-        shell: cmd
-        run: set DevEnvDir
 
   curl:
 
@@ -42,6 +39,9 @@ jobs:
           ref: 'master'
           fetch-depth: 1
           path: 'curl'
+      - name: Configure x64 Build Environment
+        shell: cmd
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
 
   libxml2:
 
@@ -57,6 +57,9 @@ jobs:
           ref: 'cmake'
           fetch-depth: 1
           path: 'libxml2'
+      - name: Configure x64 Build Environment
+        shell: cmd
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
 
   zlib:
 
@@ -72,6 +75,9 @@ jobs:
           ref: 'refs/tags/v1.2.11'
           fetch-depth: 1
           path: 'zlib'
+      - name: Configure x64 Build Environment
+        shell: cmd
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
 
   toolchain:
 
@@ -114,6 +120,9 @@ jobs:
           ref: 'master'
           fetch-depth: 1
           path: 's/toolchain/swift'
+      - name: Configure x64 Build Environment
+        shell: cmd
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
 
   sdk:
 
@@ -121,5 +130,8 @@ jobs:
     needs: [icu, curl, libxml2, toolchain]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure x64 Build Environment
+        shell: cmd
+        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
