@@ -33,11 +33,11 @@ jobs:
       - name: Build ICU
         shell: cmd
         run: |
-          cmake --build b\icu
+          cmake --build %GITHUB_WORKSPACE%\b
       - name: Install ICU
         shell: cmd
         run: |
-          cmake --build b\icu --target install
+          cmake --build %GITHUB_WORKSPACE%\b --target install
           
   curl:
 
