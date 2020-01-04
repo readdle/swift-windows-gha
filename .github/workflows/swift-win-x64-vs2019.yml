@@ -1,12 +1,17 @@
 name: swift-win-x64-vs2019
-
 on: [push]
 
+env:
+  ICU_VERSION: 64
+  
 jobs:
   icu:
 
     runs-on: windows-latest
-
+    env:
+      ARTIFACTS_PATH: ${{ GITHUB_WORKSPACE }}\a
+      INSTALL_PATH: ${{ ARTIFACTS_PATH }}\Library\icu-${{ ICU_VERSION }}\usr
+      
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -17,14 +22,15 @@ jobs:
           ref: 'maint/maint-64'
           fetch-depth: 1
           path: 'icu'
-      - name: Prepare for CMake
-        shell: cmd
-        run: |
-          copy cmake\ICU\CMakeLists.txt icu\icu4c
-          mkdir b
       - name: Configure x64 Build Environment
         shell: cmd
         run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+      - name: Prepare CMake Environment
+        shell: cmd
+        run: |
+          echo %INSTALL_PATH%
+          copy cmake\ICU\CMakeLists.txt icu\icu4c
+          mkdir b
       - name: Configure ICU
         shell: cmd
         working-directory: b
