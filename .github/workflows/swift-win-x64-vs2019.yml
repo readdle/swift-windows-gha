@@ -8,9 +8,9 @@ jobs:
   icu:
 
     runs-on: windows-latest
-#     env:
-#       ARTIFACTS_PATH: ${{ env.GITHUB_WORKSPACE }}\a
-#       INSTALL_PATH: ${{ ARTIFACTS_PATH }}\Library\icu-${{ ICU_VERSION }}\usr
+    env:
+      ARTIFACTS_PATH: ${{ runner.workspace }}\a
+      INSTALL_PATH: ${{ ARTIFACTS_PATH }}\Library\icu-${{ ICU_VERSION }}\usr
       
     steps:
       - name: Dump GitHub context
