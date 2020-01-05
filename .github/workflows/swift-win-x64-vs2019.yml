@@ -108,9 +108,40 @@ jobs:
           ref: 'refs/tags/v1.2.11'
           fetch-depth: 1
           path: 'zlib'
-      - name: Configure x64 Build Environment
+      - name: Configure Build Environment
         shell: cmd
-        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+        run: |
+          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+          
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib\usr
+          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+
+      - name: Configure zlib
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %GITHUB_WORKSPACE%\zlib^
+           -B %GITHUB_WORKSPACE%\b^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+           -DCMAKE_BUILD_TYPE=MinSizeRel^
+           -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -DBUILD_SHARED_LIBS=NO^
+           -DBUILD_TESTING=NO
+
+      - name: Build zlib
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b
+      - name: Install zlib
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b --target install
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: zlib
+          path: i
 
   toolchain:
 
