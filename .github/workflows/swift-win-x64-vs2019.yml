@@ -474,10 +474,13 @@ jobs:
           set SW_INSTALL_PATH=%SW_SDK_PATH%\usr
           set SW_XCTEST_INSTALL_PATH=%SW_PLATFORM_PATH%\Developer\Library\XCTest-development\usr
           
+          set SW_TOOLCHAIN_PATH=%SW_ARTIFACTS_PATH%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
           set SW_CURL_PATH=%SW_ARTIFACTS_PATH%\Library\libcurl-%SW_CURL_VERSION%
           set SW_ICU_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%
           set SW_XML2_PATH=%SW_ARTIFACTS_PATH%\Library\libxml2-%SW_XML2_VERSION%
           set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
+          
+          set PATH=%SW_TOOLCHAIN_PATH%\usr\bin
           
           
           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
@@ -494,4 +497,6 @@ jobs:
           echo ::set-env name=SW_ICU_PATH::%SW_ICU_PATH%
           echo ::set-env name=SW_XML2_PATH::%SW_XML2_PATH%
           echo ::set-env name=SW_ZLIB_PATH::%SW_ZLIB_PATH%
+          
+          echo ::set-env name=PATH::%PATH%
           
