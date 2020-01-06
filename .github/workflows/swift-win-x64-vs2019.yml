@@ -467,7 +467,7 @@ jobs:
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
-          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%
+          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
           set SW_BINARIES_PATH=%GITHUB_WORKSPACE%\b
           
           set SW_PLATFORM_PATH=%GITHUB_WORKSPACE%\i\Library\Developer\Platforms\Windows.platform
