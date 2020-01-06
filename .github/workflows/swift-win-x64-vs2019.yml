@@ -552,3 +552,23 @@ jobs:
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\swift-stdlib --target install
+
+      - name: Configure libdispatch
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %SW_SOURCES_PATH%\swift-corelibs-libdispatch^
+           -B %SW_BINARIES_PATH%\libdispatch^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+           -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
+           -D CMAKE_BUILD_TYPE=Release^
+           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -D BUILD_TESTING=YES^
+           -D ENABLE_SWIFT=YES
+
+      - name: Build libdispatch
+        shell: cmd
+        run: |
+          cmake --build %SW_BINARIES_PATH%\libdispatch
