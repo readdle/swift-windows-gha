@@ -84,7 +84,7 @@ jobs:
           
           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
           set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libcurl-development\usr
-          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib
+          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-1.2.11
           
           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
@@ -97,8 +97,8 @@ jobs:
            -G Ninja^
            -S %GITHUB_WORKSPACE%\curl^
            -B %GITHUB_WORKSPACE%\b^
-           -C %GITHUB_WORKSPACE%\cmake\caches\curl.cmake^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+           -C %GITHUB_WORKSPACE%\cmake\caches\curl.cmake^
            -DCMAKE_BUILD_TYPE=MinSizeRel^
            -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -DZLIB_ROOT=%SW_ZLIB_PATH%\usr^
@@ -133,9 +133,40 @@ jobs:
           ref: 'cmake'
           fetch-depth: 1
           path: 'libxml2'
-      - name: Configure x64 Build Environment
+      - name: Configure Build Environment
         shell: cmd
-        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+        run: |
+          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+          
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libxml2-development\usr
+          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+      - name: Configure libxml2
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %GITHUB_WORKSPACE%\libxml2^
+           -B %GITHUB_WORKSPACE%\b^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+           -C %GITHUB_WORKSPACE%\cmake\caches\libxml2.cmake^
+           -DCMAKE_BUILD_TYPE=MinSizeRel^
+           -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -DBUILD_SHARED_LIBS=NO^
+           -DBUILD_TESTING=NO
+
+      - name: Build libxml2
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b
+      - name: Install libxml2
+        shell: cmd
+        run: |
+          cmake --build %GITHUB_WORKSPACE%\b --target install
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: libxml2
+          path: i
 
   zlib:
 
@@ -156,7 +187,7 @@ jobs:
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib\usr
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib-1.2.11\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
 
       - name: Configure zlib
