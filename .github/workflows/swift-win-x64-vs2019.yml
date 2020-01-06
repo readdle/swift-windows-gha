@@ -2,7 +2,10 @@ name: swift-win-x64-vs2019
 on: [push]
 
 env:
+  SW_CURL_VERSION: development
   SW_ICU_VERSION: 64
+  SW_XML2_VERSION: development
+  SW_ZLIB_VERSION: 1.2.11
 
 jobs:
   icu:
@@ -83,8 +86,8 @@ jobs:
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libcurl-development\usr
-          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-1.2.11
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libcurl-%SW_CURL_VERSION%\usr
+          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
           
           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
@@ -138,8 +141,9 @@ jobs:
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libxml2-development\usr
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libxml2-%SW_XML2_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+
       - name: Configure libxml2
         shell: cmd
         run: |
@@ -187,7 +191,7 @@ jobs:
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib-1.2.11\usr
+          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib-%SW_ZLIB_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
 
       - name: Configure zlib
@@ -229,6 +233,7 @@ jobs:
         run: |
           git config --global --add core.autocrlf false
           git config --global --add core.symlinks true
+
         shell: cmd
       - name: Checkout LLVM
         uses: actions/checkout@v2
@@ -389,11 +394,69 @@ jobs:
   sdk:
 
     runs-on: windows-latest
-    needs: [icu, curl, libxml2, toolchain]
+    needs: [curl, icu, libxml2, toolchain, zlib]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Configure x64 Build Environment
+      - name: Download ICU
+        uses: actions/download-artifact@v1
+        with:
+          name: icu
+          path: 'a'
+      - name: Download curl
+        uses: actions/download-artifact@v1
+        with:
+          name: curl
+          path: 'a'
+      - name: Download libxml2
+        uses: actions/download-artifact@v1
+        with:
+          name: libxml2
+          path: 'a'
+      - name: Download zlib
+        uses: actions/download-artifact@v1
+        with:
+          name: zlib
+          path: 'a'
+      - name: Download toolchain
+        uses: actions/download-artifact@v1
+        with:
+          name: toolchain
+          path: 'a'
+      - name: Configure Build Environment
         shell: cmd
-        run: .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+        run: |
+          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+          
+          set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
+          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
+          set SW_BINARIES_PATH=%GITHUB_WORKSPACE%\b
+          
+          set SW_PLATFORM_PATH=%GITHUB_WORKSPACE%\i\Library\Developer\Platforms\Windows.platform
+          
+          set SW_SDK_PATH=%SW_PLATFORM_PATH%\Developer\SDKs\Windows.sdk
+          set SW_INSTALL_PATH=%SW_SDK_PATH%\usr
+          set SW_XCTEST_INSTALL_PATH=%SW_PLATFORM_PATH%\Developer\Library\XCTest-development\usr
+          
+          set SW_CURL_PATH=%SW_ARTIFACTS_PATH%\Library\libcurl-%SW_CURL_VERSION%
+          set SW_ICU_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%
+          set SW_XML2_PATH=%SW_ARTIFACTS_PATH%\Library\libxml2-%SW_XML2_VERSION%
+          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
+          
+          
+          echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
+          echo ::set-env name=SW_SOURCES_PATH::%SW_SOURCES_PATH%
+          echo ::set-env name=SW_BINARIES_PATH::%SW_BINARIES_PATH%
+          
+          echo ::set-env name=SW_PLATFORM_PATH::%SW_PLATFORM_PATH%
+          
+          echo ::set-env name=SW_SDK_PATH::%SW_SDK_PATH%
+          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+          echo ::set-env name=SW_XCTEST_INSTALL_PATH::%SW_XCTEST_INSTALL_PATH%
+          
+          echo ::set-env name=SW_CURL_PATH::%SW_CURL_PATH%
+          echo ::set-env name=SW_ICU_PATH::%SW_ICU_PATH%
+          echo ::set-env name=SW_XML2_PATH::%SW_XML2_PATH%
+          echo ::set-env name=SW_ZLIB_PATH::%SW_ZLIB_PATH%
+          
