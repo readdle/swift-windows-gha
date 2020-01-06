@@ -230,11 +230,11 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
       - name: Configure Git
+        shell: cmd
         run: |
           git config --global --add core.autocrlf false
           git config --global --add core.symlinks true
 
-        shell: cmd
       - name: Checkout LLVM
         uses: actions/checkout@v2
         with:
@@ -399,6 +399,41 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Configure Git
+        shell: cmd
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+      - name: Checkout LLVM
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/llvm-project'
+          ref: 'swift/master'
+          fetch-depth: 1
+      - name: Checkout swift
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift'
+          ref: 'master'
+          fetch-depth: 1
+      - name: Checkout libdispatch
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift-corelibs-libdispatch'
+          ref: 'master'
+          fetch-depth: 1
+      - name: Checkout foundation
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift-corelibs-foundation'
+          ref: 'master'
+          fetch-depth: 1
+      - name: Checkout xctest
+        uses: actions/checkout@v2
+        with:
+          repository: 'apple/swift-corelibs-xctest'
+          ref: 'master'
+          fetch-depth: 1
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
@@ -430,7 +465,7 @@ jobs:
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
           set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
-          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
+          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%
           set SW_BINARIES_PATH=%GITHUB_WORKSPACE%\b
           
           set SW_PLATFORM_PATH=%GITHUB_WORKSPACE%\i\Library\Developer\Platforms\Windows.platform
