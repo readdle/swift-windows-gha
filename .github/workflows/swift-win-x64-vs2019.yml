@@ -343,26 +343,26 @@ jobs:
            -B %SW_BINARIES_PATH%\toolchain^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
            -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
-           -DCMAKE_BUILD_TYPE=Release^
-           -DCMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%\usr^
-           -DLLDB_FRAMEWORK_INSTALL_DIR=%SW_INSTALL_PATH%\Library\PrivateFrameworks^
-           -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc^
-           -DLLVM_USE_HOST_TOOLS=NO^
-           -DLLVM_TABLEGEN=%LLVM_TABLEGEN%^
-           -DCLANG_TABLEGEN=%CLANG_TABLEGEN%^
-           -DLLDB_TABLEGEN=%LLDB_TABLEGEN%^
-           -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=%SW_SOURCES_PATH%\swift-corelibs-libdispatch^
-           -DLLVM_ENABLE_LIBEDIT=NO^
-           -DLLVM_PARALLEL_LINK_JOBS=2^
-           -DPYTHON_EXECUTABLE=%pythonLocation%\python.exe^
-           -DLLDB_DISABLE_PYTHON=YES^
-           -DSWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
-           -DSWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
-           -DSWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
-           -DSWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
-           -DSWIFT_PARALLEL_LINK_JOBS=2^
-           -DSWIFT_BUILD_DYNAMIC_STDLIB=YES^
-           -DSWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
+           -D CMAKE_BUILD_TYPE=Release^
+           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%\usr^
+           -D LLDB_FRAMEWORK_INSTALL_DIR=%SW_INSTALL_PATH%\Library\PrivateFrameworks^
+           -D LLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc^
+           -D LLVM_USE_HOST_TOOLS=NO^
+           -D LLVM_TABLEGEN=%LLVM_TABLEGEN%^
+           -D CLANG_TABLEGEN=%CLANG_TABLEGEN%^
+           -D LLDB_TABLEGEN=%LLDB_TABLEGEN%^
+           -D SWIFT_PATH_TO_LIBDISPATCH_SOURCE=%SW_SOURCES_PATH%\swift-corelibs-libdispatch^
+           -D LLVM_ENABLE_LIBEDIT=NO^
+           -D LLVM_PARALLEL_LINK_JOBS=2^
+           -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe^
+           -D LLDB_DISABLE_PYTHON=YES^
+           -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
+           -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
+           -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
+           -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
+           -D SWIFT_PARALLEL_LINK_JOBS=2^
+           -D SWIFT_BUILD_DYNAMIC_STDLIB=YES^
+           -D SWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
 
       - name: Build Toolchain
         shell: cmd
@@ -434,6 +434,7 @@ jobs:
           repository: 'apple/swift-corelibs-xctest'
           ref: 'master'
           fetch-depth: 1
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
@@ -459,6 +460,7 @@ jobs:
         with:
           name: toolchain
           path: 'a'
+
       - name: Configure Build Environment
         shell: cmd
         run: |
@@ -500,3 +502,53 @@ jobs:
           
           echo ::set-env name=PATH::%PATH%
           
+          
+          copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
+          copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
+          copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
+          copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+
+      - name: Configure LLVM
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %SW_SOURCES_PATH%\llvm-project\llvm^
+           -B %SW_BINARIES_PATH%\llvm^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+           -D CMAKE_BUILD_TYPE=Release^
+           -D LLVM_HOST_TRIPLE=x86_64-unknown-windows-msvc
+
+      - name: Configure Swift Standard Library
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja
+           -S %SW_SOURCES_PATH%\swift^
+           -B %SW_BINARIES_PATH%\swift-stdlib^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+           -C %GITHUB_WORKSPACE%\cmake\caches\swift-stdlib-windows-x86_64.cmake^
+           -D CMAKE_BUILD_TYPE=Release^
+           -D LLVM_DIR=%SW_BINARIES_PATH%\llvm\lib\cmake\llvm^
+           -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=%SW_TOOLCHAIN_PATH%\usr\bin^
+           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
+           -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
+           -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
+           -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
+           -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
+
+      - name: Build Swift Standard Library
+        shell: cmd
+        run: |
+          cmake --build %SW_BINARIES_PATH%\swift-stdlib --target
+
+      - name: Install Swift Standard Library
+        shell: cmd
+        run: |
+          cmake --build %SW_BINARIES_PATH%\swift-stdlib --target install
