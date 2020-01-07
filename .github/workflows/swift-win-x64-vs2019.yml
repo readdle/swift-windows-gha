@@ -410,30 +410,35 @@ jobs:
           repository: 'apple/llvm-project'
           ref: 'swift/master'
           fetch-depth: 1
+          path: 's/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: 'master'
           fetch-depth: 1
+          path: 's/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
           ref: 'master'
           fetch-depth: 1
+          path: 's/swift-corelibs-libdispatch'
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
           ref: 'master'
           fetch-depth: 1
+          path: 's/swift-corelibs-foundation'
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
           ref: 'master'
           fetch-depth: 1
+          path: 's/swift-corelibs-xctest'
 
       - name: Download ICU
         uses: actions/download-artifact@v1
