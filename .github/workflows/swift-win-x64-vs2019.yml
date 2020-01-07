@@ -487,7 +487,7 @@ jobs:
           set SW_XML2_PATH=%SW_ARTIFACTS_PATH%\Library\libxml2-%SW_XML2_VERSION%
           set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
           
-          set PATH=%SW_TOOLCHAIN_PATH%\usr\bin
+          set PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
           
           
           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
