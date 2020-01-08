@@ -551,7 +551,7 @@ jobs:
       - name: Build Swift Standard Library
         shell: cmd
         run: |
-          cmake --build %SW_BINARIES_PATH%\swift-stdlib --target
+          cmake --build %SW_BINARIES_PATH%\swift-stdlib
 
       - name: Install Swift Standard Library
         shell: cmd
