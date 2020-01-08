@@ -27,7 +27,7 @@ jobs:
       - name: Configure Build Environment
         shell: cmd
         env:
-          INSTALL_PATH: ${{ toJson(runner) }}
+          INSTALL_PATH: ${{ runner.workspace }}
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
