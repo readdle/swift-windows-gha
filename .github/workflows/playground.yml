@@ -2,7 +2,7 @@ name: playground
 on:
   push:
     paths: 
-      - .github/workflows/playground.yaml
+      - .github/workflows/playground.yml
 
 env:
   SW_ICU_VERSION: 64
