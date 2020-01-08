@@ -9,7 +9,6 @@ env:
   
 jobs:
   icu:
-
     runs-on: windows-latest
     strategy:
       matrix:
@@ -22,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'unicode-org/icu'
-          ref: 'maint/maint-${{ matrix.icu-version }}'
+          ref: 'maint/maint-${{ env.SW_ICU_VERSION }}'
           fetch-depth: 1
           path: 'icu'
       - name: Configure Build Environment
