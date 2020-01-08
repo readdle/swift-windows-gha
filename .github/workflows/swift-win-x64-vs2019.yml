@@ -1,5 +1,8 @@
 name: swift-win-x64-vs2019
-on: [push]
+on:
+  push:
+    paths-ignore: 
+      - .github/workflows/playground.yml
 
 env:
   SW_CURL_VERSION: development
