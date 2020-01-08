@@ -1,5 +1,8 @@
-name: swift-win-x64-vs2019
-on: [push]
+name: playground
+on:
+  push:
+    paths: 
+      - .github/workflows/playground.yam
 
 env:
   SW_ICU_VERSION: 64
