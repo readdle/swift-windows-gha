@@ -584,6 +584,7 @@ jobs:
 
       - name: Workaround for CMake<3.16
         shell: cmd
+        continue-on-error: true
         run: |
           copy %SW_BINARIES_PATH%\libdispatch\swiftDispatch.lib %SW_BINARIES_PATH%\libdispatch\src\swift
 
