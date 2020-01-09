@@ -10,6 +10,8 @@ env:
 jobs:
   icu:
     runs-on: windows-latest
+    env:
+      INSTALL_PATH: i\icu-${{ env.SW_ICU_VERSION }}\usr
 
     steps:
       - name: Checkout 
@@ -23,8 +25,6 @@ jobs:
           path: 'icu'
       - name: Configure Build Environment
         shell: cmd
-        env:
-          INSTALL_PATH: ${{ runner.workspace }}\i\icu-${{ env.SW_ICU_VERSION }}\usr
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
