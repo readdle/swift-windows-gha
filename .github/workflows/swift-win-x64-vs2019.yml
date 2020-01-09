@@ -486,6 +486,8 @@ jobs:
           set SW_XML2_PATH=%SW_ARTIFACTS_PATH%\Library\libxml2-%SW_XML2_VERSION%
           set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
           
+          set CTEST_OUTPUT_ON_FAILURE=1
+          
           set PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
           
           
@@ -507,6 +509,7 @@ jobs:
           
           echo ::set-env name=PATH::%PATH%
           
+          echo ::set-env name=CTEST_OUTPUT_ON_FAILURE::%CTEST_OUTPUT_ON_FAILURE%
           
           copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
           copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
@@ -578,11 +581,11 @@ jobs:
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch
 
-      - name: Workaround for CMake<3.16
+      - name: Test libdispatch
         shell: cmd
         continue-on-error: true
         run: |
-          copy %SW_BINARIES_PATH%\libdispatch\swiftDispatch.lib %SW_BINARIES_PATH%\libdispatch\src\swift
+          cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
 
       - name: Configure Foundation
         shell: cmd
