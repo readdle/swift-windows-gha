@@ -186,7 +186,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'madler/zlib'
-          ref: 'refs/tags/v${{ SW_ZLIB_VERSION }}'
+          ref: 'refs/tags/v${{ env.SW_ZLIB_VERSION }}'
           fetch-depth: 1
           path: 'zlib'
       - name: Configure Build Environment
