@@ -22,18 +22,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'unicode-org/icu'
-          ref: 'maint/maint-64'
+          ref: 'maint/maint-${{ env.SW_ICU_VERSION }}'
           fetch-depth: 1
           path: 'icu'
       - name: Configure Build Environment
         shell: cmd
+        env:
+          SW_INSTALL_PATH: ${{ env.GITHUB_WORKSPACE }}\i\Library\icu-${{ env.SW_ICU_VERSION }}\usr
         run: |
           call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
           
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\icu-%SW_ICU_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
 
-          copy %GITHUB_WORKSPACE%\cmake\ICU\CMakeLists.txt icu\icu4c
+          copy cmake\ICU\CMakeLists.txt icu\icu4c
 
       - name: Configure ICU
         shell: cmd
