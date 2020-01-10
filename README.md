@@ -1,5 +1,8 @@
-# Swift@Windows with GitHub Actions
+# Swift Toolchain + SDK snapshots.
+## Powered by GitHub Actions.
 
-<a href="https://github.com/lxbndr/swift-windows-gha"><img alt="GitHub Actions status" src="https://github.com/lxbndr/swift-windows-gha/workflows/swift-win-x64-vs2019/badge.svg"></a>
+Based on https://github.com/compnerd/swift-build.
 
-Swift Toolchain and SDK for Windows x64. Built with GitHub Actions. Based on https://github.com/compnerd/swift-build.
+| | **Architecture** | **Master** | **5.2** |
+|---|:---:|:---:|:---:|
+| **Windows, VS2019**        | x86_64 |[![Build Status](https://github.com/lxbndr/swift-windows-gha/workflows/swift-win-x64-vs2019/badge.svg)](https://github.com/lxbndr/swift-windows-gha/actions)| N/A |
