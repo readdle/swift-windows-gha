@@ -1,4 +1,4 @@
-name: swift-win-x64-vs2019
+name: build
 on:
   push:
     paths-ignore: 
