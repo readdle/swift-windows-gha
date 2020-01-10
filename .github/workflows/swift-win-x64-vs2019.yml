@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/playground.yml
+      - README.md
 
 env:
   SW_CURL_VERSION: development
