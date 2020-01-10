@@ -683,6 +683,7 @@ jobs:
 
       - name: Test Foundation
         shell: cmd
+        continue-on-error: true
         run: |
           cmake --build %SW_BINARIES_PATH%\foundation --target test
           
