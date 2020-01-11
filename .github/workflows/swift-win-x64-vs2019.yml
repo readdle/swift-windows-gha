@@ -230,7 +230,21 @@ jobs:
 
     runs-on: windows-latest
     needs: [icu]
-    
+    strategy:
+      matrix:
+        branch: ['master', '5.2']
+        include:
+          - branch: 'master'
+            llvm-ref: 'swift/master'
+            cmark-ref: 'master'
+            libdispatch-ref: 'master'
+            swift-ref: 'master'
+          - branch: '5.2'
+            llvm-ref: 'swift/swift-5.2-branch'
+            cmark-ref: 'swift-5.2-branch'
+            libdispatch-ref: 'swift-5.2-branch'
+            swift-ref: 'swift-5.2-branch'
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -244,28 +258,28 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'apple/llvm-project'
-          ref: 'swift/master'
+          ref: ${{ matrix.llvm-ref }}
           fetch-depth: 1
           path: 's/toolchain' 
       - name: Checkout cmark
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-cmark'
-          ref: 'master'
+          ref: ${{ matrix.cmark-ref }}
           fetch-depth: 1
           path: 's/toolchain/cmark' 
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: 'master'
+          ref: ${{ matrix.libdispatch-ref }}
           fetch-depth: 1
           path: 's/swift-corelibs-libdispatch' 
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
-          ref: 'master'
+          ref: ${{ matrix.swift-ref }}
           fetch-depth: 1
           path: 's/toolchain/swift'
       - name: Download ICU
@@ -378,7 +392,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-${{ matrix.branch }}
           path: i
 
       - name: Prepare Test Environment
@@ -396,6 +410,23 @@ jobs:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
+    strategy:
+      matrix:
+        branch: ['master', '5.2']
+        include:
+          - branch: 'master'
+            llvm-ref: 'swift/master'
+            swift-ref: 'master'
+            libdispatch-ref: 'master'
+            foundation-ref: 'master'
+            xctest-ref: 'master'
+
+          - branch: '5.2'
+            llvm-ref: 'swift/swift-5.2-branch'
+            swift-ref: 'swift-5.2-branch'
+            libdispatch-ref: 'swift-5.2-branch'
+            foundation-ref: 'swift-5.2-branch'
+            xctest-ref: 'swift-5.2-branch'
 
     steps:
       - name: Checkout
@@ -409,35 +440,35 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'apple/llvm-project'
-          ref: 'swift/master'
+          ref: ${{ matrix.llvm-ref }}
           fetch-depth: 1
           path: 's/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
-          ref: 'master'
+          ref: ${{ matrix.swift-ref }}
           fetch-depth: 1
           path: 's/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: 'master'
+          ref: ${{ matrix.libdispatch-ref }}
           fetch-depth: 1
           path: 's/swift-corelibs-libdispatch'
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
-          ref: 'master'
+          ref: ${{ matrix.foundation-ref }}
           fetch-depth: 1
           path: 's/swift-corelibs-foundation'
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
-          ref: 'master'
+          ref: ${{ matrix.xctest-ref }}
           fetch-depth: 1
           path: 's/swift-corelibs-xctest'
 
@@ -464,7 +495,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-${{ matrix.branch }}
           path: 'a'
 
       - name: Configure Build Environment
@@ -705,5 +736,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk
+          name: sdk-${{ matrix.llvm-ref }}
           path: i
