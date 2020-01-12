@@ -232,7 +232,7 @@ jobs:
     needs: [icu]
     strategy:
       matrix:
-        branch: ['master', '5.2']
+        branch: ['master']
         include:
           - branch: 'master'
             llvm-ref: 'swift/master'
@@ -412,7 +412,7 @@ jobs:
     needs: [curl, icu, libxml2, toolchain, zlib]
     strategy:
       matrix:
-        branch: ['master', '5.2']
+        branch: ['master']
         include:
           - branch: 'master'
             llvm-ref: 'swift/master'
