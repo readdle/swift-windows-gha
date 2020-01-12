@@ -736,5 +736,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk-${{ matrix.llvm-ref }}
+          name: sdk-${{ matrix.branch }}
           path: i
