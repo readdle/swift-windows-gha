@@ -1,12 +1,13 @@
-name: build
+name: swift-5.2
 on:
   push:
     paths-ignore: 
       - .github/workflows/playground.yml
+      - .github/workflows/swift-master.yml
       - README.md
 
-    schedule:
-      - cron: '0 0 * * *'
+  schedule:
+    - cron: '0 0 * * *'
 
 env:
   SW_CURL_VERSION: development
