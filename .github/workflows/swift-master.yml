@@ -677,6 +677,12 @@ jobs:
         run: |
           cmake --build %SW_BINARIES_PATH%\xctest
 
+      - name: Configure Test Environment
+        shell: cmd
+        run: |
+          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
+          echo ::set-env name=PATH::%PATH%
+
       - name: Configure Foundation Tests
         shell: cmd
         run: |
@@ -709,12 +715,6 @@ jobs:
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\foundation
-
-      - name: Configure Test Environment
-        shell: cmd
-        run: |
-          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
-          echo ::set-env name=PATH::%PATH%
 
       - name: Test Foundation
         shell: cmd
