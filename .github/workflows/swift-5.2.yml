@@ -37,7 +37,9 @@ jobs:
           
           set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\icu-%SW_ICU_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+
           copy cmake\ICU\CMakeLists.txt icu\icu4c
+
       - name: Configure ICU
         shell: cmd
         run: |
@@ -51,6 +53,7 @@ jobs:
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D BUILD_SHARED_LIBS=YES^
            -D BUILD_TOOLS=YES
+
       - name: Build ICU
         shell: cmd
         run: |
@@ -97,6 +100,7 @@ jobs:
           echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
           echo ::set-env name=SW_ZLIB_PATH::%SW_ZLIB_PATH%
+
       - name: Configure curl
         shell: cmd
         run: |
@@ -111,6 +115,7 @@ jobs:
            -D ZLIB_ROOT=%SW_ZLIB_PATH%\usr^
            -D BUILD_SHARED_LIBS=NO^
            -D BUILD_TESTING=NO
+
       - name: Build curl
         shell: cmd
         run: |
@@ -124,7 +129,7 @@ jobs:
         with:
           name: curl
           path: i
-          
+
   libxml2:
 
     runs-on: windows-latest
@@ -146,6 +151,7 @@ jobs:
           
           set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libxml2-%SW_XML2_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+
       - name: Configure libxml2
         shell: cmd
         run: |
@@ -159,6 +165,7 @@ jobs:
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D BUILD_SHARED_LIBS=NO^
            -D BUILD_TESTING=NO
+
       - name: Build libxml2
         shell: cmd
         run: |
@@ -194,6 +201,7 @@ jobs:
           
           set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib-%SW_ZLIB_VERSION%\usr
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+
       - name: Configure zlib
         shell: cmd
         run: |
@@ -207,6 +215,7 @@ jobs:
            -D CMAKE_POSITION_INDEPENDENT_CODE=YES^
            -D BUILD_SHARED_LIBS=NO^
            -D BUILD_TESTING=NO
+
       - name: Build zlib
         shell: cmd
         run: |
@@ -248,6 +257,7 @@ jobs:
         run: |
           git config --global --add core.autocrlf false
           git config --global --add core.symlinks true
+
       - name: Checkout LLVM
         uses: actions/checkout@v2
         with:
@@ -297,6 +307,7 @@ jobs:
           echo ::set-env name=SW_BINARIES_PATH::%SW_BINARIES_PATH%
           echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
           echo ::set-env name=SW_ICU_PATH::%SW_ICU_PATH%
+
       - name: Configure LLVM Build Tools
         shell: cmd
         run: |
@@ -310,6 +321,7 @@ jobs:
            -D LLVM_ENABLE_PROJECTS="clang;lldb"^
            -D LLDB_DISABLE_PYTHON=YES^
            -D LLDB_INCLUDE_TESTS=NO
+
       - name: Build LLVM Build Tools
         shell: cmd
         run: |
@@ -329,6 +341,7 @@ jobs:
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
           copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
         with:
@@ -339,6 +352,7 @@ jobs:
           echo ::set-env name=LLVM_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\llvm-tblgen.exe
           echo ::set-env name=CLANG_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\clang-tblgen.exe
           echo ::set-env name=LLDB_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\lldb-tblgen.exe
+
       - name: Configure Toolchain
         shell: cmd
         run: |
@@ -368,14 +382,17 @@ jobs:
            -D SWIFT_PARALLEL_LINK_JOBS=2^
            -D SWIFT_BUILD_DYNAMIC_STDLIB=YES^
            -D SWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
+
       - name: Build Toolchain
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\toolchain --target distribution
+
       - name: Install Toolchain
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\toolchain --target install-distribution
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -386,11 +403,13 @@ jobs:
         shell: cmd
         run: |
           echo ::set-env name=PATH::%SW_ICU_PATH%\usr\bin;%SW_INSTALL_PATH%\usr\bin;%PATH%;%ProgramFiles%\Git\usr\bin
+
       - name: Check Swift
         continue-on-error: true
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\toolchain --target check-swift
+
   sdk:
 
     runs-on: windows-latest
@@ -533,6 +552,7 @@ jobs:
           copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
           copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
           copy %SW_SOURCES_PATH%\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
         with:
@@ -548,6 +568,7 @@ jobs:
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D LLVM_HOST_TRIPLE=x86_64-unknown-windows-msvc
+
       - name: Configure Swift Standard Library
         shell: cmd
         run: |
@@ -566,14 +587,17 @@ jobs:
            -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
            -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
            -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
+
       - name: Build Swift Standard Library
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\swift-stdlib
+
       - name: Install Swift Standard Library
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\swift-stdlib --target install
+
       - name: Configure libdispatch
         shell: cmd
         run: |
@@ -588,15 +612,18 @@ jobs:
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D BUILD_TESTING=YES^
            -D ENABLE_SWIFT=YES
+
       - name: Build libdispatch
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch
+
       - name: Test libdispatch
         shell: cmd
         continue-on-error: true
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
+
       - name: Configure Foundation
         shell: cmd
         run: |
@@ -623,10 +650,12 @@ jobs:
            -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
            -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
            -D ENABLE_TESTING=NO
+
       - name: Build Foundation
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\foundation
+
       - name: Configure XCTest
         shell: cmd
         run: |
@@ -642,17 +671,25 @@ jobs:
            -D ENABLE_TESTING=NO^
            -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
            -D Foundation_DIR=%SW_BINARIES_PATH%\foundation\cmake\modules
+
       - name: Build XCTest
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\xctest
+
+      - name: Configure Test Environment
+        shell: cmd
+        run: |
+          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
+          echo ::set-env name=PATH::%PATH%
+
       - name: Configure Foundation Tests
         shell: cmd
         run: |
           cmake^
            -G Ninja^
            -S %SW_SOURCES_PATH%\swift-corelibs-foundation^
-           -B %SW_BINARIES_PATH%\foundation^
+           -B %SW_BINARIES_PATH%\foundation-test^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
            -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
@@ -673,33 +710,33 @@ jobs:
            -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
            -D ENABLE_TESTING=YES^
            -D XCTest_DIR=%SW_BINARIES_PATH%\xctest\cmake\modules
+
       - name: Build Foundation Tests
         shell: cmd
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation
-      - name: Configure Test Environment
-        shell: cmd
-        run: |
-          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
-          echo ::set-env name=PATH::%PATH%
+          cmake --build %SW_BINARIES_PATH%\foundation-test
+
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation --target test
+          cmake --build %SW_BINARIES_PATH%\foundation-test --target test
           
       - name: Install Foundation
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\foundation --target install
+
       - name: Install XCTest
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\xctest --target install
+
       - name: Install libdispatch
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch --target install
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
