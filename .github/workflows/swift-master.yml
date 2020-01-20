@@ -689,7 +689,7 @@ jobs:
           cmake^
            -G Ninja^
            -S %SW_SOURCES_PATH%\swift-corelibs-foundation^
-           -B %SW_BINARIES_PATH%\foundation^
+           -B %SW_BINARIES_PATH%\foundation-test^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
            -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
@@ -714,13 +714,13 @@ jobs:
       - name: Build Foundation Tests
         shell: cmd
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation
+          cmake --build %SW_BINARIES_PATH%\foundation-test
 
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation --target test
+          cmake --build %SW_BINARIES_PATH%\foundation-test --target test
           
       - name: Install Foundation
         shell: cmd
