@@ -593,11 +593,6 @@ jobs:
         run: |
           cmake --build %SW_BINARIES_PATH%\swift-stdlib
 
-      - name: Install Swift Standard Library
-        shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\swift-stdlib --target install
-
       - name: Configure libdispatch
         shell: cmd
         run: |
@@ -606,23 +601,17 @@ jobs:
            -S %SW_SOURCES_PATH%\swift-corelibs-libdispatch^
            -B %SW_BINARIES_PATH%\libdispatch^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
-           -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
+           -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D BUILD_TESTING=YES^
+           -D BUILD_TESTING=NO^
            -D ENABLE_SWIFT=YES
 
       - name: Build libdispatch
         shell: cmd
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch
-
-      - name: Test libdispatch
-        shell: cmd
-        continue-on-error: true
-        run: |
-          cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
 
       - name: Configure Foundation
         shell: cmd
@@ -632,7 +621,7 @@ jobs:
            -S %SW_SOURCES_PATH%\swift-corelibs-foundation^
            -B %SW_BINARIES_PATH%\foundation^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
-           -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
+           -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
@@ -664,7 +653,7 @@ jobs:
            -S %SW_SOURCES_PATH%\swift-corelibs-xctest^
            -B %SW_BINARIES_PATH%\xctest^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
-           -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
+           -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_XCTEST_INSTALL_PATH%^
@@ -677,51 +666,11 @@ jobs:
         run: |
           cmake --build %SW_BINARIES_PATH%\xctest
 
-      - name: Configure Test Environment
+      - name: Install Swift Standard Library
         shell: cmd
         run: |
-          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
-          echo ::set-env name=PATH::%PATH%
+          cmake --build %SW_BINARIES_PATH%\swift-stdlib --target install
 
-      - name: Configure Foundation Tests
-        shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %SW_SOURCES_PATH%\swift-corelibs-foundation^
-           -B %SW_BINARIES_PATH%\foundation-test^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
-           -D CMAKE_Swift_SDK=%SW_SDK_PATH%^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
-           -D CMAKE_BUILD_TYPE=Release^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
-           -D ZLIB_INCLUDE_DIR=%SW_ZLIB_PATH%\usr\include^
-           -D CURL_LIBRARY=%SW_CURL_PATH%\usr\lib\libcurl.lib^
-           -D CURL_INCLUDE_DIR=%SW_CURL_PATH%\usr\include^
-           -D ICU_INCLUDE_DIR=%SW_ICU_PATH%\usr\include^
-           -D ICU_UC_LIBRARY=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
-           -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuuc%SW_ICU_VERSION%.lib^
-           -D ICU_I18N_LIBRARY=%SW_ICU_PATH%/usr/lib/icuin%SW_ICU_VERSION%.lib^
-           -D ICU_I18N_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuin%SW_ICU_VERSION%.lib^
-           -D LIBXML2_LIBRARY=%SW_XML2_PATH%\usr\lib\libxml2s.lib^
-           -D LIBXML2_INCLUDE_DIR=%SW_XML2_PATH%\usr\include\libxml2^
-           -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
-           -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
-           -D ENABLE_TESTING=YES^
-           -D XCTest_DIR=%SW_BINARIES_PATH%\xctest\cmake\modules
-
-      - name: Build Foundation Tests
-        shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\foundation-test
-
-      - name: Test Foundation
-        shell: cmd
-        continue-on-error: true
-        run: |
-          cmake --build %SW_BINARIES_PATH%\foundation-test --target test
-          
       - name: Install Foundation
         shell: cmd
         run: |
@@ -742,3 +691,68 @@ jobs:
         with:
           name: sdk-${{ matrix.branch }}
           path: i
+
+      - name: Configure libdispatch Tests
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %SW_SOURCES_PATH%\swift-corelibs-libdispatch^
+           -B %SW_BINARIES_PATH%\libdispatch^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+           -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
+           -D CMAKE_BUILD_TYPE=Release^
+           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -D BUILD_TESTING=YES^
+           -D ENABLE_SWIFT=YES
+
+      - name: Test libdispatch
+        shell: cmd
+        continue-on-error: true
+        run: |
+          cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
+          
+      - name: Configure Foundation Test Environment
+        shell: cmd
+        run: |
+          set PATH=%SW_ICU_PATH%\usr\bin;%SW_BINARIES_PATH%\swift-stdlib\bin;%SW_BINARIES_PATH%\libdispatch;%SW_BINARIES_PATH%\foundation\Foundation;%SW_BINARIES_PATH%\xctest;%PATH%;%ProgramFiles%\Git\usr\bin
+          echo ::set-env name=PATH::%PATH%
+
+      - name: Configure Foundation Tests
+        shell: cmd
+        run: |
+          cmake^
+           -G Ninja^
+           -S %SW_SOURCES_PATH%\swift-corelibs-foundation^
+           -B %SW_BINARIES_PATH%\foundation^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+           -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
+           -D CMAKE_BUILD_TYPE=Release^
+           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+           -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
+           -D ZLIB_INCLUDE_DIR=%SW_ZLIB_PATH%\usr\include^
+           -D CURL_LIBRARY=%SW_CURL_PATH%\usr\lib\libcurl.lib^
+           -D CURL_INCLUDE_DIR=%SW_CURL_PATH%\usr\include^
+           -D ICU_INCLUDE_DIR=%SW_ICU_PATH%\usr\include^
+           -D ICU_UC_LIBRARY=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
+           -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuuc%SW_ICU_VERSION%.lib^
+           -D ICU_I18N_LIBRARY=%SW_ICU_PATH%/usr/lib/icuin%SW_ICU_VERSION%.lib^
+           -D ICU_I18N_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuin%SW_ICU_VERSION%.lib^
+           -D LIBXML2_LIBRARY=%SW_XML2_PATH%\usr\lib\libxml2s.lib^
+           -D LIBXML2_INCLUDE_DIR=%SW_XML2_PATH%\usr\include\libxml2^
+           -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
+           -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
+           -D ENABLE_TESTING=YES
+
+      - name: Build Foundation Tests
+        shell: cmd
+        run: |
+          cmake --build %SW_BINARIES_PATH%\foundation-test
+
+      - name: Test Foundation
+        shell: cmd
+        continue-on-error: true
+        run: |
+          cmake --build %SW_BINARIES_PATH%\foundation-test --target test
