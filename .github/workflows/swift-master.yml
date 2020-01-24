@@ -744,7 +744,8 @@ jobs:
            -D LIBXML2_INCLUDE_DIR=%SW_XML2_PATH%\usr\include\libxml2^
            -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
            -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
-           -D ENABLE_TESTING=YES
+           -D ENABLE_TESTING=YES^
+           -D XCTest_DIR=$(Build.BinariesDirectory)/xctest/cmake/modules
 
       - name: Build Foundation Tests
         shell: cmd
