@@ -707,12 +707,17 @@ jobs:
            -D BUILD_TESTING=YES^
            -D ENABLE_SWIFT=YES
 
+      - name: Build libdispatch
+        shell: cmd
+        run: |
+          cmake --build %SW_BINARIES_PATH%\libdispatch
+
       - name: Test libdispatch
         shell: cmd
         continue-on-error: true
         run: |
           cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
-          
+
       - name: Configure Foundation Test Environment
         shell: cmd
         run: |
@@ -750,10 +755,10 @@ jobs:
       - name: Build Foundation Tests
         shell: cmd
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation-test
+          cmake --build %SW_BINARIES_PATH%\foundation
 
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
         run: |
-          cmake --build %SW_BINARIES_PATH%\foundation-test --target test
+          cmake --build %SW_BINARIES_PATH%\foundation --target test
