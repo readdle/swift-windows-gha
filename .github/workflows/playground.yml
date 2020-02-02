@@ -3,7 +3,7 @@ on:
   push:
     paths: 
       - .github/workflows/playground.yml
-  
+
 jobs:
   rev-store:
     runs-on: windows-latest
@@ -14,17 +14,27 @@ jobs:
       - name: Store Rev
         shell: cmd
         run: |
-          git rev-parse HEAD > rev.txt
-          set /p SW_REV=< rev.txt
-          
-          echo Rev is %SW_REV%
-          echo ::set-env name=SW_REV::%SW_REV%
-          
+          mkdir i
+          git rev-parse HEAD > i\rev.txt
+
+      - name: Upload Rev
+        uses: actions/upload-artifact@v1
+        with:
+          name: rev
+          path: i
+
   rev-read:
     needs: [rev-store]
     runs-on: windows-latest
+
     steps:
+      - name: Download Rev
+        uses: actions/download-artifact@v1
+        with:
+          name: rev
+          path: 'a'
       - name: Read Rev
         shell: cmd
         run: |
+          set /p SW_REV=< a\rev.txt
           echo Rev is %SW_REV%
