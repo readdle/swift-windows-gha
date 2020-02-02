@@ -291,6 +291,21 @@ jobs:
         with:
           name: icu
           path: 'a'
+      - name: Collect Checkout Info
+        shell: cmd
+        run: |
+          mkdir %GITHUB_WORKSPACE%\checkout
+          git -C s/toolchain rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          git -C s/toolchain/cmark rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          git -C s/swift-corelibs-libdispatch rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          git -C s/toolchain/swift rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
+
+      - name: Upload Checkout Info
+        uses: actions/upload-artifact@v1
+        with:
+          name: checkout-${{ matrix.branch }}
+          path: 'checkout'
+
       - name: Configure Build Environment
         shell: cmd
         run: |
