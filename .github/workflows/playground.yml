@@ -5,17 +5,26 @@ on:
       - .github/workflows/playground.yml
   
 jobs:
-  icu:
+  rev-store:
     runs-on: windows-latest
 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - name: Configure Build Environment
+      - name: Store Rev
         shell: cmd
         run: |
           git rev-parse HEAD > rev.txt
           set /p SW_REV=< rev.txt
           
-          echo REv is %SW_REV%
-         
+          echo Rev is %SW_REV%
+          echo ::set-env name=SW_REV::%SW_REV%
+          
+  rev-read:
+    needs: [rev-store]
+    runs-on: windows-latest
+    steps:
+      - name: Read Rev
+        shell: cmd
+        run: |
+          echo Rev is %SW_REV%
