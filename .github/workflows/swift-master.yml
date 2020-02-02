@@ -434,15 +434,11 @@ jobs:
         branch: ['master']
         include:
           - branch: 'master'
-            llvm-ref: 'swift/master'
-            swift-ref: 'master'
             libdispatch-ref: 'master'
             foundation-ref: 'master'
             xctest-ref: 'master'
 
           - branch: '5.2'
-            llvm-ref: 'swift/swift-5.2-branch'
-            swift-ref: 'swift-5.2-branch'
             libdispatch-ref: 'swift-5.2-branch'
             foundation-ref: 'swift-5.2-branch'
             xctest-ref: 'swift-5.2-branch'
@@ -450,6 +446,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Download Checkout Info
+        uses: actions/download-artifact@v1
+        with:
+          name: checkout-${{ matrix.branch }}
+          path: 'a/checkout'
+      - name: Read Checkout Info
+        shell: cmd
+        run: |
+          set /p SW_LLVM_REV=< a\checkout\llvm-project.txt
+          set /p SW_SWIFT_REV=< a\checkout\swift.txt
+          
+          echo llvm-project rev is %SW_LLVM_REV%
+          echo swift rev is %SW_SWIFT_REV%
+          
+          echo ::set-env name=SW_LLVM_REV::%SW_LLVM_REV%
+          echo ::set-env name=SW_SWIFT_REV::%SW_SWIFT_REV%
+          
       - name: Configure Git
         shell: cmd
         run: |
@@ -459,14 +472,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'apple/llvm-project'
-          ref: ${{ matrix.llvm-ref }}
+          ref: ${{ env.SW_LLVM_REV }}
           fetch-depth: 1
           path: 's/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
-          ref: ${{ matrix.swift-ref }}
+          ref: ${{ env.SW_SWIFT_REV }}
           fetch-depth: 1
           path: 's/swift'
       - name: Checkout libdispatch
