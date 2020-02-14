@@ -4,7 +4,3 @@ set(SWIFT_STDLIB_DIR "${CMAKE_Swift_SDK}/usr" CACHE STRING "")
 
 set(CMAKE_Swift_FLAGS "-Xfrontend -enable-spec-devirt -resource-dir \"${SWIFT_STDLIB_DIR}/lib/swift\" -L${SWIFT_STDLIB_DIR}/lib/swift/windows" CACHE STRING "")
 set(CMAKE_Swift_LINK_FLAGS "-Xfrontend -enable-spec-devirt -resource-dir \"${SWIFT_STDLIB_DIR}/lib/swift\" -L${SWIFT_STDLIB_DIR}/lib/swift/windows" CACHE STRING "")
-
-if(CMAKE_VERSION VERSION_LESS 3.16.0)
-  set(CMAKE_Swift_LINK_LIBRARY_FLAG "-l" CACHE STRING "")
-endif()
