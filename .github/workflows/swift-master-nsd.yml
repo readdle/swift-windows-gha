@@ -4,6 +4,7 @@ on:
     paths-ignore: 
       - .github/workflows/playground.yml
       - .github/workflows/swift-5.2.yml
+      - .github/workflows/swift-master.yml
       - README.md
 
   schedule:
