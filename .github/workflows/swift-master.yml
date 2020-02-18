@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/playground.yml
+      - .github/workflows/swift-master-nsd.yml
       - .github/workflows/swift-5.2.yml
       - README.md
 
