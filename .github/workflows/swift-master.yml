@@ -335,7 +335,6 @@ jobs:
            -D CMAKE_BUILD_TYPE=Release^
            -D LLVM_ENABLE_ASSERTIONS=NO^
            -D LLVM_ENABLE_PROJECTS="clang;lldb"^
-           -D LLDB_DISABLE_PYTHON=YES^
            -D LLDB_INCLUDE_TESTS=NO
 
       - name: Build LLVM Build Tools
@@ -380,7 +379,6 @@ jobs:
            -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%\usr^
-           -D LLDB_FRAMEWORK_INSTALL_DIR=%SW_INSTALL_PATH%\Library\PrivateFrameworks^
            -D LLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc^
            -D LLVM_USE_HOST_TOOLS=NO^
            -D LLVM_TABLEGEN=%LLVM_TABLEGEN%^
@@ -390,7 +388,6 @@ jobs:
            -D LLVM_ENABLE_LIBEDIT=NO^
            -D LLVM_PARALLEL_LINK_JOBS=2^
            -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe^
-           -D LLDB_DISABLE_PYTHON=YES^
            -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
            -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
            -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
