@@ -5,6 +5,16 @@ on:
       - .github/workflows/playground.yml
 
 jobs:
+  azure:
+    runs-on: windows-latest
+    steps:
+      - name: Azure DevOps Login
+        env: 
+          AZURE_DEVOPS_EXT_PAT: ${{ secrets.SuperSecret }}
+        shell: cmd
+        run: |
+          az devops login --organization https://dev.azure.com/lxbndr/
+
   rev-store:
     runs-on: windows-latest
 
