@@ -13,7 +13,7 @@ jobs:
           AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_EXT_PAT }}
         shell: cmd
         run: |
-          az devops login --organization https://dev.azure.com/lxbndr/
+          echo %AZURE_DEVOPS_EXT_PAT% | az devops login --organization https://dev.azure.com/lxbndr/
 
   rev-store:
     runs-on: windows-latest
