@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Azure DevOps Login
         env: 
-          AZURE_DEVOPS_EXT_PAT: ${{ secrets.SuperSecret }}
+          AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_EXT_PAT }}
         shell: cmd
         run: |
           az devops login --organization https://dev.azure.com/lxbndr/
