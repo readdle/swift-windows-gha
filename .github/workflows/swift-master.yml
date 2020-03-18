@@ -33,36 +33,20 @@ jobs:
           path: 'icu'
       - name: Configure Build Environment
         shell: cmd
-        run: |
-          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-          
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\icu-%SW_ICU_VERSION%\usr
-          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
-
-          copy cmake\ICU\CMakeLists.txt icu\icu4c
+        run: scripts\workflows\jobs\icu\steps\configure-build-environment.cmd
 
       - name: Configure ICU
         shell: cmd
-        run: |
-          subst T: "%GITHUB_WORKSPACE%\icu\icu4c"
-          cmake^
-           -G Ninja^
-           -S T:\^
-           -B %GITHUB_WORKSPACE%\b^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -D CMAKE_BUILD_TYPE=MinSizeRel^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D BUILD_SHARED_LIBS=YES^
-           -D BUILD_TOOLS=YES
+        run: scripts\workflows\jobs\icu\steps\configure-icu.cmd
 
       - name: Build ICU
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b
+        run: scripts\workflows\jobs\icu\steps\build-icu.cmd
+
       - name: Install ICU
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b --target install
+        run: scripts\workflows\jobs\icu\steps\install-icu.cmd
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
