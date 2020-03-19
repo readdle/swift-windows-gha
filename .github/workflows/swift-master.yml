@@ -75,19 +75,19 @@ jobs:
           path: 'a'
       - name: Configure Build Environment
         shell: cmd
-        run: scripts\workflows\jobs\curl\configure-build-environment.cmd
+        run: scripts\workflows\jobs\curl\steps\configure-build-environment.cmd
 
       - name: Configure curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\configure-curl.cmd
+        run: scripts\workflows\jobs\curl\steps\configure-curl.cmd
 
       - name: Build curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\build-curl.cmd
+        run: scripts\workflows\jobs\curl\steps\build-curl.cmd
 
       - name: Install curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\install-curl.cmd
+        run: scripts\workflows\jobs\curl\steps\install-curl.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
