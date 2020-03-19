@@ -75,40 +75,20 @@ jobs:
           path: 'a'
       - name: Configure Build Environment
         shell: cmd
-        run: |
-          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-          
-          set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libcurl-%SW_CURL_VERSION%\usr
-          set SW_ZLIB_PATH=%SW_ARTIFACTS_PATH%\Library\zlib-%SW_ZLIB_VERSION%
-          
-          echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
-          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
-          echo ::set-env name=SW_ZLIB_PATH::%SW_ZLIB_PATH%
+        run: scripts\workflows\jobs\curl\configure-build-environment.cmd
 
       - name: Configure curl
         shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %GITHUB_WORKSPACE%\curl^
-           -B %GITHUB_WORKSPACE%\b^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -C %GITHUB_WORKSPACE%\cmake\caches\curl.cmake^
-           -D CMAKE_BUILD_TYPE=MinSizeRel^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D ZLIB_ROOT=%SW_ZLIB_PATH%\usr^
-           -D BUILD_SHARED_LIBS=NO^
-           -D BUILD_TESTING=NO
+        run: scripts\workflows\jobs\curl\configure-curl.cmd
 
       - name: Build curl
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b
-      - name: Install zlib
+        run: scripts\workflows\jobs\curl\build-curl.cmd
+
+      - name: Install curl
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b --target install
+        run: scripts\workflows\jobs\curl\install-curl.cmd
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
