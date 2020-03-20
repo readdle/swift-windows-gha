@@ -111,34 +111,20 @@ jobs:
           path: 'libxml2'
       - name: Configure Build Environment
         shell: cmd
-        run: |
-          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-          
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\libxml2-%SW_XML2_VERSION%\usr
-          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+        run: scripts\workflows\jobs\libxml2\steps\configure-build-environment.cmd
 
       - name: Configure libxml2
         shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %GITHUB_WORKSPACE%\libxml2^
-           -B %GITHUB_WORKSPACE%\b^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -C %GITHUB_WORKSPACE%\cmake\caches\libxml2.cmake^
-           -D CMAKE_BUILD_TYPE=MinSizeRel^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D BUILD_SHARED_LIBS=NO^
-           -D BUILD_TESTING=NO
+        run: scripts\workflows\jobs\libxml2\steps\configure-libxml2.cmd
 
       - name: Build libxml2
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b
+        run: scripts\workflows\jobs\libxml2\steps\build-libxml2.cmd
+
       - name: Install libxml2
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b --target install
+        run: scripts\workflows\jobs\libxml2\steps\install-libxml2.cmd
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -161,34 +147,20 @@ jobs:
           path: 'zlib'
       - name: Configure Build Environment
         shell: cmd
-        run: |
-          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-          
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\zlib-%SW_ZLIB_VERSION%\usr
-          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
+        run: scripts\workflows\jobs\zlib\steps\configure-build-environment.cmd
 
       - name: Configure zlib
         shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %GITHUB_WORKSPACE%\zlib^
-           -B %GITHUB_WORKSPACE%\b^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -D CMAKE_BUILD_TYPE=MinSizeRel^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
-           -D CMAKE_POSITION_INDEPENDENT_CODE=YES^
-           -D BUILD_SHARED_LIBS=NO^
-           -D BUILD_TESTING=NO
+        run: scripts\workflows\jobs\zlib\steps\configure-zlib.cmd
 
       - name: Build zlib
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b
+        run: scripts\workflows\jobs\zlib\steps\build-zlib.cmd
+
       - name: Install zlib
         shell: cmd
-        run: |
-          cmake --build %GITHUB_WORKSPACE%\b --target install
+        run: scripts\workflows\jobs\zlib\steps\install-zlib.cmd
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
