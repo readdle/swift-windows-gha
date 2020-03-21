@@ -245,102 +245,48 @@ jobs:
 
       - name: Configure Build Environment
         shell: cmd
-        run: |
-          call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
-          
-          set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
-          set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
-          set SW_BINARIES_PATH=%GITHUB_WORKSPACE%\b
-          set SW_INSTALL_PATH=%GITHUB_WORKSPACE%\i\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
-          set SW_ICU_PATH=%SW_ARTIFACTS_PATH%\Library\icu-%SW_ICU_VERSION%
-          
-          echo ::set-env name=SW_ARTIFACTS_PATH::%SW_ARTIFACTS_PATH%
-          echo ::set-env name=SW_SOURCES_PATH::%SW_SOURCES_PATH%
-          echo ::set-env name=SW_BINARIES_PATH::%SW_BINARIES_PATH%
-          echo ::set-env name=SW_INSTALL_PATH::%SW_INSTALL_PATH%
-          echo ::set-env name=SW_ICU_PATH::%SW_ICU_PATH%
+        run: scripts\workflows\jobs\toolchain\steps\configure-build-environment.cmd
 
       - name: Configure LLVM Build Tools
         shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %SW_SOURCES_PATH%\toolchain\llvm^
-           -B %SW_BINARIES_PATH%\llvm-tools^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -D CMAKE_BUILD_TYPE=Release^
-           -D LLVM_ENABLE_ASSERTIONS=NO^
-           -D LLVM_ENABLE_PROJECTS="clang;lldb"^
-           -D LLDB_INCLUDE_TESTS=NO
+        run: scripts\workflows\jobs\toolchain\steps\configure-llvm-build-tools.cmd
 
       - name: Build LLVM Build Tools
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\llvm-tools --target llvm-tblgen
-      - name: Build Clang Build Tool
+        run: scripts\workflows\jobs\toolchain\steps\build-llvm-build-tools.cmd
+
+      - name: Build Clang Build Tools
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\llvm-tools --target clang-tblgen
+        run: scripts\workflows\jobs\toolchain\steps\build-clang-build-tools.cmd
+
       - name: Build LLDB Build Tools
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\llvm-tools --target lldb-tblgen
-      - name: Configure SDK
+        run: scripts\workflows\jobs\toolchain\steps\build-lldb-build-tools.cmd
+
+      - name: Configure SDK Modules
         shell: cmd
-        run: |
-          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
-          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
-          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
-          copy %SW_SOURCES_PATH%\toolchain\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+        run: scripts\workflows\jobs\toolchain\steps\configure-sdk-modules.cmd
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
         with:
           python-version: 2.7.x
+
       - name: Expose Build Tools
         shell: cmd
-        run: |          
-          echo ::set-env name=LLVM_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\llvm-tblgen.exe
-          echo ::set-env name=CLANG_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\clang-tblgen.exe
-          echo ::set-env name=LLDB_TABLEGEN::%SW_BINARIES_PATH%\llvm-tools\bin\lldb-tblgen.exe
+        run: scripts\workflows\jobs\toolchain\steps\expose-build-tools.cmd
 
       - name: Configure Toolchain
         shell: cmd
-        run: |
-          cmake^
-           -G Ninja^
-           -S %SW_SOURCES_PATH%\toolchain\llvm^
-           -B %SW_BINARIES_PATH%\toolchain^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
-           -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
-           -D CMAKE_BUILD_TYPE=Release^
-           -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%\usr^
-           -D LLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc^
-           -D LLVM_USE_HOST_TOOLS=NO^
-           -D LLVM_TABLEGEN=%LLVM_TABLEGEN%^
-           -D CLANG_TABLEGEN=%CLANG_TABLEGEN%^
-           -D LLDB_TABLEGEN=%LLDB_TABLEGEN%^
-           -D SWIFT_PATH_TO_LIBDISPATCH_SOURCE=%SW_SOURCES_PATH%\swift-corelibs-libdispatch^
-           -D LLVM_ENABLE_LIBEDIT=NO^
-           -D LLVM_PARALLEL_LINK_JOBS=2^
-           -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe^
-           -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
-           -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
-           -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
-           -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
-           -D SWIFT_PARALLEL_LINK_JOBS=2^
-           -D SWIFT_BUILD_DYNAMIC_STDLIB=YES^
-           -D SWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
+        run: scripts\workflows\jobs\toolchain\steps\configure-toolchain.cmd
 
       - name: Build Toolchain
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\toolchain --target distribution
+        run: scripts\workflows\jobs\toolchain\steps\build-toolchain.cmd
 
       - name: Install Toolchain
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\toolchain --target install-distribution
+        run: scripts\workflows\jobs\toolchain\steps\install-toolchain.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -348,16 +294,14 @@ jobs:
           name: toolchain-${{ matrix.branch }}
           path: i
 
-      - name: Prepare Test Environment
+      - name: Configure Test Environment
         shell: cmd
-        run: |
-          echo ::set-env name=PATH::%SW_ICU_PATH%\usr\bin;%SW_INSTALL_PATH%\usr\bin;%PATH%;%ProgramFiles%\Git\usr\bin
+        run: scripts\workflows\jobs\toolchain\steps\configure-test-environment.cmd
 
       - name: Check Swift
         continue-on-error: true
         shell: cmd
-        run: |
-          cmake --build %SW_BINARIES_PATH%\toolchain --target check-swift
+        run: scripts\workflows\jobs\toolchain\steps\check-swift.cmd
 
   sdk:
 
