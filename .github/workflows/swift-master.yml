@@ -655,6 +655,8 @@ jobs:
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
            -D ZLIB_INCLUDE_DIR=%SW_ZLIB_PATH%\usr\include^
+           -D CURL_LIBRARY=%SW_CURL_PATH%\usr\lib\libcurl.lib^
+           -D CURL_INCLUDE_DIR=%SW_CURL_PATH%\usr\include^
            -D ICU_INCLUDE_DIR=%SW_ICU_PATH%\usr\include^
            -D ICU_UC_LIBRARY=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
            -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuuc%SW_ICU_VERSION%.lib^
@@ -764,6 +766,8 @@ jobs:
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
            -D ZLIB_INCLUDE_DIR=%SW_ZLIB_PATH%\usr\include^
+           -D CURL_LIBRARY=%SW_CURL_PATH%\usr\lib\libcurl.lib^
+           -D CURL_INCLUDE_DIR=%SW_CURL_PATH%\usr\include^
            -D ICU_INCLUDE_DIR=%SW_ICU_PATH%\usr\include^
            -D ICU_UC_LIBRARY=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
            -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_PATH%/usr/lib/icuuc%SW_ICU_VERSION%.lib^
