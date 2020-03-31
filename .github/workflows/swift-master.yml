@@ -379,7 +379,6 @@ jobs:
            -D LLVM_ENABLE_LIBEDIT=NO^
            -D LLVM_PARALLEL_LINK_JOBS=2^
            -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe^
-           -D LLDB_DISABLE_PYTHON=YES^
            -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
            -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
            -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
