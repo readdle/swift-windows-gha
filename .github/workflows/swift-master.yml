@@ -3,7 +3,6 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/playground.yml
-      - .github/workflows/swift-master-nsd.yml
       - .github/workflows/swift-5.2.yml
       - README.md
 
@@ -632,7 +631,7 @@ jobs:
            -B %SW_BINARIES_PATH%\foundation^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
            -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags-nsd.cmake^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
@@ -743,7 +742,7 @@ jobs:
            -B %SW_BINARIES_PATH%\foundation^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
            -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
-           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags-nsd.cmake^
+           -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
            -D CMAKE_BUILD_TYPE=Release^
            -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
            -D ZLIB_LIBRARY=%SW_ZLIB_PATH%\usr\lib\zlibstatic.lib^
