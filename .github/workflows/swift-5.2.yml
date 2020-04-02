@@ -388,7 +388,8 @@ jobs:
            -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
            -D SWIFT_PARALLEL_LINK_JOBS=2^
            -D SWIFT_BUILD_DYNAMIC_STDLIB=YES^
-           -D SWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES
+           -D SWIFT_BUILD_DYNAMIC_SDK_OVERLAY=YES^
+           -D SWIFT_BUILD_DISABLE_LLDB_PYTHON_SCRIPTS=TRUE
 
       - name: Build Toolchain
         shell: cmd
