@@ -171,20 +171,11 @@ jobs:
 
     runs-on: windows-latest
     needs: [icu]
-    strategy:
-      matrix:
-        branch: ['master']
-        include:
-          - branch: 'master'
-            llvm-ref: 'swift/master'
-            cmark-ref: 'master'
-            libdispatch-ref: 'master'
-            swift-ref: 'master'
-          - branch: '5.2'
-            llvm-ref: 'swift/swift-5.2-branch'
-            cmark-ref: 'swift-5.2-branch'
-            libdispatch-ref: 'swift-5.2-branch'
-            swift-ref: 'swift-5.2-branch'
+    env:
+      SW_LLVM_REF: 'swift/master'
+      SW_CMARK_REF: 'master'
+      SW_LIBDISPATCH_REF: 'master'
+      SW_SWIFT_REF: 'master'
 
     steps:
       - name: Checkout 
@@ -197,28 +188,28 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'apple/llvm-project'
-          ref: ${{ matrix.llvm-ref }}
+          ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
           path: 's/toolchain' 
       - name: Checkout cmark
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-cmark'
-          ref: ${{ matrix.cmark-ref }}
+          ref: ${{ env.SW_CMARK_REF }}
           fetch-depth: 1
           path: 's/toolchain/cmark' 
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: ${{ matrix.libdispatch-ref }}
+          ref: ${{ env.SW_LIBDISPATCH_REF }}
           fetch-depth: 1
           path: 's/swift-corelibs-libdispatch' 
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
-          ref: ${{ matrix.swift-ref }}
+          ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
           path: 's/toolchain/swift'
       - name: Download ICU
@@ -238,7 +229,7 @@ jobs:
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
         with:
-          name: checkout-${{ matrix.branch }}
+          name: checkout
           path: 'checkout'
 
       - name: Configure Build Environment
@@ -289,7 +280,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain-${{ matrix.branch }}
+          name: toolchain
           path: i
 
       - name: Configure Test Environment
@@ -305,19 +296,10 @@ jobs:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
-    strategy:
-      matrix:
-        branch: ['master']
-        include:
-          - branch: 'master'
-            libdispatch-ref: 'master'
-            foundation-ref: 'master'
-            xctest-ref: 'master'
-
-          - branch: '5.2'
-            libdispatch-ref: 'swift-5.2-branch'
-            foundation-ref: 'swift-5.2-branch'
-            xctest-ref: 'swift-5.2-branch'
+    env:
+      SW_LIBDISPATCH_REF: 'master'
+      SW_FOUNDATION_REF: 'master'
+      SW_XCTEST_REF: 'master'
 
     steps:
       - name: Checkout
@@ -325,19 +307,19 @@ jobs:
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
-          name: checkout-${{ matrix.branch }}
+          name: checkout
           path: 'a/checkout'
       - name: Read Checkout Info
         shell: cmd
         run: |
-          set /p SW_LLVM_REV=< a\checkout\llvm-project.txt
-          set /p SW_SWIFT_REV=< a\checkout\swift.txt
+          set /p SW_LLVM_REF=< a\checkout\llvm-project.txt
+          set /p SW_SWIFT_REF=< a\checkout\swift.txt
           
-          echo llvm-project rev is %SW_LLVM_REV%
-          echo swift rev is %SW_SWIFT_REV%
+          echo llvm-project rev is %SW_LLVM_REF%
+          echo swift rev is %SW_SWIFT_REF%
           
-          echo ::set-env name=SW_LLVM_REV::%SW_LLVM_REV%
-          echo ::set-env name=SW_SWIFT_REV::%SW_SWIFT_REV%
+          echo ::set-env name=SW_LLVM_REV::%SW_LLVM_REF%
+          echo ::set-env name=SW_SWIFT_REV::%SW_SWIFT_REF%
           
       - name: Configure Git
         shell: cmd
@@ -347,35 +329,35 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'apple/llvm-project'
-          ref: ${{ env.SW_LLVM_REV }}
+          ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
           path: 's/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
-          ref: ${{ env.SW_SWIFT_REV }}
+          ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
           path: 's/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: ${{ matrix.libdispatch-ref }}
+          ref: ${{ env.SW_LIBDISPATCH_REF }}
           fetch-depth: 1
           path: 's/swift-corelibs-libdispatch'
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
-          ref: ${{ matrix.foundation-ref }}
+          ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
           path: 's/swift-corelibs-foundation'
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
-          ref: ${{ matrix.xctest-ref }}
+          ref: ${{ env.SW_XCTEST_REF }}
           fetch-depth: 1
           path: 's/swift-corelibs-xctest'
 
@@ -402,7 +384,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain-${{ matrix.branch }}
+          name: toolchain
           path: 'a'
 
       - name: Configure Build Environment
@@ -469,7 +451,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk-${{ matrix.branch }}
+          name: sdk
           path: i
 
       - name: Configure libdispatch Tests
