@@ -367,6 +367,7 @@ jobs:
            -G Ninja^
            -S %SW_SOURCES_PATH%\toolchain\llvm^
            -B %SW_BINARIES_PATH%\toolchain^
+           -C %GITHUB_WORKSPACE%\cmake\caches\toolchain-5.2.cmake^
            -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
            -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
            -D CMAKE_BUILD_TYPE=Release^
@@ -443,8 +444,8 @@ jobs:
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
           
-          echo ::set-env name=SW_LLVM_REV::%SW_LLVM_REF%
-          echo ::set-env name=SW_SWIFT_REV::%SW_SWIFT_REF%
+          echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%
+          echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
           
       - name: Configure Git
         shell: cmd
