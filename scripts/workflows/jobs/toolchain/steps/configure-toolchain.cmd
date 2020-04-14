@@ -2,6 +2,7 @@ cmake^
  -G Ninja^
  -S %SW_SOURCES_PATH%\toolchain\llvm^
  -B %SW_BINARIES_PATH%\toolchain^
+ -C %GITHUB_WORKSPACE%\cmake\caches\toolchain-%SW_SWIFT_BRANCH_SPEC%.cmake^
  -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -C %GITHUB_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
  -D CMAKE_BUILD_TYPE=Release^

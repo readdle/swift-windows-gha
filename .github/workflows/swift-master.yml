@@ -11,6 +11,7 @@ on:
     - cron: '0 22 * * *'
 
 env:
+  SW_SWIFT_BRANCH_SPEC: master
   SW_CURL_VERSION: development
   SW_ICU_VERSION: 64
   SW_XML2_VERSION: development
