@@ -15,6 +15,18 @@ set(LLVM_EXTERNAL_PROJECTS
       swift
     CACHE STRING "")
 
+set(LLVM_ENABLE_RUNTIMES
+      compiler-rt
+    CACHE STRING "")
+
+# --- compiler-rt ---
+
+set(COMPILER_RT_BUILD_CRT NO CACHE BOOL "")
+set(COMPILER_RT_BUILD_LIBFUZZER NO CACHE BOOL "")
+set(COMPILER_RT_BUILD_PROFILE NO CACHE BOOL "")
+set(COMPILER_RT_BUILD_SANITIZERS NO CACHE BOOL "")
+set(COMPILER_RT_BUILD_XRAY NO CACHE BOOL "")
+
 # --- LLVM ---
 
 set(LLVM_ENABLE_ASSERTIONS YES CACHE BOOL "")
@@ -109,14 +121,26 @@ set(LLD_TOOLS
 set(LLDB_ALLOW_STATIC_BINDINGS YES CACHE BOOL "")
 set(LLDB_USE_STATIC_BINDINGS YES CACHE BOOL "")
 
-set(LLDB_TOOLS
-      liblldb
-      lldb
-      lldb-argdumper
-      lldb-server
-      lldb-vscode
-      repl_swift
-    CACHE STRING "")
+if(SWIFT_BUILD_DISABLE_LLDB_PYTHON_SCRIPTS)
+  set(LLDB_TOOLS
+        liblldb
+        lldb
+        lldb-argdumper
+        lldb-server
+        lldb-vscode
+        repl_swift
+      CACHE STRING "")
+else()
+  set(LLDB_TOOLS
+        liblldb
+        lldb
+        lldb-argdumper
+        lldb-python-scripts
+        lldb-server
+        lldb-vscode
+        repl_swift
+      CACHE STRING "")
+endif()
 
 # --- swift ---
 

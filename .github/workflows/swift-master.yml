@@ -3,7 +3,6 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/playground.yml
-      - .github/workflows/swift-master-nsd.yml
       - .github/workflows/swift-5.2.yml
       - README.md
 
@@ -319,8 +318,8 @@ jobs:
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
           
-          echo ::set-env name=SW_LLVM_REV::%SW_LLVM_REF%
-          echo ::set-env name=SW_SWIFT_REV::%SW_SWIFT_REF%
+          echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%
+          echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
           
       - name: Configure Git
         shell: cmd
