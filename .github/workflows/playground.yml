@@ -8,7 +8,7 @@ jobs:
   azure:
     runs-on: windows-latest
     env:
-      SW_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+      SW_WORKSPACE: ${{ jobs.azure.env.GITHUB_WORKSPACE }}
     steps:
       - name: Azure DevOps Login
         env: 
