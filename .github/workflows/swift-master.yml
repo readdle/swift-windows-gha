@@ -20,6 +20,8 @@ jobs:
   icu:
 
     runs-on: windows-latest
+    env:
+      SW_WORKSPACE: ${{ github.workspace }}
 
     steps:
       - name: Checkout 
