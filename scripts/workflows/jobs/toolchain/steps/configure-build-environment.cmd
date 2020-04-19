@@ -1,4 +1,4 @@
-call .github\workflows\vsenv.cmd -arch=x64 -host_arch=x64
+call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
           
 set SW_ARTIFACTS_PATH=%GITHUB_WORKSPACE%\a
 set SW_SOURCES_PATH=%GITHUB_WORKSPACE%\s
