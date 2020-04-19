@@ -1,1 +1,1 @@
-cmake --build %SW_WORKSPACE%\b --target install
+cmake --build %SW_ICU_BUILD_DIR% --target install

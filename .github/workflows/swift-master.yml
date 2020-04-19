@@ -24,21 +24,26 @@ jobs:
     runs-on: windows-latest
     env:
       SW_WORKSPACE: ${{ github.workspace }}
+      SW_SOURCES_DIR: ${{ github.workspace }}/src
+      SW_BUILD_DIR: ${{ github.workspace }}/build
+      SW_INSTALL_DIR: ${{ github.workspace }}/install
 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - name: Checkout ICU
-        uses: actions/checkout@v2
-        with:
-          repository: 'unicode-org/icu'
-          ref: 'maint/maint-${{ env.SW_ICU_VERSION }}'
-          fetch-depth: 1
-          path: 'icu'
+
       - name: Configure Build Environment
         shell: cmd
         run: scripts\workflows\jobs\icu\steps\configure-build-environment.cmd
 
+      - name: Checkout ICU
+        uses: actions/checkout@v2
+        with:
+          repository: 'unicode-org/icu'
+          ref: '${{ env.SW_ICU_REF }}'
+          fetch-depth: 1
+          path: '${{ env.SW_ICU_SOURCES_DIR }}'
+      
       - name: Configure ICU
         shell: cmd
         run: scripts\workflows\jobs\icu\steps\configure-icu.cmd
@@ -55,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: icu
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   curl:
 
