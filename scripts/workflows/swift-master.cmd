@@ -1,3 +1,5 @@
+@echo off
+
 setlocal
 
 set SW_WORKSPACE=%CD%

@@ -1,5 +1,3 @@
-@echo off
-
 setlocal
 
 set SW_ICU_REF=maint/maint-%SW_ICU_VERSION%
