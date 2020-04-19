@@ -2,9 +2,10 @@ name: swift-5.2
 on:
   push:
     paths-ignore: 
-      - .github/workflows/playground.yml
       - .github/workflows/swift-master.yml
-      - .github/workflows/swift-master-nsd.yml
+      - scripts/workflows/*
+      - scripts/workflows/jobs/*
+      - LICENSE
       - README.md
 
   schedule:

@@ -2,8 +2,10 @@ name: swift-master
 on:
   push:
     paths-ignore: 
-      - .github/workflows/playground.yml
       - .github/workflows/swift-5.2.yml
+      - scripts/workflows/*
+      - scripts/workflows/jobs/*
+      - LICENSE
       - README.md
 
   schedule:
