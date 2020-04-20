@@ -24,9 +24,9 @@ jobs:
     runs-on: windows-latest
     env:
       SW_WORKSPACE: ${{ github.workspace }}
-      SW_SOURCES_DIR: ${{ github.workspace }}/src
-      SW_BUILD_DIR: ${{ github.workspace }}/build
-      SW_INSTALL_DIR: ${{ github.workspace }}/install
+      SW_SOURCES_DIR: ${{ github.workspace }}\src
+      SW_BUILD_DIR: ${{ github.workspace }}\build
+      SW_INSTALL_DIR: ${{ github.workspace }}\install
 
     steps:
       - name: Checkout 
