@@ -1,7 +1,5 @@
 setlocal
 
-set SW_ICU_REF=maint/maint-%SW_ICU_VERSION%
-
 pushd %CD%
 
 git init %SW_ICU_SOURCES_DIR%^
@@ -14,10 +12,6 @@ git init %SW_ICU_SOURCES_DIR%^
 
 set SW_ERROR=%ERRORLEVEL%
 popd
-if %SW_ERROR% neq 0 goto end
-
-copy cmake\ICU\CMakeLists.txt %SW_ICU_SOURCES_DIR%\icu4c
-set SW_ERROR=%ERRORLEVEL%
 
 :end
 endlocal & exit /b %SW_ERROR%
