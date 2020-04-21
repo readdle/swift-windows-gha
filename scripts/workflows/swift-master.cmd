@@ -10,6 +10,6 @@ set SW_INSTALL_DIR=%SW_WORKSPACE%\install
 set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
 set SW_ICU_VERSION=64
 
-call %SW_JOBS_DIR%\icu\icu.cmd
+call %SW_JOBS_DIR%\icu.cmd
 
 endlocal

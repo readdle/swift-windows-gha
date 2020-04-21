@@ -34,7 +34,7 @@ jobs:
 
       - name: Configure Build Environment
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\configure-build-environment.cmd
+        run: scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
 
       - name: Checkout ICU
         uses: actions/checkout@v2
@@ -46,15 +46,15 @@ jobs:
 
       - name: Configure ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\configure-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
 
       - name: Build ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\build-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\build-icu.cmd
 
       - name: Install ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\install-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\install-icu.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1

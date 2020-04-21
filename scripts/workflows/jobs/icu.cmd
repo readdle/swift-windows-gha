@@ -1,6 +1,6 @@
 setlocal
 
-set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\icu\steps
+set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\icu
 
 call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-icu.cmd^
