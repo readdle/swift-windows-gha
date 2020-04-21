@@ -13,5 +13,4 @@ git init %SW_ICU_SOURCES_DIR%^
 set SW_ERROR=%ERRORLEVEL%
 popd
 
-:end
 endlocal & exit /b %SW_ERROR%
