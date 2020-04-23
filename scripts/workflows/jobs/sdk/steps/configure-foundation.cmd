@@ -19,5 +19,6 @@ cmake^
  -D LIBXML2_LIBRARY=%SW_XML2_PATH%\usr\lib\libxml2s.lib^
  -D LIBXML2_INCLUDE_DIR=%SW_XML2_PATH%\usr\include\libxml2^
  -D dispatch_DIR=%SW_BINARIES_PATH%\libdispatch\cmake\modules^
+ -D CURL_NO_CURL_CMAKE=YES^
  -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
  -D ENABLE_TESTING=NO
