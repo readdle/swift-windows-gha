@@ -17,17 +17,15 @@ env:
   SW_ICU_VERSION: 64
   SW_XML2_VERSION: development
   SW_ZLIB_VERSION: 1.2.11
+  SW_WORKSPACE: ${{ github.workspace }}
+  SW_SOURCES_DIR: ${{ github.workspace }}\src
+  SW_BUILD_DIR: ${{ github.workspace }}\build
+  SW_INSTALL_DIR: ${{ github.workspace }}\install
 
 jobs:
   icu:
 
     runs-on: windows-latest
-    env:
-      SW_WORKSPACE: ${{ github.workspace }}
-      SW_SOURCES_DIR: ${{ github.workspace }}\src
-      SW_BUILD_DIR: ${{ github.workspace }}\build
-      SW_INSTALL_DIR: ${{ github.workspace }}\install
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -143,13 +141,6 @@ jobs:
   zlib:
 
     runs-on: windows-latest
-
-    env:
-      SW_WORKSPACE: ${{ github.workspace }}
-      SW_SOURCES_DIR: ${{ github.workspace }}\src
-      SW_BUILD_DIR: ${{ github.workspace }}\build
-      SW_INSTALL_DIR: ${{ github.workspace }}\install
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
