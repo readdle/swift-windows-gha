@@ -118,19 +118,19 @@ jobs:
           path: 'libxml2'
       - name: Configure Build Environment
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\configure-build-environment.cmd
+        run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
 
       - name: Configure libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\configure-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
 
       - name: Build libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\build-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
 
       - name: Install libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\install-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
