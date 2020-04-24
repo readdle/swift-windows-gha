@@ -11,4 +11,3 @@ echo ::set-env name=SW_ICU_REF::%SW_ICU_REF%
 echo ::set-env name=SW_ICU_SOURCES_DIR::%SW_ICU_SOURCES_DIR%
 echo ::set-env name=SW_ICU_BUILD_DIR::%SW_ICU_BUILD_DIR%
 echo ::set-env name=SW_ICU_INSTALL_DIR::%SW_ICU_INSTALL_DIR%
-

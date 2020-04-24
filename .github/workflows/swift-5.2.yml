@@ -109,16 +109,18 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+
       - name: Checkout libxml2
         uses: actions/checkout@v2
         with:
           repository: 'compnerd/libxml2'
-          ref: 'cmake'
+          ref: '${{ env.SW_XML2_REF }}'
           fetch-depth: 1
-          path: 'libxml2'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+          path: '${{ env.SW_XML2_SOURCES_DIR }}'
 
       - name: Configure libxml2
         shell: cmd
@@ -136,7 +138,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: libxml2
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   zlib:
 
