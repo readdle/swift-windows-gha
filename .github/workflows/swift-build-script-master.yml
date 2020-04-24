@@ -1,0 +1,20 @@
+name: swift-build-script-master
+on:
+  push:
+    paths-ignore: 
+      - .github/workflows/swift-5.2.yml
+      - .github/workflows/swift-master.yml
+      - LICENSE
+      - README.md
+
+jobs:
+  swift:
+
+    runs-on: windows-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Run Build Script
+        shell: cmd
+        run: scripts\workflows\swift-master.cmd
