@@ -1,1 +1,1 @@
-cmake --build %GITHUB_WORKSPACE%\b
+cmake --build %SW_WORKSPACE%\b
