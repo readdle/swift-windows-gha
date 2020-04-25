@@ -67,7 +67,7 @@ jobs:
     needs: [zlib]
 
     steps:
-       - name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Configure Build Environment

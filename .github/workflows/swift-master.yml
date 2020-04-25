@@ -42,7 +42,7 @@ jobs:
           ref: '${{ env.SW_ICU_REF }}'
           fetch-depth: 1
           path: '${{ env.SW_ICU_SOURCES_DIR }}'
-      
+
       - name: Configure ICU
         shell: cmd
         run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
