@@ -1,1 +1,1 @@
-cmake --build %GITHUB_WORKSPACE%\b --target install
+cmake --build %SW_CURL_BUILD_DIR% --target install

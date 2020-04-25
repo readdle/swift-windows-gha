@@ -21,6 +21,7 @@ env:
   SW_SOURCES_DIR: ${{ github.workspace }}\src
   SW_BUILD_DIR: ${{ github.workspace }}\build
   SW_INSTALL_DIR: ${{ github.workspace }}\install
+  SW_ARTIFACTS_DIR: ${{ github.workspace }}\artifacts
 
 jobs:
   icu:
@@ -66,23 +67,26 @@ jobs:
     needs: [zlib]
 
     steps:
-      - name: Checkout
+       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+
       - name: Checkout curl
         uses: actions/checkout@v2
         with:
           repository: 'curl/curl'
-          ref: 'master'
+          ref: '${{ env.SW_CURL_REF }}'
           fetch-depth: 1
-          path: 'curl'
+          path: '${{ env.SW_CURL_SOURCES_DIR }}'
+
       - name: Download zlib
         uses: actions/download-artifact@v1
         with:
           name: zlib
-          path: 'a'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Configure curl
         shell: cmd
@@ -100,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: curl
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   libxml2:
 
