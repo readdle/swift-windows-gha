@@ -485,3 +485,8 @@ jobs:
         shell: cmd
         continue-on-error: true
         run: scripts\workflows\jobs\sdk\steps\test-foundation.cmd
+      
+      - name: test_dateFromDoesntMutate
+        shell: cmd
+        continue-on-error: true
+        run: b\foundation\TestFoundation.app\TestFoundation.exe TestFoundation.TestCalendar
