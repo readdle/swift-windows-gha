@@ -318,6 +318,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
@@ -326,15 +327,18 @@ jobs:
       - name: Read Checkout Info
         shell: cmd
         run: |
-          set /p SW_LLVM_REF=< a\checkout\llvm-project.txt
-          set /p SW_SWIFT_REF=< a\checkout\swift.txt
-          
+          set /p SW_LLVM_REF=< %SW_ARTIFACTS_DIR%\checkout\llvm-project.txt
+          set /p SW_SWIFT_REF=< %SW_ARTIFACTS_DIR%\checkout\swift.txt
+          set /p SW_LIBDISPATCH_REF=< %SW_ARTIFACTS_DIR%\checkout\swift-corelibs-libdispatch.txt
+
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
-          
+          echo swift-corelibs-libdispatch rev is %SW_LIBDISPATCH_REF%
+
           echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%
           echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
-          
+          echo ::set-env name=SW_LIBDISPATCH_REF::%SW_LIBDISPATCH_REF%
+
       - name: Configure Git
         shell: cmd
         run: scripts\workflows\jobs\sdk\steps\configure-git.cmd
@@ -345,35 +349,35 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: ''${{ env.SW_SOURCES_DIR }}/llvm-project'
+          path: '${{ env.SW_SOURCES_DIR }}/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: ''${{ env.SW_SOURCES_DIR }}/swift'
+          path: ${{ env.SW_SOURCES_DIR }}/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
           ref: ${{ env.SW_LIBDISPATCH_REF }}
           fetch-depth: 1
-          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-libdispatch'
+          path: '${{ env.SW_SOURCES_DIR }}/swift-corelibs-libdispatch'
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
           ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
-          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-foundation'
+          path: '${{ env.SW_SOURCES_DIR }}/swift-corelibs-foundation'
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
           ref: ${{ env.SW_XCTEST_REF }}
           fetch-depth: 1
-          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-xctest'
+          path: '${{ env.SW_SOURCES_DIR }}/swift-corelibs-xctest'
 
       - name: Download ICU
         uses: actions/download-artifact@v1
