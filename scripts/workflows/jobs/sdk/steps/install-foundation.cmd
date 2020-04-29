@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\foundation --target install
+cmake --build %SW_BUILD_DIR%\foundation --target install

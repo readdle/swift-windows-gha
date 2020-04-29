@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\swift-stdlib
+cmake --build %SW_BUILD_DIR%\swift-stdlib

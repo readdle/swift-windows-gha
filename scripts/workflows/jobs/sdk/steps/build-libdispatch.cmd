@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\libdispatch
+cmake --build %SW_BUILD_DIR%\libdispatch

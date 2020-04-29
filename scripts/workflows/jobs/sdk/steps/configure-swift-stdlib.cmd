@@ -1,13 +1,13 @@
 cmake^
  -G Ninja^
- -S %SW_SOURCES_PATH%\swift^
- -B %SW_BINARIES_PATH%\swift-stdlib^
+ -S %SW_SOURCES_DIR%\swift^
+ -B %SW_BUILD_DIR%\swift-stdlib^
  -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
  -C %GITHUB_WORKSPACE%\cmake\caches\swift-stdlib-windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
- -D LLVM_DIR=%SW_BINARIES_PATH%\llvm\lib\cmake\llvm^
+ -D LLVM_DIR=%SW_BUILD_DIR%\llvm\lib\cmake\llvm^
  -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=%SW_TOOLCHAIN_PATH%\usr\bin^
- -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+ -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D SWIFT_WINDOWS_x86_64_ICU_UC_INCLUDE=%SW_ICU_PATH%\usr\include\unicode^
  -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
  -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^

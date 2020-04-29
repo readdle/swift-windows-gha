@@ -204,41 +204,41 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: 's/toolchain' 
+          path: '${{ env.SW_SOURCES_DIR }}/toolchain' 
       - name: Checkout cmark
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-cmark'
           ref: ${{ env.SW_CMARK_REF }}
           fetch-depth: 1
-          path: 's/toolchain/cmark' 
+          path: '${{ env.SW_SOURCES_DIR }}/toolchain/cmark' 
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
           ref: ${{ env.SW_LIBDISPATCH_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-libdispatch' 
+          path: '${{ env.SW_SOURCES_DIR }}/swift-corelibs-libdispatch' 
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: 's/toolchain/swift'
+          path: '${{ env.SW_SOURCES_DIR }}/toolchain/swift'
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
           name: icu
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Collect Checkout Info
         shell: cmd
         run: |
           mkdir %GITHUB_WORKSPACE%\checkout
-          git -C s/toolchain rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
-          git -C s/toolchain/cmark rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
-          git -C s/swift-corelibs-libdispatch rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
-          git -C s/toolchain/swift rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
+          git -C %SW_SOURCES_DIR%/toolchain rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          git -C %SW_SOURCES_DIR%/toolchain/cmark rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          git -C %SW_SOURCES_DIR%/swift-corelibs-libdispatch rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          git -C %SW_SOURCES_DIR%/toolchain/swift rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
 
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
@@ -295,7 +295,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: toolchain
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
         shell: cmd
@@ -345,61 +345,61 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: 's/llvm-project'
+          path: ''${{ env.SW_SOURCES_DIR }}/llvm-project'
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: 's/swift'
+          path: ''${{ env.SW_SOURCES_DIR }}/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
           ref: ${{ env.SW_LIBDISPATCH_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-libdispatch'
+          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-libdispatch'
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
           ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-foundation'
+          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-foundation'
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
           ref: ${{ env.SW_XCTEST_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-xctest'
+          path: ''${{ env.SW_SOURCES_DIR }}/swift-corelibs-xctest'
 
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
           name: icu
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download curl
         uses: actions/download-artifact@v1
         with:
           name: curl
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download libxml2
         uses: actions/download-artifact@v1
         with:
           name: libxml2
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download zlib
         uses: actions/download-artifact@v1
         with:
           name: zlib
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
           name: toolchain
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Configure Build Environment
         shell: cmd
@@ -466,7 +466,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: sdk
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests
         shell: cmd

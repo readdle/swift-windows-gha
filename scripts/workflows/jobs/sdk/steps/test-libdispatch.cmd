@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\libdispatch --target ExperimentalTest
+cmake --build %SW_BUILD_DIR%\libdispatch --target ExperimentalTest

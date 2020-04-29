@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\llvm-tools --target llvm-tblgen
+cmake --build %SW_BUILD_DIR%\llvm-tools --target llvm-tblgen

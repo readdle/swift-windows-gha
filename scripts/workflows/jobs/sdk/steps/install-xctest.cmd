@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\xctest --target install
+cmake --build %SW_BUILD_DIR%\xctest --target install

@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\toolchain --target install-distribution
+cmake --build %SW_BUILD_DIR%\toolchain --target install-distribution

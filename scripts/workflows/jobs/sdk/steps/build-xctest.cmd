@@ -1,1 +1,1 @@
-cmake --build %SW_BINARIES_PATH%\xctest
+cmake --build %SW_BUILD_DIR%\xctest

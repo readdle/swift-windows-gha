@@ -1,11 +1,11 @@
 cmake^
  -G Ninja^
- -S %SW_SOURCES_PATH%\swift-corelibs-libdispatch^
- -B %SW_BINARIES_PATH%\libdispatch^
+ -S %SW_SOURCES_DIR%\swift-corelibs-libdispatch^
+ -B %SW_BUILD_DIR%\libdispatch^
  -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
- -D SWIFT_STDLIB_DIR=%SW_BINARIES_PATH%\swift-stdlib^
+ -D SWIFT_STDLIB_DIR=%SW_BUILD_DIR%\swift-stdlib^
  -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
  -D CMAKE_BUILD_TYPE=Release^
- -D CMAKE_INSTALL_PREFIX=%SW_INSTALL_PATH%^
+ -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D BUILD_TESTING=NO^
  -D ENABLE_SWIFT=YES
