@@ -323,7 +323,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: checkout
-          path: 'a/checkout'
+          path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
       - name: Read Checkout Info
         shell: cmd
         run: |
