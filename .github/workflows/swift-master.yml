@@ -185,15 +185,15 @@ jobs:
 
     runs-on: windows-latest
     needs: [icu]
-    env:
-      SW_LLVM_REF: 'swift/master'
-      SW_CMARK_REF: 'master'
-      SW_LIBDISPATCH_REF: 'master'
-      SW_SWIFT_REF: 'master'
 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
+
       - name: Configure Git
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
@@ -245,10 +245,6 @@ jobs:
         with:
           name: checkout
           path: 'checkout'
-
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
       - name: Configure LLVM Build Tools
         shell: cmd
