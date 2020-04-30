@@ -356,7 +356,7 @@ jobs:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: ${{ env.SW_SOURCES_DIR }}/swift'
+          path: '${{ env.SW_SOURCES_DIR }}/swift'
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
