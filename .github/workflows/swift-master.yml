@@ -196,7 +196,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Configure Git
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-git.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
 
       - name: Checkout LLVM
         uses: actions/checkout@v2
@@ -248,27 +248,27 @@ jobs:
 
       - name: Configure Build Environment
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-build-environment.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
       - name: Configure LLVM Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-llvm-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
 
       - name: Build LLVM Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-llvm-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-llvm-build-tools.cmd
 
       - name: Build Clang Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-clang-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-clang-build-tools.cmd
 
       - name: Build LLDB Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-lldb-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
 
       - name: Configure SDK Modules
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-sdk-modules.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
@@ -277,19 +277,19 @@ jobs:
 
       - name: Expose Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\expose-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\expose-build-tools.cmd
 
       - name: Configure Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-toolchain.cmd
 
       - name: Build Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-toolchain.cmd
 
       - name: Install Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\install-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -299,12 +299,12 @@ jobs:
 
       - name: Configure Test Environment
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-test-environment.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-test-environment.cmd
 
       - name: Check Swift
         continue-on-error: true
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\check-swift.cmd
+        run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
 
   sdk:
 
