@@ -12,7 +12,7 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   set SW_SWIFT_REF=master
 )
 
-set SW_TOOLCHAIN_INSTALL_DIR=%SW_INSTALL_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
+set SW_TOOLCHAIN_INSTALL_DIR=%SW_INSTALL_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr
 set SW_ICU_PATH=%SW_ARTIFACTS_DIR%\Library\icu-%SW_ICU_VERSION%
 
 call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
