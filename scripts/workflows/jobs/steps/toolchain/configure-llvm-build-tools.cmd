@@ -1,6 +1,6 @@
 cmake^
  -G Ninja^
- -S %SW_LLVM_SOURCES_DIR%^
+ -S %SW_LLVM_TOOLS_SOURCES_DIR%^
  -B %SW_LLVM_TOOLS_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
