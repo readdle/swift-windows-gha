@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\llvm-tools --target lldb-tblgen
+cmake --build %SW_LLVM_TOOLS_BUILD_DIR% --target lldb-tblgen

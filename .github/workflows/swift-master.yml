@@ -205,6 +205,7 @@ jobs:
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
           path: '${{ env.SW_LLVM_SOURCES_DIR }}'
+
       - name: Checkout cmark
         uses: actions/checkout@v2
         with:
@@ -212,6 +213,7 @@ jobs:
           ref: ${{ env.SW_CMARK_REF }}
           fetch-depth: 1
           path: '${{ env.SW_CMARK_SOURCES_DIR }}'
+
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
@@ -219,6 +221,7 @@ jobs:
           ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
@@ -226,11 +229,13 @@ jobs:
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Collect Checkout Info
         shell: cmd
         run: |
@@ -270,10 +275,6 @@ jobs:
         uses: actions/setup-python@v1.1.1
         with:
           python-version: 2.7.x
-
-      - name: Expose Build Tools
-        shell: cmd
-        run: scripts\workflows\jobs\steps\toolchain\expose-build-tools.cmd
 
       - name: Configure Toolchain
         shell: cmd

@@ -1,8 +1,8 @@
 cmake^
  -G Ninja^
- -S %SW_SOURCES_DIR%\toolchain\llvm^
- -B %SW_BUILD_DIR%\llvm-tools^
- -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+ -S %SW_LLVM_SOURCES_DIR%^
+ -B %SW_LLVM_TOOLS_BUILD_DIR%^
+ -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D LLVM_ENABLE_ASSERTIONS=NO^
  -D LLVM_ENABLE_PROJECTS="clang;lldb"^
