@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\toolchain --target check-swift
+cmake --build %SW_TOOLCHAIN_BUILD_DIR% --target check-swift
