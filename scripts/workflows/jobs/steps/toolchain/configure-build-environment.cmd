@@ -5,6 +5,11 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   set SW_SWIFT_REF=swift-5.2-branch
 
   set SW_LLDB_OPTIONS=-DLLDB_DISABLE_PYTHON=YES
+) else if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
+  set SW_LLVM_REF=swift/release/5.3
+  set SW_CMARK_REF=release/5.3
+  set SW_DISPATCH_REF=release/5.3
+  set SW_SWIFT_REF=release/5.3
 ) else (
   set SW_LLVM_REF=swift/master
   set SW_CMARK_REF=master

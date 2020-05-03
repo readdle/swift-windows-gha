@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/swift-5.2.yml
+      - .github/workflows/swift-5.3.yml
       - scripts/workflows/*
       - scripts/workflows/jobs/*
       - LICENSE
