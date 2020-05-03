@@ -5,17 +5,17 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   set SW_SWIFT_REF=swift-5.2-branch
 
   set SW_LLDB_OPTIONS=-DLLDB_DISABLE_PYTHON=YES
-
-  if not defined GITHUB_ACTION (
-    set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=C:\Python27\python.exe
-  ) else (
-    set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
-  )
 ) else (
   set SW_LLVM_REF=swift/master
   set SW_CMARK_REF=master
   set SW_DISPATCH_REF=master
   set SW_SWIFT_REF=master
+)
+
+if not defined GITHUB_ACTION (
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=C:\Python27\python.exe
+) else (
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
 )
 
 set SW_LLVM_SOURCES_DIR=%SW_SOURCES_DIR%\toolchain
