@@ -2,6 +2,8 @@
 
 setlocal
 
+call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+
 set SW_WORKSPACE=%CD%
 set SW_SOURCES_DIR=%SW_WORKSPACE%\src
 set SW_BUILD_DIR=%SW_WORKSPACE%\build
@@ -19,6 +21,6 @@ call %SW_JOBS_DIR%\icu.cmd^
  && call %SW_JOBS_DIR%\toolchain.cmd^
  && call %SW_JOBS_DIR%\zlib.cmd^
  && call %SW_JOBS_DIR%\libxml2.cmd^
- && call %SW_JOBS_DIR%\curl.cmd^
+ && call %SW_JOBS_DIR%\curl.cmd
  
 endlocal
