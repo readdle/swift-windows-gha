@@ -13,7 +13,9 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 )
 
 if not defined GITHUB_ACTION (
-  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=C:\Python27\python.exe
+  if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
+    set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=C:\Python27\python.exe
+  )
 ) else (
   set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
 )
