@@ -13,10 +13,12 @@ set SW_CURL_VERSION=development
 set SW_ICU_VERSION=64
 set SW_XML2_VERSION=development
 set SW_ZLIB_VERSION=1.2.11
+set SW_SWIFT_BRANCH_SPEC=master
 
 call %SW_JOBS_DIR%\icu.cmd^
+ && call %SW_JOBS_DIR%\toolchain.cmd^
  && call %SW_JOBS_DIR%\zlib.cmd^
  && call %SW_JOBS_DIR%\libxml2.cmd^
- && call %SW_JOBS_DIR%\curl.cmd
-
+ && call %SW_JOBS_DIR%\curl.cmd^
+ 
 endlocal
