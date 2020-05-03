@@ -337,7 +337,7 @@ jobs:
 
       - name: Configure Git
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-git.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
 
       - name: Checkout LLVM
         uses: actions/checkout@v2
@@ -403,7 +403,7 @@ jobs:
 
       - name: Configure Build Environment
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-build-environment.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
@@ -412,55 +412,55 @@ jobs:
 
       - name: Configure LLVM
         shell: cmd
-        run:  scripts\workflows\jobs\sdk\steps\configure-llvm.cmd
+        run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
       - name: Configure Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-swift-stdlib.cmd
 
       - name: Build Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-swift-stdlib.cmd
 
       - name: Configure libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
 
       - name: Build libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Configure Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation.cmd
 
       - name: Build Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Configure XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-xctest.cmd
 
       - name: Build XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
 
       - name: Install Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-swift-stdlib.cmd
 
       - name: Install Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd
 
       - name: Install XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
 
       - name: Install libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -470,30 +470,30 @@ jobs:
 
       - name: Configure libdispatch Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-libdispatch-tests.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch-tests.cmd
 
       - name: Build libdispatch Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Test libdispatch
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\sdk\steps\test-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-libdispatch.cmd
 
       - name: Configure Foundation Test Environment
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation-test-environment.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-test-environment.cmd
 
       - name: Configure Foundation Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation-tests.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-tests.cmd
 
       - name: Build Foundation Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\sdk\steps\test-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-foundation.cmd
