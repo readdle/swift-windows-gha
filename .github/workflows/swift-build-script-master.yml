@@ -15,6 +15,11 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+
       - name: Run Build Script
         shell: cmd
         run: scripts\workflows\swift-master.cmd
