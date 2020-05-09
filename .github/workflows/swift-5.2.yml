@@ -416,6 +416,10 @@ jobs:
         with:
           python-version: 2.7.x
 
+      - name: Configure SDK Modules
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
+
       - name: Configure LLVM
         shell: cmd
         run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd

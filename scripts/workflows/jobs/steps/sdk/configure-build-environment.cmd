@@ -61,8 +61,3 @@ echo ::set-env name=SW_ZLIB_PATH::%SW_ZLIB_PATH%
 echo ::set-env name=PATH::%PATH%
 
 echo ::set-env name=CTEST_OUTPUT_ON_FAILURE::%CTEST_OUTPUT_ON_FAILURE%
-
-copy %SW_SOURCES_DIR%\swift\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
-copy %SW_SOURCES_DIR%\swift\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
-copy %SW_SOURCES_DIR%\swift\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
-copy %SW_SOURCES_DIR%\swift\stdlib\public\Platform\winsdk.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
