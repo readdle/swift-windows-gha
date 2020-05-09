@@ -21,6 +21,12 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   set SW_XCTEST_REF=master
 )
 
+set SW_LLVM_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project
+set SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift
+set SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch
+set SW_FOUNDATION_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-foundation
+set SW_XCTEST_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-xctest
+
 set SW_PLATFORM_PATH=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform
 
 set SW_SDK_PATH=%SW_PLATFORM_PATH%\Developer\SDKs\Windows.sdk
