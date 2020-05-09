@@ -321,6 +321,7 @@ jobs:
         with:
           name: checkout
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
+
       - name: Read Checkout Info
         shell: cmd
         run: |
@@ -335,6 +336,10 @@ jobs:
           echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%
           echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
           echo ::set-env name=SW_DISPATCH_REF::%SW_DISPATCH_REF%
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Configure Git
         shell: cmd
@@ -401,10 +406,6 @@ jobs:
         with:
           name: toolchain
           path: '${{ env.SW_ARTIFACTS_DIR }}'
-
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1

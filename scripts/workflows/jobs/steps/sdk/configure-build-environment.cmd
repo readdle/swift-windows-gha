@@ -1,4 +1,25 @@
-call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
+  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/swift-5.2-branch
+  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=swift-5.2-branch
+  if not defined SW_SWIFT_REF set SW_SWIFT_REF=swift-5.2-branch
+
+  set SW_FOUNDATION_REF=swift-5.2-branch
+  set SW_XCTEST_REF=swift-5.2-branch
+) else if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
+  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/release/5.3
+  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=release/5.3
+  if not defined SW_SWIFT_REF set SW_SWIFT_REF=release/5.3
+
+  set SW_FOUNDATION_REF=release/5.3
+  set SW_XCTEST_REF=release/5.3
+) else (
+  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/master
+  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=master
+  if not defined SW_SWIFT_REF set SW_SWIFT_REF=master
+
+  set SW_FOUNDATION_REF=master
+  set SW_XCTEST_REF=master
+)
 
 set SW_PLATFORM_PATH=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform
 
@@ -15,6 +36,9 @@ set SW_ZLIB_PATH=%SW_ARTIFACTS_DIR%\Library\zlib-%SW_ZLIB_VERSION%
 set CTEST_OUTPUT_ON_FAILURE=1
 
 set PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
+
+if not defined VSCMD_VER call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+if not defined GITHUB_ACTION goto :eof
 
 echo ::set-env name=SW_PLATFORM_PATH::%SW_PLATFORM_PATH%
 
