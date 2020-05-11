@@ -2,8 +2,8 @@ setlocal
 
 pushd %CD%
 
-git init %SW_LLVM_SOURCES_DIR%^
- && cd %SW_LLVM_SOURCES_DIR%^
+git init %SW_LLVM_PROJECT_SOURCES_DIR%^
+ && cd %SW_LLVM_PROJECT_SOURCES_DIR%^
  && git config --add core.autocrlf false^
  && git config --add core.symlinks true^
  && (git remote add origin https://github.com/apple/llvm-project || ver>nul)^

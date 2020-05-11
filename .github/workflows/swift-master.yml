@@ -210,7 +210,7 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: '${{ env.SW_LLVM_SOURCES_DIR }}'
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
       - name: Checkout cmark
         uses: actions/checkout@v2
@@ -246,7 +246,7 @@ jobs:
         shell: cmd
         run: |
           mkdir %GITHUB_WORKSPACE%\checkout
-          git -C %SW_LLVM_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\llvm-project.txt
+          git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\llvm-project.txt
           git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift-cmark.txt
           git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift.txt
           git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
@@ -351,7 +351,7 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: '${{ env.SW_LLVM_SOURCES_DIR }}'
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
       - name: Checkout swift
         uses: actions/checkout@v2

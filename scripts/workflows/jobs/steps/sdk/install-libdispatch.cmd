@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\libdispatch --target install
+cmake --build %SW_DISPATCH_BUILD_DIR% --target install

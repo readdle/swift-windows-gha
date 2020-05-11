@@ -21,11 +21,18 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   set SW_XCTEST_REF=master
 )
 
-set SW_LLVM_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project
-set SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift
+set SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project
+set SW_LLVM_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\llvm
+set SW_SWIFT_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\swift
 set SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch
 set SW_FOUNDATION_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-foundation
 set SW_XCTEST_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-xctest
+
+set SW_LLVM_BUILD_DIR=%SW_BUILD_DIR%\llvm
+set SW_STDLIB_BUILD_DIR=%SW_BUILD_DIR%\swift-stdlib
+set SW_DISPATCH_BUILD_DIR=%SW_BUILD_DIR%\libdispatch
+set SW_FOUNDATION_BUILD_DIR=%SW_BUILD_DIR%\foundation
+set SW_XCTEST_BUILD_DIR=%SW_BUILD_DIR%\xctest
 
 set SW_PLATFORM_PATH=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform
 
@@ -45,6 +52,22 @@ set PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
 
 if not defined VSCMD_VER call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
 if not defined GITHUB_ACTION goto :eof
+
+echo ::set-env name=SW_FOUNDATION_REF::%SW_FOUNDATION_REF%
+echo ::set-env name=SW_XCTEST_REF::%SW_XCTEST_REF%
+
+echo ::set-env name=SW_LLVM_PROJECT_SOURCES_DIR::%SW_LLVM_PROJECT_SOURCES_DIR%
+echo ::set-env name=SW_LLVM_SOURCES_DIR::%SW_LLVM_SOURCES_DIR%
+echo ::set-env name=SW_SWIFT_SOURCES_DIR::%SW_SWIFT_SOURCES_DIR%
+echo ::set-env name=SW_DISPATCH_SOURCES_DIR::%SW_DISPATCH_SOURCES_DIR%
+echo ::set-env name=SW_FOUNDATION_SOURCES_DIR::%SW_FOUNDATION_SOURCES_DIR%
+echo ::set-env name=SW_XCTEST_SOURCES_DIR::%SW_XCTEST_SOURCES_DIR%
+
+echo ::set-env name=SW_LLVM_BUILD_DIR::%SW_LLVM_BUILD_DIR%
+echo ::set-env name=SW_STDLIB_BUILD_DIR::%SW_STDLIB_BUILD_DIR%
+echo ::set-env name=SW_DISPATCH_BUILD_DIR::%SW_DISPATCH_BUILD_DIR%
+echo ::set-env name=SW_FOUNDATION_BUILD_DIR::%SW_FOUNDATION_BUILD_DIR%
+echo ::set-env name=SW_XCTEST_BUILD_DIR::%SW_XCTEST_BUILD_DIR%
 
 echo ::set-env name=SW_PLATFORM_PATH::%SW_PLATFORM_PATH%
 

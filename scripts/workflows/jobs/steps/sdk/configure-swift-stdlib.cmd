@@ -1,9 +1,9 @@
 cmake^
  -G Ninja^
- -S %SW_SOURCES_DIR%\swift^
- -B %SW_BUILD_DIR%\swift-stdlib^
- -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
- -C %GITHUB_WORKSPACE%\cmake\caches\swift-stdlib-windows-x86_64.cmake^
+ -S %SW_SWIFT_SOURCES_DIR%^
+ -B %SW_STDLIB_BUILD_DIR%^
+ -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+ -C %SW_WORKSPACE%\cmake\caches\swift-stdlib-windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D LLVM_DIR=%SW_BUILD_DIR%\llvm\lib\cmake\llvm^
  -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=%SW_TOOLCHAIN_PATH%\usr\bin^

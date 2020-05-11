@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\swift-stdlib --target install
+cmake --build %SW_STDLIB_BUILD_DIR% --target install

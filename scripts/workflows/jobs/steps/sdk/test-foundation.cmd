@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\foundation --target test
+cmake --build %SW_FOUNDATION_BUILD_DIR% --target test

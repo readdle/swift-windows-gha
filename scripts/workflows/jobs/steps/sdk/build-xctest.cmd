@@ -1,1 +1,1 @@
-cmake --build %SW_BUILD_DIR%\xctest
+cmake --build %SW_XCTEST_BUILD_DIR%

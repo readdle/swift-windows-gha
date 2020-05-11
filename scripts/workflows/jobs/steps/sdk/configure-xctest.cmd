@@ -1,12 +1,12 @@
 cmake^
  -G Ninja^
- -S %SW_SOURCES_DIR%\swift-corelibs-xctest^
- -B %SW_BUILD_DIR%\xctest^
- -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
- -D SWIFT_STDLIB_DIR=%SW_BUILD_DIR%\swift-stdlib^
- -C %GITHUB_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
+ -S %SW_XCTEST_SOURCES_DIR%^
+ -B %SW_XCTEST_BUILD_DIR%^
+ -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
+ -D SWIFT_STDLIB_DIR=%SW_STDLIB_BUILD_DIR%^
+ -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_INSTALL_PREFIX=%SW_XCTEST_INSTALL_PATH%^
  -D ENABLE_TESTING=NO^
- -D dispatch_DIR=%SW_BUILD_DIR%\libdispatch\cmake\modules^
- -D Foundation_DIR=%SW_BUILD_DIR%\foundation\cmake\modules
+ -D dispatch_DIR=%SW_DISPATCH_BUILD_DIR%\cmake\modules^
+ -D Foundation_DIR=%SW_FOUNDATION_BUILD_DIR%\cmake\modules
