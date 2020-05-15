@@ -19,10 +19,10 @@ env:
   SW_XML2_VERSION: development
   SW_ZLIB_VERSION: 1.2.11
   SW_WORKSPACE: ${{ github.workspace }}
-  SW_SOURCES_DIR: ${{ github.workspace }}\..\s
-  SW_BUILD_DIR: ${{ github.workspace }}\..\b
-  SW_INSTALL_DIR: ${{ github.workspace }}\..\i
-  SW_ARTIFACTS_DIR: ${{ github.workspace }}\..\a
+  SW_SOURCES_DIR: ${{ github.workspace }}\s
+  SW_BUILD_DIR: ${{ github.workspace }}\b
+  SW_INSTALL_DIR: ${{ github.workspace }}\i
+  SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
   icu:
