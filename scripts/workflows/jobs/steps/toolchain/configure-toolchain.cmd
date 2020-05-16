@@ -1,6 +1,6 @@
 cmake^
  -G Ninja^
- -S %SW_TOOLCHAIN_SOURCES_DIR%^
+ -S %SW_LLVM_SOURCES_DIR%^
  -B %SW_TOOLCHAIN_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\toolchain-%SW_SWIFT_BRANCH_SPEC%.cmake^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
