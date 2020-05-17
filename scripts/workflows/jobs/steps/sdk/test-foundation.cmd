@@ -1,4 +1,3 @@
 cmake --build %SW_FOUNDATION_BUILD_DIR% --target test
 
-if defined GITHUB_ACTION goto :eof
-exit /b 0
+if %SW_IGNORE_TEST_FAILURES% neq 0 exit /b 0

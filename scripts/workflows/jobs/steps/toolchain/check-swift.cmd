@@ -1,4 +1,3 @@
 cmake --build %SW_TOOLCHAIN_BUILD_DIR% --target check-swift
 
-if defined GITHUB_ACTION goto :eof
-exit /b 0
+if %SW_IGNORE_TEST_FAILURES% neq 0 exit /b 0

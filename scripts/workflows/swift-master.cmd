@@ -17,6 +17,8 @@ set SW_XML2_VERSION=development
 set SW_ZLIB_VERSION=1.2.11
 set SW_SWIFT_BRANCH_SPEC=master
 
+set SW_IGNORE_TEST_FAILURES=1
+
 call %SW_JOBS_DIR%\icu.cmd^
  && call %SW_JOBS_DIR%\toolchain.cmd^
  && call %SW_JOBS_DIR%\zlib.cmd^
