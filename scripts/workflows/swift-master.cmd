@@ -23,6 +23,7 @@ call %SW_JOBS_DIR%\icu.cmd^
  && call %SW_JOBS_DIR%\toolchain.cmd^
  && call %SW_JOBS_DIR%\zlib.cmd^
  && call %SW_JOBS_DIR%\libxml2.cmd^
- && call %SW_JOBS_DIR%\curl.cmd
+ && call %SW_JOBS_DIR%\curl.cmd^
+ && call %SW_JOBS_DIR%\sdk.cmd
  
 endlocal
