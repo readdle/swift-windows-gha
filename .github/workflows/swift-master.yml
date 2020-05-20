@@ -29,10 +29,6 @@ jobs:
 
     runs-on: windows-latest
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -72,10 +68,6 @@ jobs:
     needs: [zlib]
 
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -120,10 +112,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -161,10 +149,6 @@ jobs:
 
     runs-on: windows-latest
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -204,10 +188,6 @@ jobs:
     needs: [icu]
 
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -333,10 +313,6 @@ jobs:
       SW_XCTEST_REF: 'master'
 
     steps:
-      - name: Add Windows Defender Exclusion
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath $Env:SW_WORKSPACE
-
       - name: Checkout
         uses: actions/checkout@v2
 
