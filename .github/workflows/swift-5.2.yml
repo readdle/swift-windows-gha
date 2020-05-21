@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/swift-master.yml
+      - .github/workflows/swift-5.3.yml
       - scripts/workflows/*
       - scripts/workflows/jobs/*
       - LICENSE
@@ -17,43 +18,49 @@ env:
   SW_ICU_VERSION: 64
   SW_XML2_VERSION: development
   SW_ZLIB_VERSION: 1.2.11
+  SW_WORKSPACE: ${{ github.workspace }}
+  SW_SOURCES_DIR: ${{ github.workspace }}\s
+  SW_BUILD_DIR: ${{ github.workspace }}\b
+  SW_INSTALL_DIR: ${{ github.workspace }}\i
+  SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
   icu:
 
     runs-on: windows-latest
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
+
       - name: Checkout ICU
         uses: actions/checkout@v2
         with:
           repository: 'unicode-org/icu'
-          ref: 'maint/maint-${{ env.SW_ICU_VERSION }}'
+          ref: '${{ env.SW_ICU_REF }}'
           fetch-depth: 1
-          path: 'icu'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\icu\steps\configure-build-environment.cmd
+          path: '${{ env.SW_ICU_SOURCES_DIR }}'
 
       - name: Configure ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\configure-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
 
       - name: Build ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\build-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\build-icu.cmd
 
       - name: Install ICU
         shell: cmd
-        run: scripts\workflows\jobs\icu\steps\install-icu.cmd
+        run: scripts\workflows\jobs\steps\icu\install-icu.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: icu
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   curl:
 
@@ -63,39 +70,42 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+
       - name: Checkout curl
         uses: actions/checkout@v2
         with:
           repository: 'curl/curl'
-          ref: 'master'
+          ref: '${{ env.SW_CURL_REF }}'
           fetch-depth: 1
-          path: 'curl'
+          path: '${{ env.SW_CURL_SOURCES_DIR }}'
+
       - name: Download zlib
         uses: actions/download-artifact@v1
         with:
           name: zlib
-          path: 'a'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\curl\steps\configure-build-environment.cmd
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Configure curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\steps\configure-curl.cmd
+        run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
 
       - name: Build curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\steps\build-curl.cmd
+        run: scripts\workflows\jobs\steps\curl\build-curl.cmd
 
       - name: Install curl
         shell: cmd
-        run: scripts\workflows\jobs\curl\steps\install-curl.cmd
+        run: scripts\workflows\jobs\steps\curl\install-curl.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: curl
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   libxml2:
 
@@ -104,87 +114,95 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+
       - name: Checkout libxml2
         uses: actions/checkout@v2
         with:
           repository: 'compnerd/libxml2'
-          ref: 'cmake'
+          ref: '${{ env.SW_XML2_REF }}'
           fetch-depth: 1
-          path: 'libxml2'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\configure-build-environment.cmd
+          path: '${{ env.SW_XML2_SOURCES_DIR }}'
 
       - name: Configure libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\configure-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
 
       - name: Build libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\build-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
 
       - name: Install libxml2
         shell: cmd
-        run: scripts\workflows\jobs\libxml2\steps\install-libxml2.cmd
+        run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: libxml2
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   zlib:
 
     runs-on: windows-latest
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
+
       - name: Checkout zlib
         uses: actions/checkout@v2
         with:
           repository: 'madler/zlib'
-          ref: 'refs/tags/v${{ env.SW_ZLIB_VERSION }}'
+          ref: '${{ env.SW_ZLIB_REF }}'
           fetch-depth: 1
-          path: 'zlib'
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\zlib\steps\configure-build-environment.cmd
+          path: '${{ env.SW_ZLIB_SOURCES_DIR }}'
 
       - name: Configure zlib
         shell: cmd
-        run: scripts\workflows\jobs\zlib\steps\configure-zlib.cmd
+        run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
 
       - name: Build zlib
         shell: cmd
-        run: scripts\workflows\jobs\zlib\steps\build-zlib.cmd
+        run: scripts\workflows\jobs\steps\zlib\build-zlib.cmd
 
       - name: Install zlib
         shell: cmd
-        run: scripts\workflows\jobs\zlib\steps\install-zlib.cmd
+        run: scripts\workflows\jobs\steps\zlib\install-zlib.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: zlib
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
   toolchain:
 
     runs-on: windows-latest
     needs: [icu]
-    env:
-      SW_LLVM_REF: 'swift/swift-5.2-branch'
-      SW_CMARK_REF: 'swift-5.2-branch'
-      SW_LIBDISPATCH_REF: 'swift-5.2-branch'
-      SW_SWIFT_REF: 'swift-5.2-branch'
-
+    
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
+
       - name: Configure Git
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-git.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
 
       - name: Checkout LLVM
         uses: actions/checkout@v2
@@ -192,41 +210,46 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: 's/toolchain' 
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
+
       - name: Checkout cmark
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-cmark'
           ref: ${{ env.SW_CMARK_REF }}
           fetch-depth: 1
-          path: 's/toolchain/cmark' 
+          path: '${{ env.SW_CMARK_SOURCES_DIR }}'
+
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: ${{ env.SW_LIBDISPATCH_REF }}
+          ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-libdispatch' 
+          path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: 's/toolchain/swift'
+          path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
           name: icu
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Collect Checkout Info
         shell: cmd
         run: |
-          mkdir %GITHUB_WORKSPACE%\checkout
-          git -C s/toolchain rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
-          git -C s/toolchain/cmark rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
-          git -C s/swift-corelibs-libdispatch rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
-          git -C s/toolchain/swift rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
+          mkdir %SW_WORKSPACE%\checkout
+          git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\llvm-project.txt
+          git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift-cmark.txt
+          git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift.txt
+          git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
 
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
@@ -234,98 +257,93 @@ jobs:
           name: checkout
           path: 'checkout'
 
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-build-environment.cmd
-
       - name: Configure LLVM Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-llvm-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
 
       - name: Build LLVM Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-llvm-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-llvm-build-tools.cmd
 
       - name: Build Clang Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-clang-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-clang-build-tools.cmd
 
       - name: Build LLDB Build Tools
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-lldb-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
 
       - name: Configure SDK Modules
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-sdk-modules.cmd
-
-      - name: Use Python 2.7.x
-        uses: actions/setup-python@v1.1.1
-        with:
-          python-version: 2.7.x
-
-      - name: Expose Build Tools
-        shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\expose-build-tools.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
 
       - name: Configure Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-toolchain.cmd
 
       - name: Build Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\build-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-toolchain.cmd
 
       - name: Install Toolchain
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\install-toolchain.cmd
+        run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: toolchain
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\configure-test-environment.cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-test-environment.cmd
 
       - name: Check Swift
         continue-on-error: true
         shell: cmd
-        run: scripts\workflows\jobs\toolchain\steps\check-swift.cmd
+        run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
 
   sdk:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
     env:
-      SW_LIBDISPATCH_REF: 'swift-5.2-branch'
       SW_FOUNDATION_REF: 'swift-5.2-branch'
       SW_XCTEST_REF: 'swift-5.2-branch'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
           name: checkout
-          path: 'a/checkout'
+          path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
+
       - name: Read Checkout Info
         shell: cmd
         run: |
-          set /p SW_LLVM_REF=< a\checkout\llvm-project.txt
-          set /p SW_SWIFT_REF=< a\checkout\swift.txt
-          
+          set /p SW_LLVM_REF=< %SW_ARTIFACTS_DIR%\checkout\llvm-project.txt
+          set /p SW_SWIFT_REF=< %SW_ARTIFACTS_DIR%\checkout\swift.txt
+          set /p SW_DISPATCH_REF=< %SW_ARTIFACTS_DIR%\checkout\swift-corelibs-libdispatch.txt
+
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
-          
+          echo swift-corelibs-libdispatch rev is %SW_DISPATCH_REF%
+
           echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%
           echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
-          
+          echo ::set-env name=SW_DISPATCH_REF::%SW_DISPATCH_REF%
+
+      - name: Configure Build Environment
+        shell: cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
+
       - name: Configure Git
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-git.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
 
       - name: Checkout LLVM
         uses: actions/checkout@v2
@@ -333,155 +351,159 @@ jobs:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
           fetch-depth: 1
-          path: 's/llvm-project'
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
+
       - name: Checkout swift
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
-          path: 's/swift'
+          path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-libdispatch'
-          ref: ${{ env.SW_LIBDISPATCH_REF }}
+          ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-libdispatch'
+          path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-foundation'
           ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-foundation'
+          path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
+
       - name: Checkout xctest
         uses: actions/checkout@v2
         with:
           repository: 'apple/swift-corelibs-xctest'
           ref: ${{ env.SW_XCTEST_REF }}
           fetch-depth: 1
-          path: 's/swift-corelibs-xctest'
+          path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
 
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
           name: icu
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download curl
         uses: actions/download-artifact@v1
         with:
           name: curl
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download libxml2
         uses: actions/download-artifact@v1
         with:
           name: libxml2
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download zlib
         uses: actions/download-artifact@v1
         with:
           name: zlib
-          path: 'a'
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
           name: toolchain
-          path: 'a'
-
-      - name: Configure Build Environment
-        shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-build-environment.cmd
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
         with:
           python-version: 2.7.x
 
+      - name: Configure SDK Modules
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
+
       - name: Configure LLVM
         shell: cmd
-        run:  scripts\workflows\jobs\sdk\steps\configure-llvm.cmd
+        run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
       - name: Configure Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-swift-stdlib.cmd
 
       - name: Build Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-swift-stdlib.cmd
 
       - name: Configure libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
 
       - name: Build libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Configure Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation.cmd
 
       - name: Build Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Configure XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-xctest.cmd
 
       - name: Build XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
 
       - name: Install Swift Standard Library
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-swift-stdlib.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-swift-stdlib.cmd
 
       - name: Install Foundation
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd
 
       - name: Install XCTest
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-xctest.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
 
       - name: Install libdispatch
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\install-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: sdk
-          path: i
+          path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-libdispatch-tests.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch-tests.cmd
 
       - name: Build libdispatch Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Test libdispatch
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\sdk\steps\test-libdispatch.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-libdispatch.cmd
 
       - name: Configure Foundation Test Environment
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation-test-environment.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-test-environment.cmd
 
       - name: Configure Foundation Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\configure-foundation-tests.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-tests.cmd
 
       - name: Build Foundation Tests
         shell: cmd
-        run: scripts\workflows\jobs\sdk\steps\build-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\sdk\steps\test-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-foundation.cmd
