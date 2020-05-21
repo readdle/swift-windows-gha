@@ -29,6 +29,16 @@ jobs:
 
     runs-on: windows-latest
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -68,6 +78,16 @@ jobs:
     needs: [zlib]
 
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -112,6 +132,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -149,6 +179,16 @@ jobs:
 
     runs-on: windows-latest
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -188,6 +228,16 @@ jobs:
     needs: [icu]
 
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -304,6 +354,11 @@ jobs:
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
 
+      - name: Check Windows Defender
+        shell: cmd
+        run: |
+          sc query WinDefend
+
   sdk:
 
     runs-on: windows-latest
@@ -313,6 +368,16 @@ jobs:
       SW_XCTEST_REF: 'master'
 
     steps:
+      - name: Disable Windows Defender
+        shell: cmd
+        continue-on-error: true
+        run: |
+          sc stop TrustedInstaller
+          sc config TrustedInstaller binPath= "sc stop WinDefend"
+          sc start TrustedInstaller
+          timeout 5
+          sc query WinDefend
+
       - name: Checkout
         uses: actions/checkout@v2
 
