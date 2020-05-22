@@ -226,12 +226,7 @@ jobs:
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
-        run: |
-          sc stop TrustedInstaller
-          sc config TrustedInstaller binPath= "sc stop WinDefend"
-          sc start TrustedInstaller
-          timeout 5
-          sc query WinDefend
+        run: scripts\tools\disable-windefend.cmd
 
       - name: Checkout 
         uses: actions/checkout@v2
