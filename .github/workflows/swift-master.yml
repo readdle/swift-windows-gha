@@ -29,13 +29,13 @@ jobs:
 
     runs-on: windows-latest
     steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
         run: scripts\tools\disable-windefend.cmd
-
-      - name: Checkout 
-        uses: actions/checkout@v2
 
       - name: Configure Build Environment
         shell: cmd
@@ -73,18 +73,13 @@ jobs:
     needs: [zlib]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
-        run: |
-          sc stop TrustedInstaller
-          sc config TrustedInstaller binPath= "sc stop WinDefend"
-          sc start TrustedInstaller
-          timeout 5
-          sc query WinDefend
-
-      - name: Checkout
-        uses: actions/checkout@v2
+        run: scripts\tools\disable-windefend.cmd
 
       - name: Configure Build Environment
         shell: cmd
@@ -127,18 +122,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
-        run: |
-          sc stop TrustedInstaller
-          sc config TrustedInstaller binPath= "sc stop WinDefend"
-          sc start TrustedInstaller
-          timeout 5
-          sc query WinDefend
-
-      - name: Checkout 
-        uses: actions/checkout@v2
+        run: scripts\tools\disable-windefend.cmd
 
       - name: Configure Build Environment
         shell: cmd
@@ -174,13 +164,13 @@ jobs:
 
     runs-on: windows-latest
     steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
         run: scripts\tools\disable-windefend.cmd
-
-      - name: Checkout 
-        uses: actions/checkout@v2
 
       - name: Configure Build Environment
         shell: cmd
@@ -218,13 +208,13 @@ jobs:
     needs: [icu]
 
     steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
         run: scripts\tools\disable-windefend.cmd
-
-      - name: Checkout 
-        uses: actions/checkout@v2
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
@@ -353,13 +343,13 @@ jobs:
       SW_XCTEST_REF: 'master'
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Disable Windows Defender
         shell: cmd
         continue-on-error: true
         run: scripts\tools\disable-windefend.cmd
-
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
