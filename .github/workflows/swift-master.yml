@@ -53,7 +53,7 @@ jobs:
         run: |
           git config --global user.name 'builder'
           git config --global user.email 'builder@lxbndr.org'
-          git -C %SW_ICU_SOURCES_DIR% apply %SW_SOURCES_DIR%\patch\icu\uassert.patch
+          git -C %SW_ICU_SOURCES_DIR% apply %SW_WORKSPACE%\patch\icu\uassert.patch
 
       - name: Configure ICU
         shell: cmd
