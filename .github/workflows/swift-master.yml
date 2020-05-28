@@ -46,14 +46,12 @@ jobs:
         with:
           repository: 'unicode-org/icu'
           ref: '${{ env.SW_ICU_REF }}'
+          fetch-depth: 1
           path: '${{ env.SW_ICU_SOURCES_DIR }}'
 
       - name: Patch ICU
         shell: cmd
-        run: |
-          git config --global user.name 'builder'
-          git config --global user.email 'builder@lxbndr.org'
-          git -C %SW_ICU_SOURCES_DIR% apply %SW_WORKSPACE%\patch\icu\uassert.patch
+        run: scripts\workflows\jobs\steps\icu\patch-icu.cmd
 
       - name: Configure ICU
         shell: cmd
