@@ -2,7 +2,8 @@ setlocal
 
 pushd %CD%
 
-git config user.name 'builder'^
+cd %SW_ICU_SOURCES_DIR%^
+ && git config user.name 'builder'^
  && git config user.email 'builder@lxbndr.org'^
  && git apply %SW_WORKSPACE%\patch\icu\uassert.patch
 
