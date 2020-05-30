@@ -9,4 +9,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-icu.cmd^
  && call %SW_STEPS_DIR%\install-icu.cmd
 
-endlocal
+set SW_ERROR=%ERRORLEVEL%
+subst T: /d
+
+endlocal & exit /b %SW_ERROR%
