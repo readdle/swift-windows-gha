@@ -15,7 +15,7 @@ on:
 env:
   SW_SWIFT_BRANCH_SPEC: 5.2
   SW_CURL_VERSION: development
-  SW_ICU_VERSION: 65
+  SW_ICU_VERSION: 64
   SW_XML2_VERSION: development
   SW_ZLIB_VERSION: 1.2.11
   SW_WORKSPACE: ${{ github.workspace }}

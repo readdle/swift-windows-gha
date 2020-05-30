@@ -1,5 +1,7 @@
 setlocal
 
+if %SW_ICU_VERSION% leq 64 goto :eof
+
 pushd %CD%
 
 cd %SW_ICU_SOURCES_DIR%^
