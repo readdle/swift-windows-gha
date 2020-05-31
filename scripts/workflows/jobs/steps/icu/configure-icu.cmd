@@ -1,7 +1,4 @@
-copy cmake\ICU\CMakeLists.txt %SW_ICU_SOURCES_DIR%\icu4c
-if errorlevel 1 goto :eof
-
-subst T: "%SW_ICU_SOURCES_DIR%\icu4c"
+copy cmake\ICU\CMakeLists-%SW_ICU_VERSION%.txt %SW_ICU_SOURCES_DIR%\icu4c\CMakeLists.txt
 if errorlevel 1 goto :eof
 
 cmake^
