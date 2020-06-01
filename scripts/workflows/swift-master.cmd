@@ -5,9 +5,17 @@ setlocal
 call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
 
 set SW_WORKSPACE=%CD%
-set SW_SOURCES_DIR=%SW_WORKSPACE%\..\src
-set SW_BUILD_DIR=%SW_WORKSPACE%\..\build
-set SW_INSTALL_DIR=%SW_WORKSPACE%\..\install
+
+if defined GITHUB_ACTION (
+  set SW_SOURCES_DIR=%SW_WORKSPACE%\..\s
+  set SW_BUILD_DIR=%SW_WORKSPACE%\..\b
+  set SW_INSTALL_DIR=%SW_WORKSPACE%\..\i
+) else (
+  set SW_SOURCES_DIR=%SW_WORKSPACE%\src
+  set SW_BUILD_DIR=%SW_WORKSPACE%\build
+  set SW_INSTALL_DIR=%SW_WORKSPACE%\install
+)
+
 set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 
 set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
