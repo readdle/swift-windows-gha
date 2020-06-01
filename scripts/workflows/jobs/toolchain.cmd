@@ -7,6 +7,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-cmark.cmd^
  && call %SW_STEPS_DIR%\checkout-libdispatch.cmd^
  && call %SW_STEPS_DIR%\checkout-swift.cmd^
+ && call %SW_STEPS_DIR%\patch-llvm.cmd^
  && call %SW_STEPS_DIR%\configure-llvm-build-tools.cmd^
  && call %SW_STEPS_DIR%\build-llvm-build-tools.cmd^
  && call %SW_STEPS_DIR%\build-clang-build-tools.cmd^

@@ -44,6 +44,10 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_ICU_SOURCES_DIR }}'
 
+      - name: Patch ICU
+        shell: cmd
+        run: scripts\workflows\jobs\steps\icu\patch-icu.cmd
+
       - name: Configure ICU
         shell: cmd
         run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
@@ -256,6 +260,10 @@ jobs:
         with:
           name: checkout
           path: 'checkout'
+
+      - name: Patch LLVM
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
       - name: Configure LLVM Build Tools
         shell: cmd
