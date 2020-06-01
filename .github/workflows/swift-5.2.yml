@@ -261,6 +261,10 @@ jobs:
           name: checkout
           path: 'checkout'
 
+      - name: Patch LLVM
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+
       - name: Configure LLVM Build Tools
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
