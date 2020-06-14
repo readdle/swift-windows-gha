@@ -50,7 +50,7 @@ set CTEST_OUTPUT_ON_FAILURE=1
 
 set PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
 
-if not defined VSCMD_VER call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
+call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 if not defined GITHUB_ACTION goto :eof
 
 echo ::set-env name=SW_FOUNDATION_REF::%SW_FOUNDATION_REF%
