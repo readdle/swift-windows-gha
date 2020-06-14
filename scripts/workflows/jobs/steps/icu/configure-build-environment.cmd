@@ -7,7 +7,7 @@ mkdir "%SW_ICU_SOURCES_DIR%\icu4c"
 subst T: "%SW_ICU_SOURCES_DIR%\icu4c"
 if errorlevel 1 goto :eof
 
-if not defined VSCMD_VER call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+if not defined VSCMD_VER call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 if not defined GITHUB_ACTION goto :eof
 
 echo ::set-env name=SW_ICU_REF::%SW_ICU_REF%

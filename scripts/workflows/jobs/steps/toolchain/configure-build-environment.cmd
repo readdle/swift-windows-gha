@@ -41,7 +41,7 @@ set SW_LLVM_TABLEGEN=%SW_LLVM_TOOLS_BUILD_DIR%\bin\llvm-tblgen.exe
 set SW_CLANG_TABLEGEN=%SW_LLVM_TOOLS_BUILD_DIR%\bin\clang-tblgen.exe
 set SW_LLDB_TABLEGEN=%SW_LLVM_TOOLS_BUILD_DIR%\bin\lldb-tblgen.exe
 
-if not defined VSCMD_VER call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+if not defined VSCMD_VER call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 if not defined GITHUB_ACTION goto :eof
 
 echo ::set-env name=SW_LLVM_REF::%SW_LLVM_REF%

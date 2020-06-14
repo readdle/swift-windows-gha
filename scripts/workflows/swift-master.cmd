@@ -2,7 +2,7 @@
 
 setlocal
 
-call scripts\tools\vsenv.cmd -arch=x64 -host_arch=x64
+call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
 set SW_WORKSPACE=%CD%
 
