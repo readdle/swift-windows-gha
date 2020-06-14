@@ -1,3 +1,5 @@
+call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
+
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   call scripts\tools\set-env.cmd SW_LLVM_REF swift/swift-5.2-branch
   call scripts\tools\set-env.cmd SW_CMARK_REF swift-5.2-branch
@@ -40,5 +42,3 @@ call scripts\tools\set-env.cmd SW_ICU_PATH %SW_ARTIFACTS_DIR%\Library\icu-%SW_IC
 call scripts\tools\set-env.cmd SW_LLVM_TABLEGEN %SW_LLVM_TOOLS_BUILD_DIR%\bin\llvm-tblgen.exe
 call scripts\tools\set-env.cmd SW_CLANG_TABLEGEN %SW_LLVM_TOOLS_BUILD_DIR%\bin\clang-tblgen.exe
 call scripts\tools\set-env.cmd SW_LLDB_TABLEGEN %SW_LLVM_TOOLS_BUILD_DIR%\bin\lldb-tblgen.exe
-
-call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64

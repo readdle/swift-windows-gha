@@ -1,3 +1,5 @@
+call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
+
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   if not defined SW_LLVM_REF set SW_LLVM_REF swift/swift-5.2-branch
   if not defined SW_DISPATCH_REF set SW_DISPATCH_REF swift-5.2-branch
@@ -49,5 +51,3 @@ call scripts\tools\set-env.cmd SW_ZLIB_PATH %SW_ARTIFACTS_DIR%\Library\zlib-%SW_
 call scripts\tools\set-env.cmd CTEST_OUTPUT_ON_FAILURE 1
 
 call scripts\tools\set-env.cmd PATH %SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
-
-call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
