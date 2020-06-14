@@ -19,10 +19,10 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 
 if not defined GITHUB_ACTION (
   if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
-    call scripts\tools\set-env.cmd SW_PYTHON_OPTIONS -D PYTHON_EXECUTABLE=C:\Python27\python.exe
+    call scripts\tools\set-env.cmd SW_PYTHON_OPTIONS "-D PYTHON_EXECUTABLE=C:\Python27\python.exe"
   )
 ) else (
-  call scripts\tools\set-env.cmd SW_PYTHON_OPTIONS -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
+  call scripts\tools\set-env.cmd SW_PYTHON_OPTIONS "-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe"
 )
 
 call scripts\tools\set-env.cmd SW_LLVM_PROJECT_SOURCES_DIR %SW_SOURCES_DIR%\llvm-project
