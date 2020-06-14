@@ -12,9 +12,9 @@ if [%1] == [] (
   goto :eof
 )
 
-set %1=%~2
+set "%1=%~2"
 
 if not defined GITHUB_ACTION goto :eof
 
-echo ::set-env name=%1::%~2
-echo set-env name=%1::%~2
+echo "::set-env name=%1::%~2"
+echo "set-env name=%1::%~2"
