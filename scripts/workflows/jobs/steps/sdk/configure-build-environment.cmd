@@ -50,4 +50,4 @@ call scripts\tools\set-env.cmd SW_ZLIB_PATH %SW_ARTIFACTS_DIR%\Library\zlib-%SW_
 
 call scripts\tools\set-env.cmd CTEST_OUTPUT_ON_FAILURE 1
 
-call scripts\tools\set-env.cmd PATH %SW_TOOLCHAIN_PATH%\usr\bin;%PATH%
+call scripts\tools\set-env.cmd PATH "%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
