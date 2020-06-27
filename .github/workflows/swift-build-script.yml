@@ -41,6 +41,8 @@ jobs:
 
       - name: Configure
         run: |
+          subst
+
           scripts\configure.cmd^
            --interactive=NO^
            --branch ${{ matrix.branch }}^
