@@ -1,9 +1,9 @@
 setlocal
 
-pushd %CD%
+set SW_PUSHDIR=%CD%
 
 git init %SW_SWIFT_SOURCES_DIR%^
- && cd %SW_SWIFT_SOURCES_DIR%^
+ && cd /d %SW_SWIFT_SOURCES_DIR%^
  && git config --add core.autocrlf false^
  && git config --add core.symlinks true^
  && (git remote add origin https://github.com/apple/swift || ver>nul)^
@@ -13,6 +13,6 @@ git init %SW_SWIFT_SOURCES_DIR%^
  && git log -1
 
 set SW_ERROR=%ERRORLEVEL%
-popd
+cd /d %SW_PUSHDIR%
 
 endlocal & exit /b %SW_ERROR%
