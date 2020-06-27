@@ -2,6 +2,8 @@ setlocal
 
 pushd %CD%
 
+echo %SW_ICU_SOURCES_DIR%
+
 git init %SW_ICU_SOURCES_DIR%^
  && cd %SW_ICU_SOURCES_DIR%^
  && (git remote add origin https://github.com/unicode-org/icu || ver>nul)^
