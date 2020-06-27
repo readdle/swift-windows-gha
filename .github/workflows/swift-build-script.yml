@@ -33,8 +33,23 @@ jobs:
         with:
           python-version: 2.7.x
 
+      - name: Prepare Build Drive
+        run: |
+          call scripts\tools\get-free-drive.cmd
+          subst %SW_FREE_DRIVE% ${{ github.workspace }}
+          echo ::set-env name=SW_WORK_DIR::%SW_FREE_DRIVE%
+
       - name: Configure
-        run: scripts\configure.cmd --branch ${{ matrix.branch }}
+        run: |
+          scripts\configure.cmd^
+           --branch ${{ matrix.branch }}^
+           --sources-dir %SW_WORK_DIR%\s^
+           --build-dir %SW_WORK_DIR%\b^
+           --install-dir %SW_WORK_DIR%\i
 
       - name: Build
         run: scripts\build.cmd
+
+      - name: Remove Build Drive
+        if: always()
+        run: subst /d %SW_WORK_DIR%
