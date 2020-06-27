@@ -7,8 +7,9 @@ for %%l in (K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z) do (
     if not errorlevel 1 (
         subst !SW_DRIVE! /d >nul
         set SW_FREE_DRIVE=!SW_DRIVE!
-        goto :eof
+        goto done
     )
 )
 
+:done
 endlocal & set SW_FREE_DRIVE=%SW_FREE_DRIVE%
