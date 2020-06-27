@@ -32,15 +32,15 @@ echo Using configuration from %SW_CONFIG_FILE%
 call %SW_CONFIG_FILE%
 
 echo.
-echo Swift branch spec:      %SWW_SWIFT_BRANCH_SPEC%
-echo Source files directory: %SWW_SOURCES_DIR%
-echo Build output directory: %SWW_BUILD_DIR%
-echo Install directory:      %SWW_INSTALL_DIR%
+echo Swift branch spec:      %SW_SWIFT_BRANCH_SPEC%
+echo Source files directory: %SW_SOURCES_DIR%
+echo Build output directory: %SW_BUILD_DIR%
+echo Install directory:      %SW_INSTALL_DIR%
 echo.
-echo CURL version:           %SWW_CURL_VERSION%
-echo ICU version:            %SWW_ICU_VERSION%
-echo XML2 version:           %SWW_XML2_VERSION%
-echo ZLIB version:           %SWW_ZLIB_VERSION%
+echo CURL version:           %SW_CURL_VERSION%
+echo ICU version:            %SW_ICU_VERSION%
+echo XML2 version:           %SW_XML2_VERSION%
+echo ZLIB version:           %SW_ZLIB_VERSION%
 echo.
 
 set SW_WORKSPACE=%CD%
