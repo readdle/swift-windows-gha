@@ -42,6 +42,7 @@ jobs:
       - name: Configure
         run: |
           scripts\configure.cmd^
+           --interactive=NO^
            --branch ${{ matrix.branch }}^
            --sources-dir %SW_WORK_DIR%\s^
            --build-dir %SW_WORK_DIR%\b^
