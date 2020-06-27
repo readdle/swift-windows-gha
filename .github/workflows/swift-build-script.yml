@@ -1,0 +1,40 @@
+name: swift-build-script
+on:
+  push:
+    paths-ignore: 
+      - .github/workflows/swift-master.yml
+      - .github/workflows/swift-5.2.yml
+      - .github/workflows/swift-5.3.yml
+      - LICENSE
+      - README.md
+
+  schedule:
+    - cron: '0 22 * * *'
+
+defaults:
+  run:
+    shell: cmd
+
+jobs:
+  swift:
+
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [master, 5.3, 5.2]
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+
+      - name: Configure
+        run: scripts\configure.cmd --branch ${{ matrix.branch }}
+
+      - name: Build
+        run: scripts\build.cmd
