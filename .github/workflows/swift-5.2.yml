@@ -4,8 +4,6 @@ on:
     paths-ignore: 
       - .github/workflows/swift-master.yml
       - .github/workflows/swift-5.3.yml
-      - scripts/workflows/*
-      - scripts/workflows/jobs/*
       - LICENSE
       - README.md
 
