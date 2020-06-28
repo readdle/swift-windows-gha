@@ -10,6 +10,9 @@ set SWW_SWIFT_BRANCH_SPEC_DEFAULT=master
 set SWW_SOURCES_DIR_DEFAULT=%CD%\w\s
 set SWW_BUILD_DIR_DEFAULT=%CD%\w\b
 set SWW_INSTALL_DIR_DEFAULT=%CD%\w\i
+set SWW_SWIFT_TEST_ENABLED_DEFAULT=Y
+set SWW_DISPATCH_TEST_ENABLED_DEFAULT=Y
+set SWW_FOUNDATION_TEST_ENABLED_DEFAULT=Y
 set SWW_CONFIG_FILE_DEFAULT=%CD%\config.cmd
 
 for %%x in (%*) do (
@@ -54,6 +57,39 @@ for %%x in (%*) do (
   ) else if /i [!SWW_ACTIVE_ARG!]==[--config] (
     set SWW_CONFIG_FILE_DEFAULT=!SWW_CURRENT_ARG!
     set SWW_ACTIVE_ARG=
+  ) else if /i [!SWW_ACTIVE_ARG!]==[--test-swift] (
+    if /i [!SWW_CURRENT_ARG!]==[YES] (
+      set SWW_SWIFT_TEST_ENABLED_DEFAULT=Y
+      set SWW_ACTIVE_ARG=
+    ) else if /i [!SWW_CURRENT_ARG!]==[NO] (
+      set SWW_SWIFT_TEST_ENABLED_DEFAULT=N
+      set SWW_ACTIVE_ARG=
+    ) else (
+      echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
+      goto :eof
+    )
+  ) else if /i [!SWW_ACTIVE_ARG!]==[--test-dispatch] (
+    if /i [!SWW_CURRENT_ARG!]==[YES] (
+      set SWW_DISPATCH_TEST_ENABLED_DEFAULT=Y
+      set SWW_ACTIVE_ARG=
+    ) else if /i [!SWW_CURRENT_ARG!]==[NO] (
+      set SWW_DISPATCH_TEST_ENABLED_DEFAULT=N
+      set SWW_ACTIVE_ARG=
+    ) else (
+      echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
+      goto :eof
+    )
+  ) else if /i [!SWW_ACTIVE_ARG!]==[--test-foundation] (
+    if /i [!SWW_CURRENT_ARG!]==[YES] (
+      set SWW_FOUNDATION_TEST_ENABLED_DEFAULT=Y
+      set SWW_ACTIVE_ARG=
+    ) else if /i [!SWW_CURRENT_ARG!]==[NO] (
+      set SWW_FOUNDATION_TEST_ENABLED_DEFAULT=N
+      set SWW_ACTIVE_ARG=
+    ) else (
+      echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
+      goto :eof
+    )
   ) else if /i [!SWW_CURRENT_ARG!]==[--interactive] (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else if /i [!SWW_CURRENT_ARG!]==[--branch] (
@@ -65,6 +101,12 @@ for %%x in (%*) do (
   ) else if /i [!SWW_CURRENT_ARG!]==[--install-dir] (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else if /i [!SWW_CURRENT_ARG!]==[--config] (
+    set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
+  ) else if /i [!SWW_CURRENT_ARG!]==[--test-swift] (
+    set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
+  ) else if /i [!SWW_CURRENT_ARG!]==[--test-dispatch] (
+    set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
+  ) else if /i [!SWW_CURRENT_ARG!]==[--test-foundation] (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else (
     echo Unknown parameter: !SWW_CURRENT_ARG!
@@ -81,11 +123,22 @@ if /i [%SWW_INTERACTIVE%]==[NO] (
   set SWW_SOURCES_DIR=%SWW_SOURCES_DIR_DEFAULT%
   set SWW_BUILD_DIR=%SWW_BUILD_DIR_DEFAULT%
   set SWW_INSTALL_DIR=%SWW_INSTALL_DIR_DEFAULT%
+  set SWW_SWIFT_TEST_ENABLED=%SWW_SWIFT_TEST_ENABLED_DEFAULT%
+  set SWW_DISPATCH_TEST_ENABLED=%SWW_DISPATCH_TEST_ENABLED_DEFAULT%
+  set SWW_FOUNDATION_TEST_ENABLED=%SWW_FOUNDATION_TEST_ENABLED_DEFAULT%
   set SWW_CONFIG_FILE=%SWW_CONFIG_FILE_DEFAULT%
   goto configure
 )
 
 :wizard-start
+
+if [%SWW_SWIFT_TEST_ENABLED%]==[YES] set SWW_SWIFT_TEST_ENABLED=Y
+if [%SWW_SWIFT_TEST_ENABLED%]==[NO] set SWW_SWIFT_TEST_ENABLED=N
+if [%SWW_DISPATCH_TEST_ENABLED%]==[YES] set SWW_DISPATCH_TEST_ENABLED=Y
+if [%SWW_DISPATCH_TEST_ENABLED%]==[NO] set SWW_DISPATCH_TEST_ENABLED=N
+if [%SWW_FOUNDATION_TEST_ENABLED%]==[YES] set SWW_FOUNDATION_TEST_ENABLED=Y
+if [%SWW_FOUNDATION_TEST_ENABLED%]==[NO] set SWW_FOUNDATION_TEST_ENABLED=N
+
 :ask-branch
 
 echo Available branches:
@@ -93,10 +146,8 @@ echo.  1. master
 echo.  2. 5.3
 echo.  3. 5.2
 
+set SWW_BRANCH_NUM=%SWW_BRANCH_NUM_DEFAULT%
 set /p SWW_BRANCH_NUM="Enter branch number to build (%SWW_BRANCH_NUM_DEFAULT%): "
-if [%SWW_BRANCH_NUM%]==[] (
-  set SWW_BRANCH_NUM=%SWW_BRANCH_NUM_DEFAULT%
-)
 
 if [%SWW_BRANCH_NUM%]==[1] (
   set SWW_SWIFT_BRANCH_SPEC=master
@@ -110,25 +161,46 @@ if [%SWW_BRANCH_NUM%]==[1] (
 set SWW_BRANCH_NUM_DEFAULT=%SWW_BRANCH_NUM%
 
 :ask-src-dir
+set SWW_SOURCES_DIR=%SWW_SOURCES_DIR_DEFAULT%
 set /p SWW_SOURCES_DIR="Enter directory for source files (%SWW_SOURCES_DIR_DEFAULT%): "
-if [%SWW_SOURCES_DIR%]==[] (
-  set SWW_SOURCES_DIR=%SWW_SOURCES_DIR_DEFAULT%
-)
 set SWW_SOURCES_DIR_DEFAULT=%SWW_SOURCES_DIR%
 
 :ask-build-dir
+set SWW_BUILD_DIR=%SWW_BUILD_DIR_DEFAULT%
 set /p SWW_BUILD_DIR="Enter directory for build output (%SWW_BUILD_DIR_DEFAULT%): "
-if [%SWW_BUILD_DIR%]==[] (
-  set SWW_BUILD_DIR=%SWW_BUILD_DIR_DEFAULT%
-)
 set SWW_BUILD_DIR_DEFAULT=%SWW_BUILD_DIR%
 
 :ask-install-dir
+set SWW_INSTALL_DIR=%SWW_INSTALL_DIR_DEFAULT%
 set /p SWW_INSTALL_DIR="Enter directory to install into (%SWW_INSTALL_DIR_DEFAULT%): "
-if [%SWW_INSTALL_DIR%]==[] (
-  set SWW_INSTALL_DIR=%SWW_INSTALL_DIR_DEFAULT%
-)
 set SWW_INSTALL_DIR_DEFAULT=%SWW_INSTALL_DIR%
+
+:ask-swift-test
+set SWW_SWIFT_TEST_ENABLED=%SWW_SWIFT_TEST_ENABLED_DEFAULT%
+set /p SWW_SWIFT_TEST_ENABLED="Enable Swift test (%SWW_SWIFT_TEST_ENABLED_DEFAULT%)?: "
+if /i not [%SWW_SWIFT_TEST_ENABLED%]==[Y] if /i not [%SWW_SWIFT_TEST_ENABLED%]==[N] (
+  goto ask-swift-test  
+)
+set SWW_SWIFT_TEST_ENABLED_DEFAULT=%SWW_SWIFT_TEST_ENABLED%
+
+:ask-dispatch-test
+set SWW_DISPATCH_TEST_ENABLED=%SWW_DISPATCH_TEST_ENABLED_DEFAULT%
+set /p SWW_DISPATCH_TEST_ENABLED="Enable Dispatch test (%SWW_DISPATCH_TEST_ENABLED_DEFAULT%)?: "
+if /i not [%SWW_DISPATCH_TEST_ENABLED%]==[Y] if /i not [%SWW_DISPATCH_TEST_ENABLED%]==[N] (
+  goto ask-dispatch-test  
+)
+set SWW_DISPATCH_TEST_ENABLED_DEFAULT=%SWW_DISPATCH_TEST_ENABLED%
+
+:ask-foundation-test
+set SWW_FOUNDATION_TEST_ENABLED=%SWW_FOUNDATION_TEST_ENABLED_DEFAULT%
+set /p SWW_FOUNDATION_TEST_ENABLED="Enable Foundation test (%SWW_FOUNDATION_TEST_ENABLED_DEFAULT%)?: "
+if [%SWW_FOUNDATION_TEST_ENABLED%]==[] (
+  set SWW_FOUNDATION_TEST_ENABLED=%SWW_FOUNDATION_TEST_ENABLED_DEFAULT%
+)
+if /i not [%SWW_FOUNDATION_TEST_ENABLED%]==[Y] if /i not [%SWW_FOUNDATION_TEST_ENABLED%]==[N] (
+  goto ask-foundation-test  
+)
+set SWW_FOUNDATION_TEST_ENABLED_DEFAULT=%SWW_FOUNDATION_TEST_ENABLED%
 
 :ask-config-file
 set /p SWW_CONFIG_FILE="Enter configuration file name to save (%SWW_CONFIG_FILE_DEFAULT%): "
@@ -148,27 +220,36 @@ set SWW_CURL_VERSION=development
 set SWW_XML2_VERSION=development
 set SWW_ZLIB_VERSION=1.2.11
 
+if /i [%SWW_SWIFT_TEST_ENABLED%]==[Y] set SWW_SWIFT_TEST_ENABLED=YES
+if /i [%SWW_SWIFT_TEST_ENABLED%]==[N] set SWW_SWIFT_TEST_ENABLED=NO
+if /i [%SWW_DISPATCH_TEST_ENABLED%]==[Y] set SWW_DISPATCH_TEST_ENABLED=YES
+if /i [%SWW_DISPATCH_TEST_ENABLED%]==[N] set SWW_DISPATCH_TEST_ENABLED=NO
+if /i [%SWW_FOUNDATION_TEST_ENABLED%]==[Y] set SWW_FOUNDATION_TEST_ENABLED=YES
+if /i [%SWW_FOUNDATION_TEST_ENABLED%]==[N] set SWW_FOUNDATION_TEST_ENABLED=NO
+
 echo.
-echo Swift branch spec:      %SWW_SWIFT_BRANCH_SPEC%
-echo Source files directory: %SWW_SOURCES_DIR%
-echo Build output directory: %SWW_BUILD_DIR%
-echo Install directory:      %SWW_INSTALL_DIR%
+echo Swift branch spec:       %SWW_SWIFT_BRANCH_SPEC%
+echo Source files directory:  %SWW_SOURCES_DIR%
+echo Build output directory:  %SWW_BUILD_DIR%
+echo Install directory:       %SWW_INSTALL_DIR%
 echo.
-echo CURL version:           %SWW_CURL_VERSION%
-echo ICU version:            %SWW_ICU_VERSION%
-echo XML2 version:           %SWW_XML2_VERSION%
-echo ZLIB version:           %SWW_ZLIB_VERSION%
+echo CURL version:            %SWW_CURL_VERSION%
+echo ICU version:             %SWW_ICU_VERSION%
+echo XML2 version:            %SWW_XML2_VERSION%
+echo ZLIB version:            %SWW_ZLIB_VERSION%
 echo.
+echo Swift test enabled:      %SWW_SWIFT_TEST_ENABLED%
+echo Dispatch test enabled:   %SWW_DISPATCH_TEST_ENABLED%
+echo Foundation test enabled: %SWW_FOUNDATION_TEST_ENABLED%
+
 echo Configuration file:     %SWW_CONFIG_FILE%
 echo.
 
 if /i [%SWW_INTERACTIVE%]==[NO] goto save-config
 
 :ask-save
+set SWW_SAVE_CONFIG=%SWW_SAVE_CONFIG_DEFAULT%
 set /p SWW_SAVE_CONFIG="Do you want to save this configuration? (Y/n): "
-if [%SWW_SAVE_CONFIG%]==[] (
-  set SWW_SAVE_CONFIG=%SWW_SAVE_CONFIG_DEFAULT%
-)
 if /i [%SWW_SAVE_CONFIG%]==[Y] (
   goto save-config
 ) else if /i [%SWW_SAVE_CONFIG%]==[N] (
@@ -187,6 +268,9 @@ echo set SW_CURL_VERSION=%SWW_CURL_VERSION%>>%SWW_CONFIG_FILE%
 echo set SW_ICU_VERSION=%SWW_ICU_VERSION%>>%SWW_CONFIG_FILE%
 echo set SW_XML2_VERSION=%SWW_XML2_VERSION%>>%SWW_CONFIG_FILE%
 echo set SW_ZLIB_VERSION=%SWW_ZLIB_VERSION%>>%SWW_CONFIG_FILE%
+echo set SW_SWIFT_TEST_ENABLED=%SWW_SWIFT_TEST_ENABLED%>>%SWW_CONFIG_FILE%
+echo set SW_DISPATCH_TEST_ENABLED=%SWW_DISPATCH_TEST_ENABLED%>>%SWW_CONFIG_FILE%
+echo set SW_FOUNDATION_TEST_ENABLED=%SWW_FOUNDATION_TEST_ENABLED%>>%SWW_CONFIG_FILE%
 
 echo Configuration saved. Run build.cmd.
 
