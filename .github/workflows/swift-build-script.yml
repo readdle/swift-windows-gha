@@ -48,7 +48,10 @@ jobs:
            --branch ${{ matrix.branch }}^
            --sources-dir %SW_WORK_DIR%\s^
            --build-dir %SW_WORK_DIR%\b^
-           --install-dir %SW_WORK_DIR%\i
+           --install-dir %SW_WORK_DIR%\i^
+           --test-swift=NO^
+           --test-dispatch=NO^
+           --test-foundation=NO
 
       - name: Build
         run: scripts\build.cmd

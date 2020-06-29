@@ -1,3 +1,8 @@
+if [%SW_DISPATCH_TEST_ENABLED%]==[NO] (
+    echo Skipping Dispatch tests configuration
+    goto :eof
+)
+
 cmake^
  -G Ninja^
  -S %SW_DISPATCH_SOURCES_DIR%^

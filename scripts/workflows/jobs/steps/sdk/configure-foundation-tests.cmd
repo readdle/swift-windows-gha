@@ -1,3 +1,8 @@
+if [%SW_FOUNDATION_TEST_ENABLED%]==[NO] (
+    echo Skipping Foundation tests configuration
+    goto :eof
+)
+
 cmake^
  -G Ninja^
  -S %SW_FOUNDATION_SOURCES_DIR%^
