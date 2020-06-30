@@ -29,8 +29,8 @@ if not defined GITHUB_ACTION (
 
 call scripts\tools\set-env.cmd SW_LLVM_PROJECT_SOURCES_DIR %SW_SOURCES_DIR%\llvm-project
 call scripts\tools\set-env.cmd SW_LLVM_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\llvm
-call scripts\tools\set-env.cmd SW_CMARK_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\cmark
-call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\swift
+call scripts\tools\set-env.cmd SW_CMARK_SOURCES_DIR %SW_SOURCES_DIR%\cmark
+call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_SOURCES_DIR%\swift
 call scripts\tools\set-env.cmd SW_DISPATCH_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-libdispatch
 
 call scripts\tools\set-env.cmd SW_LLVM_TOOLS_BUILD_DIR %SW_BUILD_DIR%\llvm-tools
