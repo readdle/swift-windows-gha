@@ -3,6 +3,7 @@ cmake^
  -S %SW_LLVM_SOURCES_DIR%^
  -B %SW_LLVM_TOOLS_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
+ -D CMAKE_MODULE_PATH=%SW_SWIFT_SOURCES_DIR%\cmake\modules^
  -D CMAKE_BUILD_TYPE=Release^
  -D LLVM_ENABLE_ASSERTIONS=NO^
  -D LLVM_ENABLE_PROJECTS="clang;lldb"^
