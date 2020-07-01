@@ -25,7 +25,7 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 
 call scripts\tools\set-env.cmd SW_LLVM_PROJECT_SOURCES_DIR %SW_SOURCES_DIR%\llvm-project
 call scripts\tools\set-env.cmd SW_LLVM_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\llvm
-call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\swift
+call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_SOURCES_DIR%\swift
 call scripts\tools\set-env.cmd SW_DISPATCH_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-libdispatch
 call scripts\tools\set-env.cmd SW_FOUNDATION_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-foundation
 call scripts\tools\set-env.cmd SW_XCTEST_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-xctest
