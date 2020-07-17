@@ -58,7 +58,7 @@ jobs:
            --test-swift=NO^
            --test-dispatch=NO^
            --test-foundation=NO^
-           --enable-no-objc-patch=${{ matrix.enable-no-objc-path}}
+           --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}
 
       - name: Build
         run: scripts\build.cmd

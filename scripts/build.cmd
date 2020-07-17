@@ -13,17 +13,17 @@ for %%x in (%*) do (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else (
     echo Unknown parameter: !SWW_CURRENT_ARG!
-    goto :eof
+    exit /b 1
   )
 )
 if [%SWW_ACTIVE_ARG%] neq [] (
   echo Parameter value not specified: !SWW_ACTIVE_ARG!
-  goto :eof
+  exit /b 1
 )
 
 if not exist %SW_CONFIG_FILE% (
     echo Configuration not found: %SW_CONFIG_FILE%
-    goto :eof
+    exit /b 1
 )
 
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
