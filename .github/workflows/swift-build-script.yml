@@ -26,9 +26,9 @@ jobs:
         patch: [clean, no-objc]
         include:
           - patch: clean
-            enable-objc-patch: NO
+            enable-no-objc-patch: NO
           - patch: no-objc
-            enable-objc-patch: YES
+            enable-no-objc-patch: YES
 
     steps:
       - name: Checkout 
