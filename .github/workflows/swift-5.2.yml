@@ -193,9 +193,9 @@ jobs:
       matrix:
         patch: [clean, no-objc]
         include:
-          - clean:
+          - patch: clean
             enable-objc-patch: NO
-          - no-objc:
+          - patch: no-objc
             enable-objc-patch: YES
 
     env:
