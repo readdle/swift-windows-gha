@@ -407,6 +407,10 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
 
+      - name: Patch LLVM
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
@@ -430,7 +434,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-clean
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Use Python 2.7.x
