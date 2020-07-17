@@ -194,19 +194,14 @@ jobs:
         patch: [clean, no-objc]
         include:
           - clean:
-            enable-objc-patch: NO
+            enable-no-objc-patch: NO
           - no-objc:
-            enable-objc-patch: YES
+            enable-no-objc-patch: YES
 
     env:
-      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-objc-patch }}
+      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
 
     steps:
-      - name: Temporary - Debug
-        shell: cmd
-        run: |
-          echo Patch: %SW_EXPERIMENTAL_OBJC_PATCH_ENABLED%
-
       - name: Checkout 
         uses: actions/checkout@v2
 

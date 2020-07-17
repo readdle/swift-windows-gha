@@ -23,6 +23,12 @@ jobs:
       fail-fast: false
       matrix:
         branch: [master, 5.3, 5.2]
+        patch: [clean, no-objc]
+        include:
+          - clean:
+            enable-no-objc-patch: NO
+          - no-objc:
+            enable-no-objc-patch: YES
 
     steps:
       - name: Checkout 
@@ -51,7 +57,8 @@ jobs:
            --install-dir %SW_WORK_DIR%\i^
            --test-swift=NO^
            --test-dispatch=NO^
-           --test-foundation=NO
+           --test-foundation=NO^
+           --enable-no-objc-patch=${{ matrix.enable-no-objc-path}}
 
       - name: Build
         run: scripts\build.cmd
