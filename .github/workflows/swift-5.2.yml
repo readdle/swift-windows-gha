@@ -202,6 +202,11 @@ jobs:
       SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-objc-patch }}
 
     steps:
+      - name: Temporary - Debug
+        shell: cmd
+        run: |
+          echo Patch: %SW_EXPERIMENTAL_OBJC_PATCH_ENABLED%
+
       - name: Checkout 
         uses: actions/checkout@v2
 
