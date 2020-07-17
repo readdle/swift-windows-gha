@@ -213,10 +213,10 @@ jobs:
       matrix:
         patch: [clean, no-objc]
         include:
-          - clean:
-            enable-no-objc-patch: NO
-          - no-objc:
-            enable-no-objc-patch: YES
+          - patch: clean
+            enable-objc-patch: NO
+          - patch: no-objc
+            enable-objc-patch: YES
 
     env:
       SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
