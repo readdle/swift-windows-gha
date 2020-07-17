@@ -188,7 +188,19 @@ jobs:
 
     runs-on: windows-latest
     needs: [icu]
-    
+    strategy:
+      fail-fast: false
+      matrix:
+        patch: [clean, no-objc]
+        include:
+          - clean:
+            enable-objc-patch: NO
+          - no-objc:
+            enable-objc-patch: YES
+
+    env:
+      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-objc-patch }}
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -263,6 +275,10 @@ jobs:
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
+      - name: Patch Swift
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
+
       - name: Configure LLVM Build Tools
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
@@ -298,7 +314,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-${{ matrix.patch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
