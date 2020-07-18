@@ -1,0 +1,91 @@
+diff --git a/include/swift/Basic/LangOptions.h b/include/swift/Basic/LangOptions.h
+index 56bcabfd59..01f053d0cd 100644
+--- a/include/swift/Basic/LangOptions.h
++++ b/include/swift/Basic/LangOptions.h
+@@ -156,6 +156,11 @@ namespace swift {
+     /// was not compiled with -enable-testing.
+     bool EnableTestableAttrRequiresTestableModule = true;
+ 
++    /// Experimental
++    /// Disables @objc and dynamic attrs
++    /// Ignored when EnableObjCInterop == true
++    bool DisableObjCAttr = false;
++
+     ///
+     /// Flags for developers
+     ///
+diff --git a/include/swift/Option/FrontendOptions.td b/include/swift/Option/FrontendOptions.td
+index 563aa63e8f..f172bb050d 100644
+--- a/include/swift/Option/FrontendOptions.td
++++ b/include/swift/Option/FrontendOptions.td
+@@ -113,6 +113,11 @@ def verify_syntax_tree : Flag<["-"], "verify-syntax-tree">,
+ def show_diagnostics_after_fatal : Flag<["-"], "show-diagnostics-after-fatal">,
+   HelpText<"Keep emitting subsequent diagnostics after a fatal error">;
+   
++def experimental_disable_objc_attr : Flag<["-"], "experimental-disable-objc-attr">,
++  Flags<[FrontendOption]>,
++  HelpText<"Disables parsing @objc and dynamic attrs. "
++           "Ignored if Objective-C interop enabled">;
++
+ def enable_descriptive_diagnostics : Flag<["-"], "enable-descriptive-diagnostics">,
+   HelpText<"Show descriptive diagnostic information, if available.">;
+   
+diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
+index dca1d50973..11cdd54b7c 100644
+--- a/lib/Driver/ToolChains.cpp
++++ b/lib/Driver/ToolChains.cpp
+@@ -189,6 +189,7 @@ static void addCommonFrontendArgs(const ToolChain &TC, const OutputInfo &OI,
+                        options::OPT_warn_swift3_objc_inference_minimal,
+                        options::OPT_warn_swift3_objc_inference_complete);
+   inputArgs.AddLastArg(arguments, options::OPT_warn_implicit_overrides);
++  inputArgs.AddLastArg(arguments, options::OPT_experimental_disable_objc_attr);
+   inputArgs.AddLastArg(arguments, options::OPT_typo_correction_limit);
+   inputArgs.AddLastArg(arguments, options::OPT_enable_app_extension);
+   inputArgs.AddLastArg(arguments, options::OPT_enable_library_evolution);
+diff --git a/lib/Frontend/CompilerInvocation.cpp b/lib/Frontend/CompilerInvocation.cpp
+index 78dab4a0f5..5d2144d2dd 100644
+--- a/lib/Frontend/CompilerInvocation.cpp
++++ b/lib/Frontend/CompilerInvocation.cpp
+@@ -374,6 +374,8 @@ static bool ParseLangArgs(LangOptions &Opts, ArgList &Args,
+ 
+   Opts.EnableThrowWithoutTry |= Args.hasArg(OPT_enable_throw_without_try);
+ 
++  Opts.DisableObjCAttr |= Args.hasArg(OPT_experimental_disable_objc_attr);
++  
+   if (auto A = Args.getLastArg(OPT_enable_objc_attr_requires_foundation_module,
+                                OPT_disable_objc_attr_requires_foundation_module)) {
+     Opts.EnableObjCAttrRequiresFoundation
+diff --git a/lib/Parse/ParseDecl.cpp b/lib/Parse/ParseDecl.cpp
+index 8e8efc9a30..d3fbf0d8c9 100644
+--- a/lib/Parse/ParseDecl.cpp
++++ b/lib/Parse/ParseDecl.cpp
+@@ -3436,9 +3436,27 @@ Parser::parseDecl(ParseDeclOptions Flags,
+ 
+   if (auto SF = CurDeclContext->getParentSourceFile()) {
+     if (!getScopeInfo().isInactiveConfigBlock()) {
++
++      bool ObjCAttrDisabled = Context.LangOpts.DisableObjCAttr
++        && !Context.LangOpts.EnableObjCInterop; // do nothing is ObjCInterop enabled
++
++      bool AttributesChanged = false;
++
+       for (auto Attr : Attributes) {
+-        if (isa<ObjCAttr>(Attr))
+-          SF->AttrsRequiringFoundation.insert(Attr);
++        if (isa<ObjCAttr>(Attr)) {
++          if (!ObjCAttrDisabled) {
++            SF->AttrsRequiringFoundation.insert(Attr);
++          }
++          else {
++            Attr->setInvalid();
++            Attributes.removeAttribute(Attr);
++            AttributesChanged = true;
++          }
++        }
++      }
++
++      if (AttributesChanged) {
++        DeclResult.get()->getAttrs() = Attributes;
+       }
+     }
+   }

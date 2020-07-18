@@ -208,6 +208,18 @@ jobs:
 
     runs-on: windows-latest
     needs: [icu]
+    strategy:
+      fail-fast: false
+      matrix:
+        patch: [clean, no-objc]
+        include:
+          - patch: clean
+            enable-no-objc-patch: NO
+          - patch: no-objc
+            enable-no-objc-patch: YES
+
+    env:
+      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
 
     steps:
       - name: Checkout 
@@ -319,7 +331,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-${{ matrix.patch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
@@ -422,6 +434,10 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
 
+      - name: Patch LLVM
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
@@ -445,7 +461,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain
+          name: toolchain-clean
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Use Python 2.7.x

@@ -27,7 +27,7 @@ for %%x in (%*) do (
       set SWW_ACTIVE_ARG=
     ) else (
       echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
-      goto :eof
+      exit /b 1
     )
   ) else if /i [!SWW_ACTIVE_ARG!]==[--branch] (
     if /i [!SWW_CURRENT_ARG!]==[master] (
@@ -44,7 +44,7 @@ for %%x in (%*) do (
       set SWW_ACTIVE_ARG=
     ) else (
       echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
-      goto :eof
+      exit /b 1
     )
   ) else if /i [!SWW_ACTIVE_ARG!]==[--sources-dir] (
     set SWW_SOURCES_DIR_DEFAULT=!SWW_CURRENT_ARG!
@@ -67,7 +67,7 @@ for %%x in (%*) do (
       set SWW_ACTIVE_ARG=
     ) else (
       echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
-      goto :eof
+      exit /b 1
     )
   ) else if /i [!SWW_ACTIVE_ARG!]==[--test-dispatch] (
     if /i [!SWW_CURRENT_ARG!]==[YES] (
@@ -78,7 +78,7 @@ for %%x in (%*) do (
       set SWW_ACTIVE_ARG=
     ) else (
       echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
-      goto :eof
+      exit /b 1
     )
   ) else if /i [!SWW_ACTIVE_ARG!]==[--test-foundation] (
     if /i [!SWW_CURRENT_ARG!]==[YES] (
@@ -89,7 +89,18 @@ for %%x in (%*) do (
       set SWW_ACTIVE_ARG=
     ) else (
       echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
-      goto :eof
+      exit /b 1
+    )
+  ) else if /i [!SWW_ACTIVE_ARG!]==[--enable-no-objc-patch] (
+    if /i [!SWW_CURRENT_ARG!]==[YES] (
+      set SWW_EXPERIMENTAL_OBJC_PATCH_ENABLED_DEFAULT=Y
+      set SWW_ACTIVE_ARG=
+    ) else if /i [!SWW_CURRENT_ARG!]==[NO] (
+      set SWW_EXPERIMENTAL_OBJC_PATCH_ENABLED_DEFAULT=N
+      set SWW_ACTIVE_ARG=
+    ) else (
+      echo Invalid parameter value: !SWW_ACTIVE_ARG!=!SWW_CURRENT_ARG!
+      exit /b 1
     )
   ) else if /i [!SWW_CURRENT_ARG!]==[--interactive] (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
@@ -109,14 +120,16 @@ for %%x in (%*) do (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else if /i [!SWW_CURRENT_ARG!]==[--test-foundation] (
     set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
+  ) else if /i [!SWW_CURRENT_ARG!]==[--enable-no-objc-patch] (
+    set SWW_ACTIVE_ARG=!SWW_CURRENT_ARG!
   ) else (
     echo Unknown parameter: !SWW_CURRENT_ARG!
-    goto :eof
+    exit /b 1
   )
 )
 if [%SWW_ACTIVE_ARG%] neq [] (
   echo Parameter value not specified: !SWW_ACTIVE_ARG!
-  goto :eof
+  exit /b 1
 )
 
 if /i [%SWW_INTERACTIVE%]==[NO] (
