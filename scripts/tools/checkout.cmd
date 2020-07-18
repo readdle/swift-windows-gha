@@ -85,7 +85,7 @@ rem *** Check target directory
 if exist %SW_TARGET_DIR% (
   for /f "delims=" %%a in ('dir /a /b %SW_TARGET_DIR%') do set SW_LAST_DIR_ITEM=%%a
   if not [!SW_LAST_DIR_ITEM!]==[] (
-    echo Target directory not empty
+    echo Target directory is not empty
     set SW_ERROR=2
     goto finalize
   )
