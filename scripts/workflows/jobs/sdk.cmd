@@ -19,7 +19,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\install-xctest.cmd^
  && call %SW_STEPS_DIR%\install-libdispatch.cmd^
  && call %SW_STEPS_DIR%\configure-libdispatch-tests.cmd^
- && call %SW_STEPS_DIR%\build-libdispatch.cmd^
+ && call %SW_STEPS_DIR%\build-libdispatch-tests.cmd^
  && call %SW_STEPS_DIR%\test-libdispatch.cmd^
  && call %SW_STEPS_DIR%\configure-foundation-test-environment.cmd^
  && call %SW_STEPS_DIR%\configure-foundation-tests.cmd^
