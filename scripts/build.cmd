@@ -43,6 +43,7 @@ echo XML2 version:            %SW_XML2_VERSION%
 echo ZLIB version:            %SW_ZLIB_VERSION%
 echo.
 echo Swift @objc patch:       %SW_EXPERIMENTAL_OBJC_PATCH_ENABLED%
+echo Swift print patch:       %SW_STDLIB_PATCH_ENABLED%
 echo.
 echo Swift test enabled:      %SW_SWIFT_TEST_ENABLED%
 echo Dispatch test enabled:   %SW_DISPATCH_TEST_ENABLED%

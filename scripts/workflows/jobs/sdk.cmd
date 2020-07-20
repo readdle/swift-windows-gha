@@ -5,6 +5,7 @@ set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\sdk
 call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-foundation.cmd^
  && call %SW_STEPS_DIR%\checkout-xctest.cmd^
+ && call %SW_STEPS_DIR%\patch-stdlib.cmd^
  && call %SW_STEPS_DIR%\configure-llvm.cmd^
  && call %SW_STEPS_DIR%\configure-swift-stdlib.cmd^
  && call %SW_STEPS_DIR%\build-swift-stdlib.cmd^
