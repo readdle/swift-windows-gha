@@ -1,6 +1,6 @@
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
-call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL https://github.com/apple/swift-corelibs-libdispatch.git
+call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/apple/swift-corelibs-libdispatch.git
 
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   call scripts\tools\set-env.cmd SW_LLVM_REF swift/swift-5.2-branch
@@ -20,7 +20,7 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 )
 
 if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
-  call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL https://github.com/readdle/swift-corelibs-libdispatch.git
+  call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/readdle/swift-corelibs-libdispatch.git
   call scripts\tools\set-env.cmd SW_DISPATCH_REF swift-dev-windows-readdle
 )
 
