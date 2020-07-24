@@ -1,5 +1,7 @@
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
+call scripts\tools\set-env.cmd SW_FOUNDATION_ORIGIN_URL https://github.com/apple/swift-corelibs-foundation
+
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
   if not defined SW_LLVM_REF set SW_LLVM_REF swift/swift-5.2-branch
   if not defined SW_DISPATCH_REF set SW_DISPATCH_REF swift-5.2-branch
@@ -21,6 +23,11 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 
   call scripts\tools\set-env.cmd SW_FOUNDATION_REF master
   call scripts\tools\set-env.cmd SW_XCTEST_REF master
+)
+
+if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
+  call scripts\tools\set-env.cmd SW_FOUNDATION_ORIGIN_URL https://github.com/readdle/swift-corelibs-foundation.git
+  call scripts\tools\set-env.cmd SW_FOUNDATION_REF swift-windows-dev-branch
 )
 
 call scripts\tools\set-env.cmd SW_LLVM_PROJECT_SOURCES_DIR %SW_SOURCES_DIR%\llvm-project
