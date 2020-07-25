@@ -5,6 +5,7 @@ setlocal enabledelayedexpansion
 set SW_INTERACTIVE=YES
 
 set SW_SWIFT_BRANCH_SPEC=master
+set SW_SWIFT_SDK_SPEC=apple
 set SW_SOURCES_DIR=%CD%\w\s
 set SW_BUILD_DIR=%CD%\w\b
 set SW_INSTALL_DIR=%CD%\w\i
@@ -18,6 +19,16 @@ set SW_CONFIG_FILE=%CD%\config.cmd
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
 
+call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_SWIFT_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_DISPATCH_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_FOUNDATION_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
+
+if "%SW_INTERACTIVE%"=="NO" (
+  goto configure
+)
+
 if /i "%SW_SWIFT_BRANCH_SPEC%"=="master" (
   set SW_BRANCH_NUM=1
 ) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
@@ -26,14 +37,10 @@ if /i "%SW_SWIFT_BRANCH_SPEC%"=="master" (
   set SW_BRANCH_NUM=3
 )
 
-call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_SWIFT_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_DISPATCH_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_FOUNDATION_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
-
-if /i [%SW_INTERACTIVE%]==[NO] (
-  goto configure
+if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
+  set SW_SWIFT_SDK_SPEC_NUM=1
+) else if /i "%SW_SWIFT_SDK_SPEC%"=="readdle" (
+  set SW_SWIFT_SDK_SPEC_NUM=2
 )
 
 :sw_wizard_start
@@ -41,6 +48,7 @@ if /i [%SW_INTERACTIVE%]==[NO] (
 call :sw_normalize_parameters_for_wizard
 
 call :sw_ask_branch
+call :sw_ask_sdk_spec
 call :sw_ask_directories
 call :sw_ask_swift_patch
 call :sw_ask_stdlib_patch
@@ -50,7 +58,7 @@ call :sw_ask_foundation_test
 call :sw_ask_config_file
 
 :configure
-if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
+if "%SW_SWIFT_BRANCH_SPEC%"=="5.2" (
   set SW_ICU_VERSION=64
 ) else (
   set SW_ICU_VERSION=67
@@ -64,6 +72,7 @@ call :sw_normalize_parameters_for_saving
 
 echo.
 echo Swift branch spec:       %SW_SWIFT_BRANCH_SPEC%
+echo Swift SDK spec:          %SW_SWIFT_SDK_SPEC%
 echo Source files directory:  %SW_SOURCES_DIR%
 echo Build output directory:  %SW_BUILD_DIR%
 echo Install directory:       %SW_INSTALL_DIR%
@@ -83,7 +92,7 @@ echo Foundation test enabled: %SW_FOUNDATION_TEST_ENABLED%
 echo Configuration file:      %SW_CONFIG_FILE%
 echo.
 
-if /i [%SW_INTERACTIVE%]==[NO] goto sw_save_config
+if "%SW_INTERACTIVE%"=="NO" goto sw_save_config
 
 :sw_ask_save
 set SW_SAVE_CONFIG=Y
@@ -98,6 +107,7 @@ if "%SW_SAVE_CONFIG%"=="N" goto sw_wizard_start
 
 :sw_save_config
 echo set SW_SWIFT_BRANCH_SPEC=%SW_SWIFT_BRANCH_SPEC%>%SW_CONFIG_FILE%
+echo set SW_SWIFT_SDK_SPEC=%SW_SWIFT_SDK_SPEC%>>%SW_CONFIG_FILE%
 echo set SW_SOURCES_DIR=%SW_SOURCES_DIR%>>%SW_CONFIG_FILE%
 echo set SW_BUILD_DIR=%SW_BUILD_DIR%>>%SW_CONFIG_FILE%
 echo set SW_INSTALL_DIR=%SW_INSTALL_DIR%>>%SW_CONFIG_FILE%
@@ -128,6 +138,7 @@ set CURRENT_ARG=%~1
 
 if "%NEXT_ARG%"=="SW_INTERACTIVE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SWIFT_BRANCH_SPEC"                 goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SWIFT_SDK_SPEC"                    goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SOURCES_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
@@ -142,6 +153,7 @@ if not defined CURRENT_ARG goto sw_parse_argumens_end
 
 if "%CURRENT_ARG%"=="--interactive" (                   set NEXT_ARG=SW_INTERACTIVE
 ) else if "%CURRENT_ARG%"=="--branch" (                 set NEXT_ARG=SW_SWIFT_BRANCH_SPEC
+) else if "%CURRENT_ARG%"=="--sdk" (                    set NEXT_ARG=SW_SWIFT_SDK_SPEC
 ) else if "%CURRENT_ARG%"=="--sources-dir" (            set NEXT_ARG=SW_SOURCES_DIR
 ) else if "%CURRENT_ARG%"=="--build-dir" (              set NEXT_ARG=SW_BUILD_DIR
 ) else if "%CURRENT_ARG%"=="--install-dir" (            set NEXT_ARG=SW_INSTALL_DIR
@@ -174,7 +186,7 @@ exit /b
 rem ###########################################################################
 :sw_validate_parameters
 setlocal enabledelayedexpansion
-for %%G in (SW_INTERACTIVE SW_SWIFT_BRANCH_SPEC SW_SOURCES_DIR SW_BUILD_DIR SW_INSTALL_DIR SW_CONFIG_FILE SW_SWIFT_TEST_ENABLED SW_DISPATCH_TEST_ENABLED SW_FOUNDATION_TEST_ENABLED SW_OBJC_PATCH_ENABLED SW_STDLIB_PATCH_ENABLED) do (
+for %%G in (SW_INTERACTIVE SW_SWIFT_BRANCH_SPEC SW_SWIFT_SDK_SPEC SW_SOURCES_DIR SW_BUILD_DIR SW_INSTALL_DIR SW_CONFIG_FILE SW_SWIFT_TEST_ENABLED SW_DISPATCH_TEST_ENABLED SW_FOUNDATION_TEST_ENABLED SW_OBJC_PATCH_ENABLED SW_STDLIB_PATCH_ENABLED) do (
   call :sw_validate_parameter %%G
   if errorlevel 1 goto sw_validate_parameters_fail
 )
@@ -197,6 +209,8 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
   if /i not "%VALUE%"=="master" if /i not "%VALUE%"=="5.3" if /i not "%VALUE%"=="5.2" goto :sw_validate_parameter_fail
+) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
+  if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_BUILD_DIR" (
@@ -342,15 +356,39 @@ echo.  3. 5.2
 
 set /p SW_BRANCH_NUM="Enter branch number to build (%SW_BRANCH_NUM%): "
 
-if [%SW_BRANCH_NUM%]==[1] (
+if "%SW_BRANCH_NUM%"=="1" (
   set SW_SWIFT_BRANCH_SPEC=master
-) else if [%SW_BRANCH_NUM%]==[2] (
+) else if "%SW_BRANCH_NUM%"=="2" (
   set SW_SWIFT_BRANCH_SPEC=5.3
-) else if [%SW_BRANCH_NUM%]==[3] (
+) else if "%SW_BRANCH_NUM%"=="3" (
   set SW_SWIFT_BRANCH_SPEC=5.2
 ) else (
   set SW_BRANCH_NUM=%SW_ORIGINAL_VALUE%
   goto sw_ask_branch_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_spec
+set SW_ORIGINAL_VALUE=%SW_SWIFT_SDK_SPEC_NUM%
+
+:sw_ask_sdk_spec_input
+echo Available SDK specs:
+echo.  1. Apple
+echo.  2. Readdle
+
+set /p SW_SWIFT_SDK_SPEC_NUM="Enter SDK spec number (%SW_SWIFT_SDK_SPEC_NUM%): "
+
+if "%SW_SWIFT_SDK_SPEC_NUM%"=="1" (
+  set SW_SWIFT_SDK_SPEC=apple
+) else if "%SW_SWIFT_SDK_SPEC_NUM%"=="2" (
+  set SW_SWIFT_SDK_SPEC=readdle
+) else (
+  set SW_SWIFT_SDK_SPEC_NUM=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_spec_input
 )
 
 exit /b
