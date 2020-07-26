@@ -524,4 +524,9 @@ jobs:
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\steps\sdk\test-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
+
+      - name: Test Foundation (XCTest)
+        shell: cmd
+        continue-on-error: true
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
