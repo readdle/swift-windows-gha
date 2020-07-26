@@ -328,7 +328,9 @@ jobs:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
-    matrix:
+    strategy:
+      fail-fast: false
+      matrix:
         swift-sdk-spec: [apple, readdle]
         include:
           - swift-sdk-spec: apple
