@@ -274,7 +274,7 @@ jobs:
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.patch }}
           path: 'checkout'
 
       - name: Configure LLVM Build Tools
@@ -339,6 +339,7 @@ jobs:
             stdlib-patch-enabled: YES
 
     env:
+      SW_SWIFT_SDK_SPEC: ${{ matrix.swift-sdk-spec }}
       SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
 
     steps:
@@ -348,7 +349,7 @@ jobs:
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.patch }}
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
 
       - name: Read Checkout Info
