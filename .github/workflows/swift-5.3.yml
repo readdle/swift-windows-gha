@@ -191,21 +191,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        patch: [apple, readdle]
+        spec: [apple, readdle]
         include:
-          - patch: apple
+          - spec: apple
             enable-no-objc-patch: NO
             enable-swift-test: YES
-            swift-sdk-spec: apple
-          - patch: readdle
+          - spec: readdle
             enable-no-objc-patch: YES
             enable-swift-test: NO
-            swift-sdk-spec: readdle
 
     env:
       SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
       SW_SWIFT_TEST_ENABLED: ${{ matrix.enable-swift-test }}
-      SW_SWIFT_SDK_SPEC: ${{ matrix.swift-sdk-spec }}
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
 
     steps:
       - name: Checkout 
@@ -274,7 +272,7 @@ jobs:
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
         with:
-          name: checkout-${{ matrix.patch }}
+          name: checkout-${{ matrix.spec }}
           path: 'checkout'
 
       - name: Configure LLVM Build Tools
@@ -312,7 +310,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain-${{ matrix.patch }}
+          name: toolchain-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
@@ -331,15 +329,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift-sdk-spec: [apple, readdle]
+        spec: [apple, readdle]
         include:
-          - swift-sdk-spec: apple
-            stdlib-patch-enabled: NO
-          - swift-sdk-spec: readdle
+          - spec: apple
+            stdlib-patch-enabled: NO 
+          - spec: readdle
             stdlib-patch-enabled: YES
 
     env:
-      SW_SWIFT_SDK_SPEC: ${{ matrix.swift-sdk-spec }}
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
       SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
 
     steps:
@@ -349,7 +347,7 @@ jobs:
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
-          name: checkout-${{ matrix.patch }}
+          name: checkout-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
 
       - name: Read Checkout Info
@@ -513,7 +511,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk
+          name: sdk-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests
