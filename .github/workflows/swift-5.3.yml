@@ -444,7 +444,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain-${{ matrix.swift-sdk-spec }}
+          name: toolchain-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Use Python 2.7.x
