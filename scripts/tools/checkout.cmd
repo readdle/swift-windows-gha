@@ -2,6 +2,10 @@
 
 setlocal enabledelayedexpansion
 
+set SW_LOG=call %~f0\..\log.cmd
+set SW_LOG_INFO=call %~f0\..\log.cmd --scope checkout --level info
+set SW_LOG_ERROR=call %~f0\..\log.cmd --scope checkout --level error
+
 rem *** Parse input arguments
 :sw_parse_argument
 set CURRENT_ARG=%1
@@ -17,6 +21,12 @@ if [%CURRENT_ARG%]==[--ref] set NEXT_ARG=SW_REF
 if [%CURRENT_ARG%]==[--depth] set NEXT_ARG=SW_FETCH_DEPTH
 if [%CURRENT_ARG%]==[--dir] set NEXT_ARG=SW_TARGET_DIR
 if [%CURRENT_ARG%]==[--help] goto help
+
+if not defined NEXT_ARG (
+  %SW_LOG_ERROR% --message "Unknown parameter: %CURRENT_ARG%"
+  exit /b 1
+)
+
 goto :sw_parse_argument_next
 
 :sw_parse_argument_accept
@@ -51,31 +61,30 @@ if not errorlevel 1 (
 
 rem *** Check input parameters
 if [%SW_URL%]==[] (
-  echo Repository URL not specified
+  %SW_LOG_ERROR% --message "Repository URL not specified"
   set SW_ERROR=1
   goto finalize
 )
 if [%SW_TARGET_DIR%]==[] (
-  echo Target directory not specified
+  %SW_LOG_ERROR% --message "Target directory not specified"
   set SW_ERROR=1
   goto finalize
 )
 if not [%SW_FETCH_DEPTH%]==[] (
   echo %SW_FETCH_DEPTH%| findstr /r "^[1-9][0-9]*$">nul
   if errorlevel 1 (
-    echo Invalid depth parameter: %SW_FETCH_DEPTH%
+    %SW_LOG_ERROR% --message "Invalid depth parameter: %SW_FETCH_DEPTH%"
     set SW_ERROR=1
     goto finalize
   )
 )
 
-
-echo Repository URL:    %SW_URL%
-echo Ref:               %SW_REF%
-echo Commit:            %SW_COMMIT%
-echo Depth:             %SW_FETCH_DEPTH%
-echo Target directory:  %SW_TARGET_DIR%
-echo.
+%SW_LOG_INFO% --prefix "Repository URL:    " --message "%SW_URL%"
+%SW_LOG_INFO% --prefix "Ref:               " --message "%SW_REF%"
+%SW_LOG_INFO% --prefix "Commit:            " --message "%SW_COMMIT%"
+%SW_LOG_INFO% --prefix "Depth:             " --message "%SW_FETCH_DEPTH%"
+%SW_LOG_INFO% --prefix "Target directory:  " --message "%SW_TARGET_DIR%"
+%SW_LOG_INFO%
 
 
 set SW_TAGS_REF_SPEC=+refs/tags/*:refs/tags/*
@@ -85,7 +94,7 @@ rem *** Check target directory
 if exist %SW_TARGET_DIR% (
   for /f "delims=" %%a in ('dir /a /b %SW_TARGET_DIR%') do set SW_LAST_DIR_ITEM=%%a
   if not [!SW_LAST_DIR_ITEM!]==[] (
-    echo Target directory is not empty
+    %SW_LOG_ERROR% --message "Target directory is not empty"
     set SW_ERROR=2
     goto finalize
   )
@@ -93,6 +102,7 @@ if exist %SW_TARGET_DIR% (
 
 
 rem *** Initialize repository
+%SW_LOG_INFO% --message "Initializing repository in %SW_TARGET_DIR%"
 git init %SW_TARGET_DIR%
 if errorlevel 1 (
   set SW_ERROR=1
@@ -109,6 +119,7 @@ if errorlevel 1 (
 
 
 rem *** Add remote URL
+%SW_LOG_INFO% --message "Adding remote %SW_URL%"
 git remote add origin %SW_URL%
 if errorlevel 1 (
   set SW_ERROR=1
@@ -117,21 +128,25 @@ if errorlevel 1 (
 
 
 rem *** Disable automatic garbage collection
+%SW_LOG_INFO% --message "Disabling automatic garbage collection"
 git config gc.auto 0
 
 
 rem *** Fetch repository
 if not defined SW_FETCH_DEPTH (
+  %SW_LOG_INFO% --message "Fetching all history"
   call :get_ref_spec_all_history SW_REF_SPEC "%SW_REF%" "%SW_COMMIT%"
   call :git_fetch "!SW_REF_SPEC!"
   rem todo: implement testRef
 ) else (
+  %SW_LOG_INFO% --message "Fetching history at depth %SW_FETCH_DEPTH%"
   call :get_ref_spec SW_REF_SPEC "%SW_REF%" "%SW_COMMIT%"
   call :git_fetch "!SW_REF_SPEC!" "%SW_FETCH_DEPTH%"
 )
 
 
 rem *** Get checkout info
+%SW_LOG_INFO% --message "Retrieving checkout info"
 call :get_checkout_info SW_REF SW_START_POINT "%SW_REF%" "%SW_COMMIT%"
 if errorlevel 1 (
   set SW_ERROR=%ERRORLEVEL%
@@ -140,6 +155,7 @@ if errorlevel 1 (
 
 
 rem *** Checkout
+%SW_LOG_INFO% --message "Performing checkout"
 call :git_checkout "%SW_REF%" "%SW_START_POINT%"
 if errorlevel 1 (
   set SW_ERROR=%ERRORLEVEL%
@@ -232,7 +248,7 @@ if defined FETCH_DEPTH (
 )
 
 set GIT_ARGS=%GIT_ARGS% origin %REF_SPEC%
-echo %GIT_ARGS%
+%SW_LOG_INFO% --prefix "Git arguments:" --message "%GIT_ARGS%"
 
 git %GIT_ARGS%
 
@@ -275,7 +291,7 @@ if not defined REF (
     if [!TAG_EXISTS!]==[YES] (
       set RESULT_REF=refs/tags/%REF%
     ) else (
-      echo A branch or tag with the name '%REF%' could not be found
+      %SW_LOG_ERROR% --message "A branch or tag with the name '%REF%' could not be found"
       endlocal
       exit /b 1
     )
@@ -361,18 +377,19 @@ git %GIT_ARGS%
 
 rem ###########################################################################
 :help
-echo Fetches and checkouts git repository. Does not handle authorization.
-echo.
-echo Parameters:
-echo.  --url=^<value^>      Git repository URL
-echo.  --dir=^<value^>      Directory to fetch into
-echo.  --ref=^<value^>      Tag, branch or commit hash. Optional.
-echo.  --depth=^<value^>    Fetch depth. A number greater than 0. Optional.
-echo.  --help             Display this help message
-(
-  endlocal
-  exit /b
-)
+set SW_LOG_HELP=%SW_LOG% --scope help
+%SW_LOG_HELP% --message "Fetches and checkouts git repository. Does not handle authorization."
+%SW_LOG_HELP% 
+%SW_LOG_HELP% --message "Parameters:"
+%SW_LOG_HELP% --prefix "--url=<value>      " --message "Git repository URL"
+%SW_LOG_HELP% --prefix "--dir=<value>      " --message "Directory to fetch into"
+%SW_LOG_HELP% --prefix "--ref=<value>      " --message "Tag, branch or commit hash. Optional."
+%SW_LOG_HELP% --prefix "--depth=<value>    " --message "Fetch depth. A number greater than 0. Optional."
+%SW_LOG_HELP% --prefix "--help             " --message "Display this help message"
+
+endlocal
+exit /b
+
 
 rem ###########################################################################
 :finalize
