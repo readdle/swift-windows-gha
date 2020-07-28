@@ -78,8 +78,11 @@ setlocal enabledelayedexpansion
 
 set OUT_VAR=%1
 set "PARAM=%~2"
-set "PARAM=%PARAM:<=^<%"
-set "PARAM=%PARAM:>=^>%"
+
+if defined PARAM (
+  set "PARAM=!PARAM:<=^<!"
+  set "PARAM=!PARAM:>=^>!"
+)
 
 (
   endlocal
