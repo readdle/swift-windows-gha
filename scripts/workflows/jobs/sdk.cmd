@@ -25,6 +25,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\configure-foundation-test-environment.cmd^
  && call %SW_STEPS_DIR%\configure-foundation-tests.cmd^
  && call %SW_STEPS_DIR%\build-foundation-tests.cmd^
- && call %SW_STEPS_DIR%\test-foundation.cmd
+ && call %SW_STEPS_DIR%\test-foundation-ctest.cmd^
+ && call %SW_STEPS_DIR%\test-foundation-xctest.cmd
 
 endlocal

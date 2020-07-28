@@ -191,15 +191,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        patch: [clean, no-objc]
+        spec: [apple, readdle]
         include:
-          - patch: clean
+          - spec: apple
             enable-no-objc-patch: NO
-          - patch: no-objc
+            enable-swift-test: YES
+          - spec: readdle
             enable-no-objc-patch: YES
+            enable-swift-test: NO
 
     env:
       SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
+      SW_SWIFT_TEST_ENABLED: ${{ matrix.enable-swift-test }}
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
 
     steps:
       - name: Checkout 
@@ -237,7 +241,7 @@ jobs:
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-libdispatch'
+          repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
@@ -268,7 +272,7 @@ jobs:
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.spec }}
           path: 'checkout'
 
       - name: Configure LLVM Build Tools
@@ -306,7 +310,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain-${{ matrix.patch }}
+          name: toolchain-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
@@ -322,9 +326,19 @@ jobs:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: [apple, readdle]
+        include:
+          - spec: apple
+            stdlib-patch-enabled: NO 
+          - spec: readdle
+            stdlib-patch-enabled: YES
+
     env:
-      SW_FOUNDATION_REF: 'release/5.3'
-      SW_XCTEST_REF: 'release/5.3'
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
+      SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
 
     steps:
       - name: Checkout
@@ -333,7 +347,7 @@ jobs:
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
 
       - name: Read Checkout Info
@@ -378,7 +392,7 @@ jobs:
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-libdispatch'
+          repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
@@ -386,7 +400,7 @@ jobs:
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-foundation'
+          repository: ${{ env.SW_FOUNDATION_REPO }}
           ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
           path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
@@ -402,6 +416,10 @@ jobs:
       - name: Patch LLVM
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+
+      - name: Patch StdLib
+        shell: cmd
+        run: scripts\workflows\jobs\steps\sdk\patch-stdlib.cmd
 
       - name: Download ICU
         uses: actions/download-artifact@v1
@@ -426,7 +444,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain-clean
+          name: toolchain-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Use Python 2.7.x
@@ -493,7 +511,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk
+          name: sdk-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests
@@ -524,4 +542,9 @@ jobs:
       - name: Test Foundation
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\steps\sdk\test-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
+
+      - name: Test Foundation (XCTest)
+        shell: cmd
+        continue-on-error: true
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
