@@ -8,7 +8,7 @@ set SW_CURRENT_CMD=%0
 
 rem *** Parse input arguments
 :sw_parse_argument
-set "CURRENT_ARG=%~1"
+set CURRENT_ARG=%1
 if not defined CURRENT_ARG goto sw_parse_argumens_end
 
 if [%NEXT_ARG%]==[SW_SCOPE] goto sw_parse_argument_accept
@@ -30,7 +30,7 @@ if not defined NEXT_ARG (
 goto :sw_parse_argument_next
 
 :sw_parse_argument_accept
-set "%NEXT_ARG%=%CURRENT_ARG%"
+set %NEXT_ARG%=%CURRENT_ARG%
 set NEXT_ARG=
 
 :sw_parse_argument_next
@@ -57,6 +57,10 @@ if /i [%SW_LEVEL%]==[info] (
   set SW_LEVEL=ERR
 )
 
+if defined SW_SCOPE call :escape_and_dequote SW_SCOPE %SW_SCOPE%
+if defined SW_PREFIX call :escape_and_dequote SW_PREFIX %SW_PREFIX%
+if defined SW_MESSAGE call :escape_and_dequote SW_MESSAGE %SW_MESSAGE%
+
 rem *** Add spacers
 if defined SW_SCOPE set "SW_SCOPE=%SW_SCOPE% "
 if defined SW_PREFIX set "SW_PREFIX=%SW_PREFIX% "
@@ -65,6 +69,23 @@ echo.%SW_SCOPE%[%SW_LEVEL_COLOR%%SW_LEVEL%%SW_LOG_RESET%] %SW_LOG_MAGENTA%%SW_PR
 
 endlocal
 goto :eof
+
+
+
+rem ###########################################################################
+:escape_and_dequote <out_var> <var>
+setlocal enabledelayedexpansion
+
+set OUT_VAR=%1
+set "PARAM=%~2"
+set "PARAM=%PARAM:<=^<%"
+set "PARAM=%PARAM:>=^>%"
+
+(
+  endlocal
+  set "%OUT_VAR%=%PARAM%"
+  exit /b
+)
 
 
 
@@ -78,6 +99,8 @@ call %SW_CURRENT_CMD% --scope help --prefix "--level    " --message "desired log
 call %SW_CURRENT_CMD% --scope help --prefix "--prefix   " --message "emphasized prefix of message body"
 call %SW_CURRENT_CMD% --scope help --prefix "--message  " --message "message body to log"
 goto :eof
+
+
 
 rem ###########################################################################
 :init_log
