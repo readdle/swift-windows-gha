@@ -529,7 +529,12 @@ jobs:
         shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
-      - name: Test Foundation
+      - name: Test Foundation (CTest)
         shell: cmd
         continue-on-error: true
-        run: scripts\workflows\jobs\steps\sdk\test-foundation.cmd
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
+
+      - name: Test Foundation (XCTest)
+        shell: cmd
+        continue-on-error: true
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
