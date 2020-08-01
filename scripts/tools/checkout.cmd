@@ -2,9 +2,8 @@
 
 setlocal enabledelayedexpansion
 
-set SW_LOG=call %~f0\..\log.cmd
-set SW_LOG_INFO=call %~f0\..\log.cmd --scope checkout --level info
-set SW_LOG_ERROR=call %~f0\..\log.cmd --scope checkout --level error
+set SW_LOG_INFO=%SW_LOG_INFO% --scope checkout
+set SW_LOG_ERROR=%SW_LOG_ERROR% --scope checkout
 
 rem *** Parse input arguments
 :sw_parse_argument

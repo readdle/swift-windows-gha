@@ -118,6 +118,10 @@ set SW_LOG_GREEN=%SW_ESC%[32m
 set SW_LOG_YELLOW=%SW_ESC%[33m
 set SW_LOG_MAGENTA=%SW_ESC%[35m
 
+set SW_LOG=call "%~f0"
+set SW_LOG_INFO=%SW_LOG% --level info
+set SW_LOG_ERROR=%SW_LOG% --level error
+
 set SW_LOG_INITIALIZED=Y
 
 exit /b
