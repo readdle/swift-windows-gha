@@ -22,7 +22,7 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
 
 if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
   call scripts\tools\set-env.cmd SW_DISPATCH_REPO readdle/swift-corelibs-libdispatch
-  call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/%SW_DISPATCH_REPO%.git
+  call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/!SW_DISPATCH_REPO!.git
   call scripts\tools\set-env.cmd SW_DISPATCH_REF swift-dev-windows-readdle
 )
 
