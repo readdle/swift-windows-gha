@@ -5,6 +5,8 @@ for /f "usebackq delims=*" %%i in (`"C:\Program Files (x86)\Microsoft Visual Stu
     call "%%i"\Common7\Tools\vsdevcmd.bat %*
 )
 
+set
+
 if not defined GITHUB_ACTION goto :eof
 
 setlocal
