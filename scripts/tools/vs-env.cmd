@@ -5,9 +5,7 @@ for /f "usebackq delims=*" %%i in (`"C:\Program Files (x86)\Microsoft Visual Stu
     call "%%i"\Common7\Tools\vsdevcmd.bat %*
 )
 
-set
-
-if not defined GITHUB_ACTION goto :eof
+if not defined GITHUB_ACTIONS goto :eof
 
 setlocal
 for /f "delims== tokens=1,2" %%a in ('set') do (

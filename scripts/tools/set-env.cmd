@@ -14,7 +14,6 @@ if [%1] == [] (
 
 set "%1=%~2"
 
-if not defined GITHUB_ACTION goto :eof
+if not defined GITHUB_ACTIONS goto :eof
 
 echo ::set-env name=%1::%~2
-echo set-env name=%1::%~2
