@@ -4,8 +4,8 @@ setlocal enabledelayedexpansion
 
 call "%~f0\..\tools\log.cmd" > nul
 
-set SW_LOG_INFO=%SW_LOG_INFO% --scope build
-set SW_LOG_ERROR=%SW_LOG_ERROR% --scope build
+set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
+set SW_LOG_BUILD_ERROR=%SW_LOG_ERROR% --scope build
 
 set SW_CONFIG_FILE=config.cmd
 
@@ -14,51 +14,51 @@ if errorlevel 1 goto :eof
 
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
-echo Using configuration from %SW_CONFIG_FILE%
+%SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
 call %SW_CONFIG_FILE%
 
-%SW_LOG_INFO%
-%SW_LOG_INFO% --prefix="Swift branch spec:       " --message="%SW_SWIFT_BRANCH_SPEC%"
-%SW_LOG_INFO% --prefix="Swift SDK spec:          " --message="%SW_SWIFT_SDK_SPEC%"
-%SW_LOG_INFO% --prefix="Source files directory:  " --message="%SW_SOURCES_DIR%"
-%SW_LOG_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
-%SW_LOG_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
-%SW_LOG_INFO%
-%SW_LOG_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
-%SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
-%SW_LOG_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
-%SW_LOG_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
-%SW_LOG_INFO%
-%SW_LOG_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
-%SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
-%SW_LOG_INFO%
-%SW_LOG_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
-%SW_LOG_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
-%SW_LOG_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
-%SW_LOG_INFO%
-%SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
-%SW_LOG_INFO%
-
-
-set SW_WORKSPACE=%CD%
+set "SW_WORKSPACE=%~dp0\.."
+call :sw_normalize_path SW_WORKSPACE %SW_WORKSPACE%
 set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
 set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
+
+%SW_LOG_BUILD_INFO%
+%SW_LOG_BUILD_INFO% --prefix="Workspace:               " --message="%SW_WORKSPACE%"
+%SW_LOG_BUILD_INFO%
+%SW_LOG_BUILD_INFO% --prefix="Swift branch spec:       " --message="%SW_SWIFT_BRANCH_SPEC%"
+%SW_LOG_BUILD_INFO% --prefix="Swift SDK spec:          " --message="%SW_SWIFT_SDK_SPEC%"
+%SW_LOG_BUILD_INFO% --prefix="Source files directory:  " --message="%SW_SOURCES_DIR%"
+%SW_LOG_BUILD_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
+%SW_LOG_BUILD_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
+%SW_LOG_BUILD_INFO%
+%SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
+%SW_LOG_BUILD_INFO%
+%SW_LOG_BUILD_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
+%SW_LOG_BUILD_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
+%SW_LOG_BUILD_INFO%
+%SW_LOG_BUILD_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO%
+
 set SW_IGNORE_TEST_FAILURES=1
 
-call %SW_JOBS_DIR%\toolchain.cmd
-REM call %SW_JOBS_DIR%\icu.cmd^
-REM  && call %SW_JOBS_DIR%\toolchain.cmd^
-REM  && call %SW_JOBS_DIR%\zlib.cmd^
-REM  && call %SW_JOBS_DIR%\libxml2.cmd^
-REM  && call %SW_JOBS_DIR%\curl.cmd^
-REM  && call %SW_JOBS_DIR%\sdk.cmd
+call %SW_JOBS_DIR%\icu.cmd^
+ && call %SW_JOBS_DIR%\toolchain.cmd^
+ && call %SW_JOBS_DIR%\zlib.cmd^
+ && call %SW_JOBS_DIR%\libxml2.cmd^
+ && call %SW_JOBS_DIR%\curl.cmd^
+ && call %SW_JOBS_DIR%\sdk.cmd
  
 endlocal
 goto :eof
 
 
 
-rem ###########################################################################
+:: ###########################################################################
 :sw_parse_arguments <arguments...>
 :sw_parse_arguments_start
 set CURRENT_ARG=%~1
@@ -87,7 +87,8 @@ goto sw_parse_arguments_start
 exit /b
 
 
-rem ###########################################################################
+
+:: ###########################################################################
 :sw_validate_parameters
 setlocal enabledelayedexpansion
 for %%G in (SW_CONFIG_FILE) do (
@@ -102,7 +103,8 @@ endlocal
 exit /b 1
 
 
-rem ###########################################################################
+
+:: ###########################################################################
 :sw_validate_parameter <parameter>
 setlocal enabledelayedexpansion
 
@@ -124,3 +126,10 @@ exit /b
 echo %PARAMETER% - Invalid value: %VALUE%
 endlocal
 exit /b 1
+
+
+
+:: ###########################################################################
+:sw_normalize_path <output_var> <path>
+set "%1=%~f2"
+exit /b
