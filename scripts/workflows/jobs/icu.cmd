@@ -1,5 +1,6 @@
 setlocal
 
+set SW_LOG_ICU_INFO=%SW_LOG_INFO% --scope icu
 set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\icu
 
 call %SW_STEPS_DIR%\configure-build-environment.cmd^
