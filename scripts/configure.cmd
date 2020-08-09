@@ -2,6 +2,11 @@
 
 setlocal enabledelayedexpansion
 
+call "%~f0\..\tools\log.cmd" > nul
+
+set SW_LOG_INFO=%SW_LOG_INFO% --scope config
+set SW_LOG_ERROR=%SW_LOG_ERROR% --scope config
+
 set SW_INTERACTIVE=YES
 
 set SW_SWIFT_BRANCH_SPEC=master
@@ -26,7 +31,10 @@ call :sw_normalize_bool_parameter_for_wizard SW_FOUNDATION_TEST_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
 
 if "%SW_INTERACTIVE%"=="NO" (
+  %SW_LOG_INFO% --message="Non-interactive mode"
   goto configure
+) else (
+  %SW_LOG_INFO% --message="Interactive mode"
 )
 
 if /i "%SW_SWIFT_BRANCH_SPEC%"=="master" (
@@ -70,27 +78,27 @@ set SW_ZLIB_VERSION=1.2.11
 
 call :sw_normalize_parameters_for_saving
 
-echo.
-echo Swift branch spec:       %SW_SWIFT_BRANCH_SPEC%
-echo Swift SDK spec:          %SW_SWIFT_SDK_SPEC%
-echo Source files directory:  %SW_SOURCES_DIR%
-echo Build output directory:  %SW_BUILD_DIR%
-echo Install directory:       %SW_INSTALL_DIR%
-echo.
-echo CURL version:            %SW_CURL_VERSION%
-echo ICU version:             %SW_ICU_VERSION%
-echo XML2 version:            %SW_XML2_VERSION%
-echo ZLIB version:            %SW_ZLIB_VERSION%
-echo.
-echo Swift @objc patch:       %SW_OBJC_PATCH_ENABLED%
-echo Swift print patch:       %SW_STDLIB_PATCH_ENABLED%
-echo.
-echo Swift test enabled:      %SW_SWIFT_TEST_ENABLED%
-echo Dispatch test enabled:   %SW_DISPATCH_TEST_ENABLED%
-echo Foundation test enabled: %SW_FOUNDATION_TEST_ENABLED%
-
-echo Configuration file:      %SW_CONFIG_FILE%
-echo.
+%SW_LOG_INFO%
+%SW_LOG_INFO% --prefix="Swift branch spec:       " --message="%SW_SWIFT_BRANCH_SPEC%"
+%SW_LOG_INFO% --prefix="Swift SDK spec:          " --message="%SW_SWIFT_SDK_SPEC%"
+%SW_LOG_INFO% --prefix="Source files directory:  " --message="%SW_SOURCES_DIR%"
+%SW_LOG_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
+%SW_LOG_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
+%SW_LOG_INFO%
+%SW_LOG_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
+%SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
+%SW_LOG_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
+%SW_LOG_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
+%SW_LOG_INFO%
+%SW_LOG_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
+%SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
+%SW_LOG_INFO%
+%SW_LOG_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
+%SW_LOG_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
+%SW_LOG_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
+%SW_LOG_INFO%
+%SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
+%SW_LOG_INFO%
 
 if "%SW_INTERACTIVE%"=="NO" goto sw_save_config
 
@@ -124,7 +132,7 @@ echo set SW_SWIFT_TEST_ENABLED=%SW_SWIFT_TEST_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_DISPATCH_TEST_ENABLED=%SW_DISPATCH_TEST_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_FOUNDATION_TEST_ENABLED=%SW_FOUNDATION_TEST_ENABLED%>>%SW_CONFIG_FILE%
 
-echo Configuration saved. Run build.cmd.
+%SW_LOG_INFO% --message="Configuration saved. Run build.cmd."
 
 goto :eof
 endlocal
@@ -165,7 +173,7 @@ if "%CURRENT_ARG%"=="--interactive" (                   set NEXT_ARG=SW_INTERACT
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (     set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--help" (                   goto help
 ) else (
-  echo Unknown argument: %CURRENT_ARG%
+  %SW_LOG_ERROR% --message="Unknown argument: %CURRENT_ARG%"
   exit /b 1
 )
 goto :sw_parse_arguments_next
@@ -244,7 +252,7 @@ endlocal
 exit /b
 
 :sw_validate_parameter_fail
-echo %PARAMETER% - Invalid value: %VALUE%
+%SW_LOG_ERROR% --message="%PARAMETER% - Invalid value: %VALUE%"
 endlocal
 exit /b 1
 
