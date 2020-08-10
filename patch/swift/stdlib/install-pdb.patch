@@ -1,0 +1,14 @@
+diff --git a/stdlib/cmake/modules/AddSwiftStdlib.cmake b/stdlib/cmake/modules/AddSwiftStdlib.cmake
+index a2f682ec..4f0e41be 100644
+--- a/stdlib/cmake/modules/AddSwiftStdlib.cmake
++++ b/stdlib/cmake/modules/AddSwiftStdlib.cmake
+@@ -2108,6 +2108,9 @@ function(add_swift_target_library name)
+                                      DESTINATION "lib${LLVM_LIBDIR_SUFFIX}/${resource_dir}/${resource_dir_sdk_subdir}/${SWIFT_PRIMARY_VARIANT_ARCH}"
+                                      COMPONENT "${SWIFTLIB_INSTALL_IN_COMPONENT}"
+                                    PERMISSIONS ${file_permissions})
++        if(SWIFTLIB_SHARED)
++          install(FILES $<TARGET_PDB_FILE:${name}-windows-${SWIFT_PRIMARY_VARIANT_ARCH}> DESTINATION "bin" OPTIONAL)
++        endif()
+       else()
+         # NOTE: ${UNIVERSAL_LIBRARY_NAME} is the output associated with the target
+         # ${lipo_target}

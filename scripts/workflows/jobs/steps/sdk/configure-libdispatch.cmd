@@ -1,3 +1,9 @@
+setlocal enabledelayedexpansion
+
+if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
+    set SW_DISPATCH_PDB=-D DISPATCH_ENABLE_PDB=ON
+)
+
 cmake^
  -G Ninja^
  -S %SW_DISPATCH_SOURCES_DIR%^
@@ -8,4 +14,7 @@ cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D BUILD_TESTING=NO^
- -D ENABLE_SWIFT=YES
+ -D ENABLE_SWIFT=YES^
+ %SW_DISPATCH_PDB%
+
+endlocal
