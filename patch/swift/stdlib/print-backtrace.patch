@@ -1,0 +1,159 @@
+diff --git a/include/swift/Runtime/Debug.h b/include/swift/Runtime/Debug.h
+index e4e77cb8..e0ec2d93 100644
+--- a/include/swift/Runtime/Debug.h
++++ b/include/swift/Runtime/Debug.h
+@@ -148,6 +148,12 @@ void dumpStackTraceEntry(unsigned index, void *framePC,
+ SWIFT_RUNTIME_ATTRIBUTE_NOINLINE
+ void printCurrentBacktrace(unsigned framesToSkip = 1);
+ 
++SWIFT_RUNTIME_ATTRIBUTE_NOINLINE
++void printCurrentBacktraceToFile(unsigned framesToSkip, FILE *stream);
++
++void dumpStackTraceEntryToFile(unsigned index, void *framePC,
++                               bool shortOutput, FILE *stream);
++
+ /// Debugger breakpoint ABI. This structure is passed to the debugger (and needs
+ /// to be stable) and describes extra information about a fatal error or a
+ /// non-fatal warning, which should be logged as a runtime issue. Please keep
+diff --git a/stdlib/public/SwiftShims/AssertionReporting.h b/stdlib/public/SwiftShims/AssertionReporting.h
+index 9c55a628..af1804df 100644
+--- a/stdlib/public/SwiftShims/AssertionReporting.h
++++ b/stdlib/public/SwiftShims/AssertionReporting.h
+@@ -15,6 +15,7 @@
+ 
+ #include "SwiftStdint.h"
+ #include "Visibility.h"
++#include <stdio.h>
+ 
+ #if __has_feature(nullability)
+ #pragma clang assume_nonnull begin
+@@ -24,6 +25,9 @@
+ namespace swift { extern "C" {
+ #endif
+ 
++SWIFT_RUNTIME_STDLIB_API
++void _swift_stdlib_printCurrentBacktraceToFile(FILE *fd, unsigned framesToSkip);
++
+ /// Report a fatal error to system console, stderr, and crash logs.
+ ///
+ ///     <prefix>: <message>: file <file>, line <line>\n
+diff --git a/stdlib/public/core/Runtime.swift b/stdlib/public/core/Runtime.swift
+index 23695337..4d216239 100644
+--- a/stdlib/public/core/Runtime.swift
++++ b/stdlib/public/core/Runtime.swift
+@@ -611,3 +611,7 @@ internal class __SwiftNativeNSSet {
+ }
+ 
+ #endif
++
++public func printCurrentBacktraceToFile(fd: UnsafeMutablePointer<FILE>) {
++  _swift_stdlib_printCurrentBacktraceToFile(fd, 0);
++}
+\ No newline at end of file
+diff --git a/stdlib/public/runtime/Errors.cpp b/stdlib/public/runtime/Errors.cpp
+index d57557cf..ed31aaca 100644
+--- a/stdlib/public/runtime/Errors.cpp
++++ b/stdlib/public/runtime/Errors.cpp
+@@ -476,3 +476,88 @@ void swift::swift_abortDynamicReplacementDisabling() {
+                     "Fatal error: trying to disable a dynamic replacement "
+                     "that is already disabled");
+ }
++
++// --- Readdle: Print Backtrace ---
++
++// copy of swift::printCurrentBacktrace
++LLVM_ATTRIBUTE_NOINLINE
++void swift::printCurrentBacktraceToFile(unsigned framesToSkip, FILE *stream) {
++#if SWIFT_SUPPORTS_BACKTRACE_REPORTING
++  constexpr unsigned maxSupportedStackDepth = 128;
++  void *addrs[maxSupportedStackDepth];
++#if defined(_WIN32)
++  int symbolCount = CaptureStackBackTrace(0, maxSupportedStackDepth, addrs, NULL);
++#elif defined(__ELF__)
++  struct UnwindState state = {&addrs[0], &addrs[maxSupportedStackDepth]};
++  _Unwind_Backtrace(SwiftUnwindFrame, &state);
++  int symbolCount = state.current - addrs;
++#else
++  int symbolCount = backtrace(addrs, maxSupportedStackDepth);
++#endif
++  for (int i = framesToSkip; i < symbolCount; ++i) {
++    dumpStackTraceEntryToFile(i - framesToSkip, addrs[i], false, stream);
++  }
++#else
++  fprintf(stream, "<backtrace unavailable>\n");
++#endif
++}
++
++// copy of swift::dumpStackTraceEntry
++void swift::dumpStackTraceEntryToFile(unsigned index, void *framePC,
++                                      bool shortOutput, FILE *stream) {
++#if SWIFT_SUPPORTS_BACKTRACE_REPORTING
++  SymbolInfo syminfo;
++
++  // 0 is failure for lookupSymbol
++  if (0 == lookupSymbol(framePC, &syminfo)) {
++    return;
++  }
++
++  // If lookupSymbol succeeded then fileName is non-null. Thus, we find the
++  // library name here. Avoid using StringRef::rsplit because its definition
++  // is not provided in the header so that it requires linking with
++  // libSupport.a.
++  StringRef libraryName = StringRef(syminfo.fileName);
++  libraryName = libraryName.substr(libraryName.rfind('/')).substr(1);
++
++  // Next we get the symbol name that we are going to use in our backtrace.
++  std::string symbolName;
++  // We initialize symbolAddr to framePC so that if we succeed in finding the
++  // symbol, we get the offset in the function and if we fail to find the symbol
++  // we just get HexAddr + 0.
++  uintptr_t symbolAddr = uintptr_t(framePC);
++  bool foundSymbol =
++      getSymbolNameAddr(libraryName, syminfo, symbolName, symbolAddr);
++  ptrdiff_t offset = 0;
++  if (foundSymbol) {
++    offset = ptrdiff_t(uintptr_t(framePC) - symbolAddr);
++  } else {
++    offset = ptrdiff_t(uintptr_t(framePC) - uintptr_t(syminfo.baseAddress));
++    symbolAddr = uintptr_t(framePC);
++    symbolName = "<unavailable>";
++  }
++
++  // We do not use %p here for our pointers since the format is implementation
++  // defined. This makes it logically impossible to check the output. Forcing
++  // hexadecimal solves this issue.
++  // If the symbol is not available, we print out <unavailable> + offset
++  // from the base address of where the image containing framePC is mapped.
++  // This gives enough info to reconstruct identical debugging target after
++  // this process terminates.
++  if (shortOutput) {
++    fprintf(stream, "%s`%s + %td", libraryName.data(), symbolName.c_str(),
++            offset);
++  } else {
++    constexpr const char *format = "%-4u %-34s 0x%0.16" PRIxPTR " %s + %td\n";
++    fprintf(stream, format, index, libraryName.data(), symbolAddr,
++            symbolName.c_str(), offset);
++  }
++#else
++  if (shortOutput) {
++    fprintf(stream, "<unavailable>");
++  } else {
++    constexpr const char *format = "%-4u 0x%0.16tx\n";
++    fprintf(stream, format, index, reinterpret_cast<uintptr_t>(framePC));
++  }
++#endif
++}
+\ No newline at end of file
+diff --git a/stdlib/public/stubs/Assert.cpp b/stdlib/public/stubs/Assert.cpp
+index 547d9d7f..4552be0c 100644
+--- a/stdlib/public/stubs/Assert.cpp
++++ b/stdlib/public/stubs/Assert.cpp
+@@ -116,3 +116,8 @@ void swift::_swift_stdlib_reportUnimplementedInitializer(
+   free(log);
+ }
+ 
++void swift::_swift_stdlib_printCurrentBacktraceToFile(FILE *fd, unsigned framesToSkip) {
++  printCurrentBacktraceToFile(framesToSkip, fd);
++}
++
++
