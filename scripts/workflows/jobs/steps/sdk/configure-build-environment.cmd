@@ -6,12 +6,12 @@ call scripts\tools\set-env.cmd SW_FOUNDATION_REPO apple/swift-corelibs-foundatio
 call scripts\tools\set-env.cmd SW_FOUNDATION_ORIGIN_URL git://github.com/%SW_FOUNDATION_REPO%.git
 
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
-  if not defined SW_LLVM_REF set SW_LLVM_REF swift/swift-5.2-branch
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF swift-5.2-branch
-  if not defined SW_SWIFT_REF set SW_SWIFT_REF swift-5.2-branch
+  if not defined SW_LLVM_REF set SW_LLVM_REF swift-5.2.5-RELEASE
+  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF swift-5.2.5-RELEASE
+  if not defined SW_SWIFT_REF set SW_SWIFT_REF swift-5.2.5-RELEASE
 
-  call scripts\tools\set-env.cmd SW_FOUNDATION_REF swift-5.2-branch
-  call scripts\tools\set-env.cmd SW_XCTEST_REF swift-5.2-branch
+  call scripts\tools\set-env.cmd SW_FOUNDATION_REF swift-5.2.5-RELEASE
+  call scripts\tools\set-env.cmd SW_XCTEST_REF swift-5.2.5-RELEASE
 ) else if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
   if not defined SW_LLVM_REF call scripts\tools\set-env.cmd SW_LLVM_REF swift/release/5.3
   if not defined SW_DISPATCH_REF call scripts\tools\set-env.cmd SW_DISPATCH_REF release/5.3
