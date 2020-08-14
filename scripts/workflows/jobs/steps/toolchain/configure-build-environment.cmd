@@ -4,10 +4,10 @@ call scripts\tools\set-env.cmd SW_DISPATCH_REPO apple/swift-corelibs-libdispatch
 call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/%SW_DISPATCH_REPO%.git
 
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
-  call scripts\tools\set-env.cmd SW_LLVM_REF swift/swift-5.2-branch
-  call scripts\tools\set-env.cmd SW_CMARK_REF swift-5.2-branch
-  call scripts\tools\set-env.cmd SW_DISPATCH_REF swift-5.2-branch
-  call scripts\tools\set-env.cmd SW_SWIFT_REF swift-5.2-branch
+  call scripts\tools\set-env.cmd SW_LLVM_REF swift-5.2.5-RELEASE
+  call scripts\tools\set-env.cmd SW_CMARK_REF swift-5.2.5-RELEASE
+  call scripts\tools\set-env.cmd SW_DISPATCH_REF swift-5.2.5-RELEASE
+  call scripts\tools\set-env.cmd SW_SWIFT_REF swift-5.2.5-RELEASE
 ) else if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
   call scripts\tools\set-env.cmd SW_LLVM_REF swift/release/5.3
   call scripts\tools\set-env.cmd SW_CMARK_REF release/5.3
