@@ -254,6 +254,10 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
 
+      - name: Patch Swift
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
