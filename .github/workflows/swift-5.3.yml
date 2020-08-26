@@ -201,7 +201,7 @@ jobs:
             enable-swift-test: NO
 
     env:
-      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
+      SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
       SW_SWIFT_TEST_ENABLED: ${{ matrix.enable-swift-test }}
       SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
 

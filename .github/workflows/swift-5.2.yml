@@ -199,7 +199,7 @@ jobs:
             enable-no-objc-patch: YES
 
     env:
-      SW_EXPERIMENTAL_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
+      SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
 
     steps:
       - name: Checkout 

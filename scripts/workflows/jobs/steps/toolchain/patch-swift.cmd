@@ -1,4 +1,4 @@
-if not [%SW_EXPERIMENTAL_OBJC_PATCH_ENABLED%]==[YES] (
+if not [%SW_OBJC_PATCH_ENABLED%]==[YES] (
     echo Skipping Swift patches
     goto :eof
 )
