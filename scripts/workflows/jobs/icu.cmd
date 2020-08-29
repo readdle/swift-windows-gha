@@ -1,6 +1,14 @@
 setlocal
 
 set SW_LOG_ICU_INFO=%SW_LOG_INFO% --scope icu
+set SW_LOG_ICU_WARNING=%SW_LOG_WARNING% --scope icu
+
+if "%SW_SKIP_ICU%"=="YES" (
+  %SW_LOG_ICU_WARNING% --message="Skipping job"
+  goto :eof
+)
+%SW_LOG_ICU_INFO% --message="Starting job"
+
 set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\icu
 
 call %SW_STEPS_DIR%\configure-build-environment.cmd^

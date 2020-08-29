@@ -121,6 +121,7 @@ set SW_LOG_MAGENTA=%SW_ESC%[35m
 set SW_LOG=call "%~f0"
 set SW_LOG_INFO=%SW_LOG% --level info
 set SW_LOG_ERROR=%SW_LOG% --level error
+set SW_LOG_WARNING=%SW_LOG% --level warning
 
 set SW_LOG_INITIALIZED=Y
 

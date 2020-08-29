@@ -1,4 +1,13 @@
-setlocal
+setlocal enabledelayedexpansion
+
+set SW_LOG_SDK_INFO=%SW_LOG_INFO% --scope sdk
+set SW_LOG_SDK_WARNING=%SW_LOG_WARNING% --scope sdk
+
+if "%SW_SKIP_SDK%"=="YES" (
+  %SW_LOG_SDK_WARNING% --message="Skipping job"
+  goto :eof
+)
+%SW_LOG_SDK_INFO% --message="Starting job"
 
 set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\sdk
 

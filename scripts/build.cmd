@@ -5,6 +5,7 @@ setlocal enabledelayedexpansion
 call "%~f0\..\tools\log.cmd" > nul
 
 set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
+set SW_LOG_BUILD_WARNING=%SW_LOG_WARNING% --scope build
 set SW_LOG_BUILD_ERROR=%SW_LOG_ERROR% --scope build
 
 set SW_CONFIG_FILE=config.cmd
@@ -42,6 +43,13 @@ set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 %SW_LOG_BUILD_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO%
+if "%SW_SKIP_ICU%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="ICU" )
+if "%SW_SKIP_TOOLCHAIN%"=="YES" ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="Toolchain" )
+if "%SW_SKIP_ZLIB%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="zlib" )
+if "%SW_SKIP_XML2%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="libxml2" )
+if "%SW_SKIP_CURL%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="curl" )
+if "%SW_SKIP_SDK%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="SDK" )
 %SW_LOG_BUILD_INFO%
 
 set SW_IGNORE_TEST_FAILURES=1
