@@ -2,7 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-call "%~f0\..\tools\log.cmd" > nul
+call "%~f0\..\tools\init-log.cmd"
 
 set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
 set SW_LOG_BUILD_WARNING=%SW_LOG_WARNING% --scope build
