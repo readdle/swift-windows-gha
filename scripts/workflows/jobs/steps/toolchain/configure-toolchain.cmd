@@ -1,9 +1,10 @@
-setlocal
+setlocal enabledelayedexpansion
 
 if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
     set SW_LLDB_OPTIONS=-DLLDB_DISABLE_PYTHON=YES
     set SW_LLVM_OPTIONS=-D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra;cmark;swift;lldb;lld"    
 ) else (
+    set SW_LLVM_OPTIONS=-DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc
     set SW_EXTERNAL_SOURCES_OPTIONS=-D LLVM_EXTERNAL_SWIFT_SOURCE_DIR="%SW_SWIFT_SOURCES_DIR%" -D LLVM_EXTERNAL_CMARK_SOURCE_DIR="%SW_CMARK_SOURCES_DIR%"
 )
 
