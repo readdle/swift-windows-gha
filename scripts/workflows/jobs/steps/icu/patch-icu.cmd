@@ -1,5 +1,7 @@
 setlocal enabledelayedexpansion
 
+goto :eof
+
 set SW_PUSHDIR=%CD%
 
 cd /d %SW_ICU_SOURCES_DIR%^
