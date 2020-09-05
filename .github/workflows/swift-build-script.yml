@@ -3,7 +3,6 @@ on:
   push:
     paths-ignore: 
       - .github/workflows/swift-master.yml
-      - .github/workflows/swift-5.2.yml
       - .github/workflows/swift-5.3.yml
       - LICENSE
       - README.md
@@ -22,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [master, 5.3, 5.2]
+        branch: [master, 5.3]
         patch: [clean, no-objc]
         include:
           - patch: clean

@@ -41,8 +41,6 @@ if /i "%SW_SWIFT_BRANCH_SPEC%"=="master" (
   set SW_BRANCH_NUM=1
 ) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
   set SW_BRANCH_NUM=2
-) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.2" (
-  set SW_BRANCH_NUM=3
 )
 
 if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
@@ -66,11 +64,7 @@ call :sw_ask_foundation_test
 call :sw_ask_config_file
 
 :configure
-if "%SW_SWIFT_BRANCH_SPEC%"=="5.2" (
-  set SW_ICU_VERSION=64
-) else (
-  set SW_ICU_VERSION=67
-)
+set SW_ICU_VERSION=67
 
 set SW_CURL_VERSION=development
 set SW_XML2_VERSION=development
@@ -216,7 +210,7 @@ set VALUE=!%PARAMETER%!
 if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
-  if /i not "%VALUE%"=="master" if /i not "%VALUE%"=="5.3" if /i not "%VALUE%"=="5.2" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="master" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
   if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
@@ -360,7 +354,6 @@ set SW_ORIGINAL_VALUE=%SW_BRANCH_NUM%
 echo Available branches:
 echo.  1. master
 echo.  2. 5.3
-echo.  3. 5.2
 
 set /p SW_BRANCH_NUM="Enter branch number to build (%SW_BRANCH_NUM%): "
 
@@ -368,8 +361,6 @@ if "%SW_BRANCH_NUM%"=="1" (
   set SW_SWIFT_BRANCH_SPEC=master
 ) else if "%SW_BRANCH_NUM%"=="2" (
   set SW_SWIFT_BRANCH_SPEC=5.3
-) else if "%SW_BRANCH_NUM%"=="3" (
-  set SW_SWIFT_BRANCH_SPEC=5.2
 ) else (
   set SW_BRANCH_NUM=%SW_ORIGINAL_VALUE%
   goto sw_ask_branch_input

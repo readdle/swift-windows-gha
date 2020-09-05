@@ -5,14 +5,7 @@ call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/%SW_DISPA
 call scripts\tools\set-env.cmd SW_FOUNDATION_REPO apple/swift-corelibs-foundation
 call scripts\tools\set-env.cmd SW_FOUNDATION_ORIGIN_URL git://github.com/%SW_FOUNDATION_REPO%.git
 
-if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
-  if not defined SW_LLVM_REF set SW_LLVM_REF swift-5.2.5-RELEASE
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF swift-5.2.5-RELEASE
-  if not defined SW_SWIFT_REF set SW_SWIFT_REF swift-5.2.5-RELEASE
-
-  call scripts\tools\set-env.cmd SW_FOUNDATION_REF swift-5.2.5-RELEASE
-  call scripts\tools\set-env.cmd SW_XCTEST_REF swift-5.2.5-RELEASE
-) else if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
+if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
   if not defined SW_LLVM_REF call scripts\tools\set-env.cmd SW_LLVM_REF swift/release/5.3
   if not defined SW_DISPATCH_REF call scripts\tools\set-env.cmd SW_DISPATCH_REF release/5.3
   if not defined SW_SWIFT_REF call scripts\tools\set-env.cmd SW_SWIFT_REF release/5.3
@@ -40,11 +33,7 @@ if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
 
 call scripts\tools\set-env.cmd SW_LLVM_PROJECT_SOURCES_DIR %SW_SOURCES_DIR%\llvm-project
 call scripts\tools\set-env.cmd SW_LLVM_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\llvm
-if [%SW_SWIFT_BRANCH_SPEC%]==[5.2] (
-  call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_LLVM_PROJECT_SOURCES_DIR%\swift
-) else (
-  call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_SOURCES_DIR%\swift
-)
+call scripts\tools\set-env.cmd SW_SWIFT_SOURCES_DIR %SW_SOURCES_DIR%\swift
 call scripts\tools\set-env.cmd SW_DISPATCH_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-libdispatch
 call scripts\tools\set-env.cmd SW_FOUNDATION_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-foundation
 call scripts\tools\set-env.cmd SW_XCTEST_SOURCES_DIR %SW_SOURCES_DIR%\swift-corelibs-xctest
