@@ -22,6 +22,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-llvm-build-tools.cmd^
  && call %SW_STEPS_DIR%\build-clang-build-tools.cmd^
  && call %SW_STEPS_DIR%\build-lldb-build-tools.cmd^
+ && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
  && call %SW_STEPS_DIR%\configure-sdk-modules.cmd^
  && call %SW_STEPS_DIR%\configure-toolchain.cmd^
  && call %SW_STEPS_DIR%\build-toolchain.cmd^

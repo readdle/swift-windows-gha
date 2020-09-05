@@ -1,7 +1,11 @@
 setlocal enabledelayedexpansion
 
-if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" (
     set SW_LLVM_PDB=-D LLVM_ENABLE_PDB=ON
+)
+
+if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (
+    set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
 )
 
 cmake^
@@ -18,7 +22,7 @@ cmake^
  -D SWIFT_WINDOWS_x86_64_ICU_UC=%SW_ICU_PATH%\usr\lib\icuuc%SW_ICU_VERSION%.lib^
  -D SWIFT_WINDOWS_x86_64_ICU_I18N_INCLUDE=%SW_ICU_PATH%\usr\include^
  -D SWIFT_WINDOWS_x86_64_ICU_I18N=%SW_ICU_PATH%\usr\lib\icuin%SW_ICU_VERSION%.lib^
- -D PYTHON_EXECUTABLE=%pythonLocation%\python.exe^
+ %SW_PYTHON_OPTIONS%^
  %SW_LLVM_PDB%
 
 endlocal

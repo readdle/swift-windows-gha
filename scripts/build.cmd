@@ -13,15 +13,13 @@ set SW_CONFIG_FILE=config.cmd
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
 
-call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
-
-%SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
-call %SW_CONFIG_FILE%
-
 set "SW_WORKSPACE=%~dp0\.."
 call :sw_normalize_path SW_WORKSPACE %SW_WORKSPACE%
 set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
 set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
+
+%SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
+call %SW_CONFIG_FILE%
 
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="Workspace:               " --message="%SW_WORKSPACE%"
@@ -51,6 +49,8 @@ if "%SW_SKIP_XML2%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:
 if "%SW_SKIP_CURL%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="curl" )
 if "%SW_SKIP_SDK%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="SDK" )
 %SW_LOG_BUILD_INFO%
+
+call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
 set SW_IGNORE_TEST_FAILURES=1
 

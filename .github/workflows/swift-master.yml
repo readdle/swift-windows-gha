@@ -230,11 +230,6 @@ jobs:
         continue-on-error: true
         run: scripts\tools\disable-windefend.cmd
 
-      - name: Use Python 2.7.x
-        uses: actions/setup-python@v1.1.1
-        with:
-          python-version: 2.7.x
-
       - name: Configure Build Environment
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
@@ -311,6 +306,10 @@ jobs:
       - name: Build LLDB Build Tools
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
+
+      - name: Build Diagnostics Serialization Tools
+        shell: cmd
+        run: scripts\workflows\jobs\steps\toolchain\build-swift-serialize-diagnostics.cmd
 
       - name: Configure SDK Modules
         shell: cmd
@@ -463,11 +462,6 @@ jobs:
         with:
           name: toolchain-clean
           path: '${{ env.SW_ARTIFACTS_DIR }}'
-
-      - name: Use Python 2.7.x
-        uses: actions/setup-python@v1.1.1
-        with:
-          python-version: 2.7.x
 
       - name: Configure SDK Modules
         shell: cmd
