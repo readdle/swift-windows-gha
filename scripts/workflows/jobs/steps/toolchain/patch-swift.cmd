@@ -17,7 +17,7 @@ set SW_PUSHDIR=%CD%
 
 cd /d %SW_SWIFT_SOURCES_DIR%^
  && git config user.name 'builder'^
- && git config user.email 'builder@lxbndr.org'^
+ && git config user.email 'swift-builder@readdle.com'^
  && %SW_PATCH_DISABLE_OBJC%
 
 set SW_ERROR=%ERRORLEVEL%

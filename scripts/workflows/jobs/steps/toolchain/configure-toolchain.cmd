@@ -10,7 +10,7 @@ cmake^
  -B %SW_TOOLCHAIN_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\toolchain-%SW_SWIFT_BRANCH_SPEC%.cmake^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
- -C %SW_WORKSPACE%\cmake\caches\org.lxbndr.dt.cmake^
+ -C %SW_WORKSPACE%\cmake\caches\com.readdle.dt.cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_INSTALL_PREFIX=%SW_TOOLCHAIN_INSTALL_DIR%^
  -D LLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-windows-msvc^

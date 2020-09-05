@@ -1,5 +1,5 @@
 # Swift Toolchain and SDK Build Tool
-[![Build Status](https://github.com/lxbndr/swift-windows-gha/workflows/swift-master/badge.svg)](https://github.com/lxbndr/swift-windows-gha/actions?query=workflow%3Aswift-master) [![Build Status](https://github.com/lxbndr/swift-windows-gha/workflows/swift-5.3/badge.svg)](https://github.com/lxbndr/swift-windows-gha/actions?query=workflow%3Aswift-5.3) [![Build Status](https://github.com/lxbndr/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/lxbndr/swift-windows-gha/actionshttps://github.com/lxbndr/swift-windows-gha/actions?query=workflow%3Aswift-build-script)
+[![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-master/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-master) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-5.3/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-5.3) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/readdle/swift-windows-gha/actionshttps://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-build-script)
 
 Based on https://github.com/compnerd/swift-build.
 
