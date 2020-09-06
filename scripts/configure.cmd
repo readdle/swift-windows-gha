@@ -65,10 +65,10 @@ call :sw_ask_config_file
 
 :configure
 set SW_ICU_VERSION=67
-
 set SW_CURL_VERSION=development
 set SW_XML2_VERSION=development
 set SW_ZLIB_VERSION=1.2.11
+set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 
 call :sw_normalize_parameters_for_saving
 
@@ -78,6 +78,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Source files directory:  " --message="%SW_SOURCES_DIR%"
 %SW_LOG_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
 %SW_LOG_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
+%SW_LOG_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
 %SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
@@ -113,6 +114,7 @@ echo set SW_SWIFT_SDK_SPEC=%SW_SWIFT_SDK_SPEC%>>%SW_CONFIG_FILE%
 echo set SW_SOURCES_DIR=%SW_SOURCES_DIR%>>%SW_CONFIG_FILE%
 echo set SW_BUILD_DIR=%SW_BUILD_DIR%>>%SW_CONFIG_FILE%
 echo set SW_INSTALL_DIR=%SW_INSTALL_DIR%>>%SW_CONFIG_FILE%
+echo set SW_ARTIFACTS_DIR=%SW_ARTIFACTS_DIR%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_CURL_VERSION=%SW_CURL_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_ICU_VERSION=%SW_ICU_VERSION%>>%SW_CONFIG_FILE%

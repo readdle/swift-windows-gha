@@ -16,7 +16,6 @@ if errorlevel 1 goto :eof
 set "SW_WORKSPACE=%~dp0\.."
 call :sw_normalize_path SW_WORKSPACE %SW_WORKSPACE%
 set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
-set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 
 %SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
 call %SW_CONFIG_FILE%
@@ -29,6 +28,7 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Source files directory:  " --message="%SW_SOURCES_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
+%SW_LOG_BUILD_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
