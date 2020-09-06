@@ -437,6 +437,10 @@ jobs:
         shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
+      - name: Patch StdLib
+        shell: cmd
+        run: scripts\workflows\jobs\steps\sdk\patch-stdlib.cmd
+
       - name: Download ICU
         uses: actions/download-artifact@v1
         with:
