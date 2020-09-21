@@ -25,12 +25,15 @@ jobs:
   icu:
 
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
 
       - name: Checkout ICU
@@ -42,19 +45,15 @@ jobs:
           path: '${{ env.SW_ICU_SOURCES_DIR }}'
 
       - name: Patch ICU
-        shell: cmd
         run: scripts\workflows\jobs\steps\icu\patch-icu.cmd
 
       - name: Configure ICU
-        shell: cmd
         run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
 
       - name: Build ICU
-        shell: cmd
         run: scripts\workflows\jobs\steps\icu\build-icu.cmd
 
       - name: Install ICU
-        shell: cmd
         run: scripts\workflows\jobs\steps\icu\install-icu.cmd
 
       - name: Upload Artifact
@@ -67,13 +66,15 @@ jobs:
 
     runs-on: windows-latest
     needs: [zlib]
+    defaults:
+      run:
+        shell: cmd
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
 
       - name: Checkout curl
@@ -91,15 +92,12 @@ jobs:
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Configure curl
-        shell: cmd
         run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
 
       - name: Build curl
-        shell: cmd
         run: scripts\workflows\jobs\steps\curl\build-curl.cmd
 
       - name: Install curl
-        shell: cmd
         run: scripts\workflows\jobs\steps\curl\install-curl.cmd
 
       - name: Upload Artifact
@@ -111,13 +109,15 @@ jobs:
   libxml2:
 
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
 
       - name: Checkout libxml2
@@ -129,15 +129,12 @@ jobs:
           path: '${{ env.SW_XML2_SOURCES_DIR }}'
 
       - name: Configure libxml2
-        shell: cmd
         run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
 
       - name: Build libxml2
-        shell: cmd
         run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
 
       - name: Install libxml2
-        shell: cmd
         run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
 
       - name: Upload Artifact
@@ -149,12 +146,15 @@ jobs:
   zlib:
 
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
 
       - name: Checkout zlib
@@ -166,15 +166,12 @@ jobs:
           path: '${{ env.SW_ZLIB_SOURCES_DIR }}'
 
       - name: Configure zlib
-        shell: cmd
         run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
 
       - name: Build zlib
-        shell: cmd
         run: scripts\workflows\jobs\steps\zlib\build-zlib.cmd
 
       - name: Install zlib
-        shell: cmd
         run: scripts\workflows\jobs\steps\zlib\install-zlib.cmd
 
       - name: Upload Artifact
@@ -199,6 +196,10 @@ jobs:
             enable-no-objc-patch: YES
             enable-swift-test: NO
 
+    defaults:
+      run:
+        shell: cmd
+
     env:
       SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
       SW_SWIFT_TEST_ENABLED: ${{ matrix.enable-swift-test }}
@@ -214,11 +215,9 @@ jobs:
           python-version: 2.7.x
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
       - name: Configure Git
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
 
       - name: Checkout LLVM
@@ -254,7 +253,6 @@ jobs:
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
 
       - name: Patch Swift
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
 
       - name: Download ICU
@@ -264,7 +262,6 @@ jobs:
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Collect Checkout Info
-        shell: cmd
         run: |
           mkdir %SW_WORKSPACE%\checkout
           git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\llvm-project.txt
@@ -279,35 +276,27 @@ jobs:
           path: 'checkout'
 
       - name: Configure LLVM Build Tools
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
 
       - name: Build LLVM Build Tools
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\build-llvm-build-tools.cmd
 
       - name: Build Clang Build Tools
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\build-clang-build-tools.cmd
 
       - name: Build LLDB Build Tools
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
 
       - name: Configure SDK Modules
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
 
       - name: Configure Toolchain
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-toolchain.cmd
 
       - name: Build Toolchain
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\build-toolchain.cmd
 
       - name: Install Toolchain
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
 
       - name: Upload Artifact
@@ -317,12 +306,10 @@ jobs:
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-test-environment.cmd
 
       - name: Check Swift
         continue-on-error: true
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
 
   sdk:
@@ -339,6 +326,10 @@ jobs:
           - spec: readdle
             stdlib-patch-enabled: YES
 
+    defaults:
+      run:
+        shell: cmd
+
     env:
       SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
       SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
@@ -354,7 +345,6 @@ jobs:
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
 
       - name: Read Checkout Info
-        shell: cmd
         run: |
           set /p SW_LLVM_REF=< %SW_ARTIFACTS_DIR%\checkout\llvm-project.txt
           set /p SW_SWIFT_REF=< %SW_ARTIFACTS_DIR%\checkout\swift.txt
@@ -369,11 +359,9 @@ jobs:
           echo ::set-env name=SW_DISPATCH_REF::%SW_DISPATCH_REF%
 
       - name: Configure Build Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Configure Git
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
 
       - name: Checkout LLVM
@@ -417,11 +405,9 @@ jobs:
           path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
 
       - name: Patch LLVM
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
       - name: Patch StdLib
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\patch-stdlib.cmd
 
       - name: Download ICU
@@ -456,59 +442,45 @@ jobs:
           python-version: 2.7.x
 
       - name: Configure SDK Modules
-        shell: cmd
         run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
 
       - name: Configure LLVM
-        shell: cmd
         run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
       - name: Configure Swift Standard Library
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-swift-stdlib.cmd
 
       - name: Build Swift Standard Library
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-swift-stdlib.cmd
 
       - name: Configure libdispatch
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
 
       - name: Build libdispatch
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Configure Foundation
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-foundation.cmd
 
       - name: Build Foundation
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Configure XCTest
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-xctest.cmd
 
       - name: Build XCTest
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
 
       - name: Install Swift Standard Library
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\install-swift-stdlib.cmd
 
       - name: Install Foundation
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd
 
       - name: Install XCTest
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
 
       - name: Install libdispatch
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
       - name: Upload Artifact
@@ -518,36 +490,28 @@ jobs:
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-libdispatch-tests.cmd
 
       - name: Build libdispatch Tests
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
       - name: Test libdispatch
-        shell: cmd
         continue-on-error: true
         run: scripts\workflows\jobs\steps\sdk\test-libdispatch.cmd
 
       - name: Configure Foundation Test Environment
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-foundation-test-environment.cmd
 
       - name: Configure Foundation Tests
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\configure-foundation-tests.cmd
 
       - name: Build Foundation Tests
-        shell: cmd
         run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
       - name: Test Foundation
-        shell: cmd
         continue-on-error: true
         run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
 
       - name: Test Foundation (XCTest)
-        shell: cmd
         continue-on-error: true
         run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
