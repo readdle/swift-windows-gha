@@ -1,7 +1,9 @@
 # Swift Toolchain and SDK Build Tool
 [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-master/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-master) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-5.3/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-5.3) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/readdle/swift-windows-gha/actionshttps://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-build-script)
 
-Based on https://github.com/compnerd/swift-build.
+![Swift on Windows](doc/img/swift-windows-cover.png)
+### Project Goals
+Swift is a large project consisting of many parts. When it comes to changing or investigate something located in, for example, Swift Foundation library, it is crucial to have quick and robust way to rebuild only that part.
 
 The goals of this project are to:
 - Provide a tool to build and experiment with Swift (Toolchain and SDK) on Windows in convenient way on local developer machine
