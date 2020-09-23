@@ -24,7 +24,17 @@ The goals of this project are to:
 
 ### Getting Started
 1. Run **elevated Command Prompt**. Elevation is required to install clang modules into Visual Studio directory. If you somehow omit this step (e.g. by commenting corresponding script line), elevation is not needed, but make sure you have modues installed already (either manually, or by previous build tool run).
-2. Clone this repository (e.g. to `C:\swift-windows-gha`) and CD into it.
+2. Clone this repository (e.g. to `C:\swift-windows-gha`) and CD into it. Note: don't put it deeply into directory structure, or you will probably get build errors due to file path length restrictions.
 3. Run `scripts\configure.cmd`.
 4. Answer to all questions with defaults by pressing Enter.
 5. Run `scripts\build.cmd`.
+
+Just toolchain alone contains more than 5000 sources to build, so be patient. Build takes about 40 minutes on 3.2GHz 8-core CPU, more than a hour on VM under MacBook Pro 2017, and about 6 hours on GitHub Actions cloud agent.
+
+In the end you will get `Library` folder at the default output path, which contains all built products as well as some intermediates.
+
+### Coming Soon...
+- Build process details
+- Build configuration options
+- How-To: Working on SDK
+- Troubleshooting
