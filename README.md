@@ -3,6 +3,11 @@
 
 Based on https://github.com/compnerd/swift-build.
 
+The goals of this project are to:
+- Provide a tool to build and experiment with Swift (Toolchain and SDK) on Windows in convenient way on local developer machine
+- Provide binary snapshots of dev and release versions of vanilla Swift, as well as customized version by Readdle
+- Provide convenient code/script blocks to integrate Swift build process in arbitrary CI/CD flow
+
 ### Requirements
 - **_Windows 10 RedStone 4 (10.0.17763.0)_** or newer
 - **_Developer Mode_**. Enable in _Settings > Update & Security > For developers_. Required to create symlinks without elevation.
@@ -21,7 +26,3 @@ Based on https://github.com/compnerd/swift-build.
 3. Run `scripts\configure.cmd`.
 4. Answer to all questions with defaults by pressing Enter.
 5. Run `scripts\build.cmd`.
-
-### TODO
-1. Add detailed description for configuration options.
-2. Add Hello World example.
