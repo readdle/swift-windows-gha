@@ -181,27 +181,49 @@ if "%NEXT_ARG%"=="SW_SOURCES_DIR"                       goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST"         goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH_TEST"            goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION_TEST"          goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_ICU"                          goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN"                    goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST"         goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_ZLIB"                         goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_XML2"                         goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_CURL"                         goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK"                          goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_CHECKOUT"                 goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_STDLIB"                   goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH"                 goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION"               goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_XCTEST"                   goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH_TEST"            goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION_TEST"          goto sw_parse_arguments_accept
 
 if not defined CURRENT_ARG goto sw_parse_argumens_end
 
-if "%CURRENT_ARG%"=="--interactive" (                   set NEXT_ARG=SW_INTERACTIVE
-) else if "%CURRENT_ARG%"=="--branch" (                 set NEXT_ARG=SW_SWIFT_BRANCH_SPEC
-) else if "%CURRENT_ARG%"=="--sdk" (                    set NEXT_ARG=SW_SWIFT_SDK_SPEC
-) else if "%CURRENT_ARG%"=="--sources-dir" (            set NEXT_ARG=SW_SOURCES_DIR
-) else if "%CURRENT_ARG%"=="--build-dir" (              set NEXT_ARG=SW_BUILD_DIR
-) else if "%CURRENT_ARG%"=="--install-dir" (            set NEXT_ARG=SW_INSTALL_DIR
-) else if "%CURRENT_ARG%"=="--config" (                 set NEXT_ARG=SW_CONFIG_FILE
-) else if "%CURRENT_ARG%"=="--skip-swift-test" (        set NEXT_ARG=SW_SKIP_TOOLCHAIN_SWIFT_TEST
-) else if "%CURRENT_ARG%"=="--skip-dispatch-test" (     set NEXT_ARG=SW_SKIP_SDK_DISPATCH_TEST
-) else if "%CURRENT_ARG%"=="--skip-foundation-test" (   set NEXT_ARG=SW_SKIP_SDK_FOUNDATION_TEST
-) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (   set NEXT_ARG=SW_OBJC_PATCH_ENABLED
-) else if "%CURRENT_ARG%"=="--enable-print-patch" (     set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
-) else if "%CURRENT_ARG%"=="--help" (                   goto help
+if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTERACTIVE
+) else if "%CURRENT_ARG%"=="--branch" (                    set NEXT_ARG=SW_SWIFT_BRANCH_SPEC
+) else if "%CURRENT_ARG%"=="--sdk" (                       set NEXT_ARG=SW_SWIFT_SDK_SPEC
+) else if "%CURRENT_ARG%"=="--sources-dir" (               set NEXT_ARG=SW_SOURCES_DIR
+) else if "%CURRENT_ARG%"=="--build-dir" (                 set NEXT_ARG=SW_BUILD_DIR
+) else if "%CURRENT_ARG%"=="--install-dir" (               set NEXT_ARG=SW_INSTALL_DIR
+) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
+) else if "%CURRENT_ARG%"=="--skip-icu" (                  set NEXT_ARG=SW_SKIP_ICU
+) else if "%CURRENT_ARG%"=="--skip-toolchain" (            set NEXT_ARG=SW_SKIP_TOOLCHAIN
+) else if "%CURRENT_ARG%"=="--skip-toolchain-swift-test" ( set NEXT_ARG=SW_SKIP_TOOLCHAIN_SWIFT_TEST
+) else if "%CURRENT_ARG%"=="--skip-zlib" (                 set NEXT_ARG=SW_SKIP_ZLIB
+) else if "%CURRENT_ARG%"=="--skip-xml2" (                 set NEXT_ARG=SW_SKIP_XML2
+) else if "%CURRENT_ARG%"=="--skip-curl" (                 set NEXT_ARG=SW_SKIP_CURL
+) else if "%CURRENT_ARG%"=="--skip-sdk" (                  set NEXT_ARG=SW_SKIP_SDK
+) else if "%CURRENT_ARG%"=="--skip-sdk-checkout" (         set NEXT_ARG=SW_SKIP_SDK_CHECKOUT
+) else if "%CURRENT_ARG%"=="--skip-sdk-stdlib" (           set NEXT_ARG=SW_SKIP_SDK_STDLIB
+) else if "%CURRENT_ARG%"=="--skip-sdk-dispatch" (         set NEXT_ARG=SW_SKIP_SDK_DISPATCH
+) else if "%CURRENT_ARG%"=="--skip-sdk-foundation" (       set NEXT_ARG=SW_SKIP_SDK_FOUNDATION
+) else if "%CURRENT_ARG%"=="--skip-sdk-xctest" (           set NEXT_ARG=SW_SKIP_SDK_XCTEST
+) else if "%CURRENT_ARG%"=="--skip-sdk-dispatch-test" (    set NEXT_ARG=SW_SKIP_SDK_DISPATCH_TEST
+) else if "%CURRENT_ARG%"=="--skip-sdk-foundation-test" (  set NEXT_ARG=SW_SKIP_SDK_FOUNDATION_TEST
+) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
+) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
+) else if "%CURRENT_ARG%"=="--help" (                      goto help
 ) else (
   %SW_LOG_ERROR% --message="Unknown argument: %CURRENT_ARG%"
   exit /b 1
@@ -224,7 +246,29 @@ exit /b
 rem ###########################################################################
 :sw_validate_parameters
 setlocal enabledelayedexpansion
-for %%G in (SW_INTERACTIVE SW_SWIFT_BRANCH_SPEC SW_SWIFT_SDK_SPEC SW_SOURCES_DIR SW_BUILD_DIR SW_INSTALL_DIR SW_CONFIG_FILE SW_SKIP_TOOLCHAIN_SWIFT_TEST SW_SKIP_SDK_DISPATCH_TEST SW_SKIP_SDK_FOUNDATION_TEST SW_OBJC_PATCH_ENABLED SW_STDLIB_PATCH_ENABLED) do (
+for %%G in (SW_INTERACTIVE^
+ SW_SWIFT_BRANCH_SPEC^
+ SW_SWIFT_SDK_SPEC^
+ SW_SOURCES_DIR^
+ SW_BUILD_DIR^
+ SW_INSTALL_DIR^
+ SW_CONFIG_FILE^
+ SW_OBJC_PATCH_ENABLED^
+ SW_STDLIB_PATCH_ENABLED^
+ SW_SKIP_ICU^
+ SW_SKIP_TOOLCHAIN^
+ SW_SKIP_TOOLCHAIN_SWIFT_TEST^
+ SW_SKIP_ZLIB^
+ SW_SKIP_XML2^
+ SW_SKIP_CURL^
+ SW_SKIP_SDK^
+ SW_SKIP_SDK_CHECKOUT^
+ SW_SKIP_SDK_STDLIB^
+ SW_SKIP_SDK_DISPATCH^
+ SW_SKIP_SDK_FOUNDATION^
+ SW_SKIP_SDK_XCTEST^
+ SW_SKIP_SDK_DISPATCH_TEST^
+ SW_SKIP_SDK_FOUNDATION_TEST) do (
   call :sw_validate_parameter %%G
   if errorlevel 1 goto sw_validate_parameters_fail
 )
@@ -257,27 +301,45 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_CONFIG_FILE" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
-) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
-    goto :sw_validate_parameter_fail
-  )
-) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH_TEST" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
-    goto :sw_validate_parameter_fail
-  )
-) else if "%PARAMETER%"=="SW_SKIP_SDK_FOUNDATION_TEST" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
-    goto :sw_validate_parameter_fail
-  )
 ) else if "%PARAMETER%"=="SW_OBJC_PATCH_ENABLED" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
-    goto :sw_validate_parameter_fail
-  )
+  goto :sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_STDLIB_PATCH_ENABLED" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
-    goto :sw_validate_parameter_fail
-  )
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_ICU" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_ZLIB" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_XML2" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_CURL" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_CHECKOUT" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_STDLIB" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_FOUNDATION" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_XCTEST" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH_TEST" (
+  goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_SDK_FOUNDATION_TEST" (
+  goto :sw_validate_parameter_bool
 )
+endlocal
+exit /b
+
+:sw_validate_parameter_bool
+call :sw_validate_bool_value %VALUE%
+if errorlevel 1 goto :sw_validate_parameter_fail
 endlocal
 exit /b
 
@@ -399,6 +461,17 @@ set PARAMETER=%1
 set VALUE=!%PARAMETER%!
 
 if not "%VALUE%"=="Y" if not "%VALUE%"=="N" exit /b 1
+
+endlocal
+exit /b
+
+
+
+rem ###########################################################################
+:sw_validate_bool_value <value>
+setlocal enabledelayedexpansion
+
+if not "%1"=="YES" if not "%1"=="NO" exit /b 1
 
 endlocal
 exit /b
