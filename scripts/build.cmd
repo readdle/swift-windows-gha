@@ -2,11 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-set "SW_WORKSPACE=%~dp0\.."
-call :sw_normalize_path SW_WORKSPACE "%SW_WORKSPACE%"
-
-call "%SW_WORKSPACE%\scripts\tools\init-log.cmd"
-set "SW_PRE_STEP=call ""%SW_WORKSPACE%\scripts\tools\pre-step.cmd"""
+call %~dp0\tools\init-build.cmd
 
 set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
 set SW_LOG_BUILD_WARNING=%SW_LOG_WARNING% --scope build
@@ -16,10 +12,6 @@ set SW_CONFIG_FILE=config.cmd
 
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
-
-set "SW_WORKSPACE=%~dp0\.."
-call :sw_normalize_path SW_WORKSPACE %SW_WORKSPACE%
-set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
 
 %SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
 call %SW_CONFIG_FILE%
@@ -58,12 +50,12 @@ call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
 set SW_IGNORE_TEST_FAILURES=1
 
-call %SW_JOBS_DIR%\icu.cmd^
- && call %SW_JOBS_DIR%\toolchain.cmd^
- && call %SW_JOBS_DIR%\zlib.cmd^
- && call %SW_JOBS_DIR%\libxml2.cmd^
- && call %SW_JOBS_DIR%\curl.cmd^
- && call %SW_JOBS_DIR%\sdk.cmd
+call %SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\toolchain.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\zlib.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\curl.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\sdk.cmd
  
 endlocal
 goto :eof
@@ -138,10 +130,3 @@ exit /b
 %SW_LOG_BUILD_ERROR% --message="%PARAMETER% - Invalid value: %VALUE%"
 endlocal
 exit /b 1
-
-
-
-:: ###########################################################################
-:sw_normalize_path <output_var> <path>
-set "%1=%~f2"
-exit /b

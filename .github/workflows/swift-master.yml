@@ -34,12 +34,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
 
       - name: Checkout ICU
         uses: actions/checkout@v2
@@ -79,12 +77,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
 
       - name: Checkout curl
         uses: actions/checkout@v2
@@ -126,12 +122,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
 
       - name: Checkout libxml2
         uses: actions/checkout@v2
@@ -167,12 +161,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
 
       - name: Checkout zlib
         uses: actions/checkout@v2
@@ -222,12 +214,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
       - name: Configure Git
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
@@ -344,10 +334,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
-
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
@@ -369,7 +355,9 @@ jobs:
           echo ::set-env name=SW_DISPATCH_REF::%SW_DISPATCH_REF%
 
       - name: Configure Build Environment
-        run: scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
+        run: |
+          call scripts\tools\init-build.cmd
+          call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Configure Git
         run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
