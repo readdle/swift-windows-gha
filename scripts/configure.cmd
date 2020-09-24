@@ -63,9 +63,7 @@ call :sw_ask_sdk_spec
 call :sw_ask_directories
 call :sw_ask_swift_patch
 call :sw_ask_stdlib_patch
-call :sw_ask_swift_test
-call :sw_ask_dispatch_test
-call :sw_ask_foundation_test
+call :sw_ask_fine_tune
 call :sw_ask_config_file
 
 :configure
@@ -578,6 +576,16 @@ if errorlevel 1 (
   set SW_STDLIB_PATCH_ENABLED=%SW_ORIGINAL_VALUE%
   goto sw_ask_stdlib_patch_input
 )
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_fine_tune
+call :sw_ask_swift_test
+call :sw_ask_dispatch_test
+call :sw_ask_foundation_test
 
 exit /b
 
