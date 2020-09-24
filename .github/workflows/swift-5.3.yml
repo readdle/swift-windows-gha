@@ -191,10 +191,10 @@ jobs:
         include:
           - spec: apple
             enable-no-objc-patch: NO
-            enable-swift-test: YES
+            skip-swift-test: NO
           - spec: readdle
             enable-no-objc-patch: YES
-            enable-swift-test: NO
+            skip-swift-test: YES
 
     defaults:
       run:
@@ -202,7 +202,7 @@ jobs:
 
     env:
       SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
-      SW_SWIFT_TEST_ENABLED: ${{ matrix.enable-swift-test }}
+      SW_SKIP_TOOLCHAIN_SWIFT_TEST: ${{ matrix.skip-swift-test }}
       SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
 
     steps:

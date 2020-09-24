@@ -42,7 +42,7 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO%
-%SW_LOG_BUILD_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO% --prefix="Skip Swift test:         " --message="%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"
 %SW_LOG_BUILD_INFO% --prefix="Skip Dispatch test:      " --message="%SW_SKIP_SDK_DISPATCH_TEST%"
 %SW_LOG_BUILD_INFO% --prefix="Skip Foundation test:    " --message="%SW_SKIP_SDK_FOUNDATION_TEST%"
 %SW_LOG_BUILD_INFO%
