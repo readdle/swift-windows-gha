@@ -35,12 +35,6 @@ set SW_CONFIG_FILE=%CD%\config.cmd
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
 
-call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_TOOLCHAIN_SWIFT_TEST
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH_TEST
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_FOUNDATION_TEST
-call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
-
 if "%SW_INTERACTIVE%"=="NO" (
   %SW_LOG_INFO% --message="Non-interactive mode"
   goto configure
@@ -297,9 +291,20 @@ exit /b 1
 rem ###########################################################################
 :sw_normalize_parameters_for_wizard
 
-call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_ICU
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_TOOLCHAIN
 call :sw_normalize_bool_parameter_for_wizard SW_SKIP_TOOLCHAIN_SWIFT_TEST
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_ZLIB
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_XML2
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_CURL
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_CHECKOUT
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_STDLIB
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_FOUNDATION
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_XCTEST
 call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH_TEST
 call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_FOUNDATION_TEST
 
@@ -310,9 +315,20 @@ exit /b
 rem ###########################################################################
 :sw_normalize_parameters_for_saving
 
-call :sw_normalize_bool_parameter_for_saving SW_STDLIB_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_saving SW_OBJC_PATCH_ENABLED
+call :sw_normalize_bool_parameter_for_saving SW_STDLIB_PATCH_ENABLED
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_ICU
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_TOOLCHAIN
 call :sw_normalize_bool_parameter_for_saving SW_SKIP_TOOLCHAIN_SWIFT_TEST
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_ZLIB
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_XML2
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_CURL
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_CHECKOUT
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_STDLIB
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_DISPATCH
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_FOUNDATION
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_XCTEST
 call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_DISPATCH_TEST
 call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_FOUNDATION_TEST
 
@@ -329,6 +345,7 @@ set VALUE=!%PARAMETER%!
 
 if "%VALUE%"=="YES" set VALUE=Y
 if "%VALUE%"=="NO" set VALUE=N
+if "%VALUE%"=="" set VALUE=N
 
 (
   endlocal
