@@ -56,7 +56,7 @@ jobs:
            --install-dir %SW_WORK_DIR%\i^
            --test-swift=NO^
            --skip-dispatch-test=YES^
-           --test-foundation=NO^
+           --skip-foundation-test=YES^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}
 
       - name: Build

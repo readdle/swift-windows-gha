@@ -44,7 +44,7 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Skip Dispatch test:      " --message="%SW_SKIP_SDK_DISPATCH_TEST%"
-%SW_LOG_BUILD_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
+%SW_LOG_BUILD_INFO% --prefix="Skip Foundation test:    " --message="%SW_SKIP_SDK_FOUNDATION_TEST%"
 %SW_LOG_BUILD_INFO%
 if "%SW_SKIP_ICU%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="ICU" )
 if "%SW_SKIP_TOOLCHAIN%"=="YES" ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="Toolchain" )
