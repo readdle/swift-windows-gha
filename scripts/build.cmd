@@ -2,7 +2,11 @@
 
 setlocal enabledelayedexpansion
 
-call "%~f0\..\tools\init-log.cmd"
+set "SW_WORKSPACE=%~dp0\.."
+call :sw_normalize_path SW_WORKSPACE "%SW_WORKSPACE%"
+
+call "%SW_WORKSPACE%\scripts\tools\init-log.cmd"
+set "SW_PRE_STEP=call ""%SW_WORKSPACE%\scripts\tools\pre-step.cmd"""
 
 set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
 set SW_LOG_BUILD_WARNING=%SW_LOG_WARNING% --scope build

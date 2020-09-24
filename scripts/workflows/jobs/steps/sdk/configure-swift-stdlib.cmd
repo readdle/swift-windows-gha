@@ -1,7 +1,10 @@
 setlocal enabledelayedexpansion
 
-if "%SW_SWIFT_SDK_SPEC%"=="readdle" (
-  set SW_LLVM_PDB=-D LLVM_ENABLE_PDB=ON
+%SW_PRE_STEP% --scope="sdk" --name="Configure StdLib" --flag=SW_SKIP_SDK_STDLIB
+if errorlevel 1 exit /b 0
+
+if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
+    set SW_LLVM_PDB=-D LLVM_ENABLE_PDB=ON
 )
 
 if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (

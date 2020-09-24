@@ -1,3 +1,8 @@
+setlocal enabledelayedexpansion
+
+%SW_PRE_STEP% --scope="sdk" --name="Configure Foundation" --flag=SW_SKIP_SDK_FOUNDATION
+if errorlevel 1 exit /b 0
+
 cmake^
  -G Ninja^
  -S %SW_FOUNDATION_SOURCES_DIR%^
@@ -22,3 +27,5 @@ cmake^
  -D CURL_NO_CURL_CMAKE=YES^
  -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
  -D ENABLE_TESTING=NO
+
+endlocal
