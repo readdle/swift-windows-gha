@@ -17,7 +17,7 @@ set SW_INSTALL_DIR=%CD%\w\i
 set SW_OBJC_PATCH_ENABLED=NO
 set SW_STDLIB_PATCH_ENABLED=NO
 set SW_SWIFT_TEST_ENABLED=YES
-set SW_DISPATCH_TEST_ENABLED=YES
+set SW_SKIP_SDK_DISPATCH_TEST=NO
 set SW_FOUNDATION_TEST_ENABLED=YES
 set SW_CONFIG_FILE=%CD%\config.cmd
 
@@ -26,7 +26,7 @@ if errorlevel 1 goto :eof
 
 call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_SWIFT_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_DISPATCH_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH_TEST
 call :sw_normalize_bool_parameter_for_wizard SW_FOUNDATION_TEST_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
 
@@ -89,7 +89,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
-%SW_LOG_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
+%SW_LOG_INFO% --prefix="Skip Dispatch test:      " --message="%SW_SKIP_SDK_DISPATCH_TEST%"
 %SW_LOG_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
@@ -125,7 +125,7 @@ echo set SW_OBJC_PATCH_ENABLED=%SW_OBJC_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_SWIFT_TEST_ENABLED=%SW_SWIFT_TEST_ENABLED%>>%SW_CONFIG_FILE%
-echo set SW_DISPATCH_TEST_ENABLED=%SW_DISPATCH_TEST_ENABLED%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_DISPATCH_TEST=%SW_SKIP_SDK_DISPATCH_TEST%>>%SW_CONFIG_FILE%
 echo set SW_FOUNDATION_TEST_ENABLED=%SW_FOUNDATION_TEST_ENABLED%>>%SW_CONFIG_FILE%
 
 %SW_LOG_INFO% --message="Configuration saved. Run build.cmd."
@@ -148,7 +148,7 @@ if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SWIFT_TEST_ENABLED"                goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_DISPATCH_TEST_ENABLED"             goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH_TEST"            goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_FOUNDATION_TEST_ENABLED"           goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
@@ -163,7 +163,7 @@ if "%CURRENT_ARG%"=="--interactive" (                   set NEXT_ARG=SW_INTERACT
 ) else if "%CURRENT_ARG%"=="--install-dir" (            set NEXT_ARG=SW_INSTALL_DIR
 ) else if "%CURRENT_ARG%"=="--config" (                 set NEXT_ARG=SW_CONFIG_FILE
 ) else if "%CURRENT_ARG%"=="--test-swift" (             set NEXT_ARG=SW_SWIFT_TEST_ENABLED
-) else if "%CURRENT_ARG%"=="--test-dispatch" (          set NEXT_ARG=SW_DISPATCH_TEST_ENABLED
+) else if "%CURRENT_ARG%"=="--skip-dispatch-test" (          set NEXT_ARG=SW_SKIP_SDK_DISPATCH_TEST
 ) else if "%CURRENT_ARG%"=="--test-foundation" (        set NEXT_ARG=SW_FOUNDATION_TEST_ENABLED
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (   set NEXT_ARG=SW_OBJC_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (     set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
@@ -190,7 +190,7 @@ exit /b
 rem ###########################################################################
 :sw_validate_parameters
 setlocal enabledelayedexpansion
-for %%G in (SW_INTERACTIVE SW_SWIFT_BRANCH_SPEC SW_SWIFT_SDK_SPEC SW_SOURCES_DIR SW_BUILD_DIR SW_INSTALL_DIR SW_CONFIG_FILE SW_SWIFT_TEST_ENABLED SW_DISPATCH_TEST_ENABLED SW_FOUNDATION_TEST_ENABLED SW_OBJC_PATCH_ENABLED SW_STDLIB_PATCH_ENABLED) do (
+for %%G in (SW_INTERACTIVE SW_SWIFT_BRANCH_SPEC SW_SWIFT_SDK_SPEC SW_SOURCES_DIR SW_BUILD_DIR SW_INSTALL_DIR SW_CONFIG_FILE SW_SWIFT_TEST_ENABLED SW_SKIP_SDK_DISPATCH_TEST SW_FOUNDATION_TEST_ENABLED SW_OBJC_PATCH_ENABLED SW_STDLIB_PATCH_ENABLED) do (
   call :sw_validate_parameter %%G
   if errorlevel 1 goto sw_validate_parameters_fail
 )
@@ -227,7 +227,7 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
     goto :sw_validate_parameter_fail
   )
-) else if "%PARAMETER%"=="SW_DISPATCH_TEST_ENABLED" (
+) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH_TEST" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" (
     goto :sw_validate_parameter_fail
   )
@@ -260,7 +260,7 @@ rem ###########################################################################
 call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_wizard SW_SWIFT_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_DISPATCH_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH_TEST
 call :sw_normalize_bool_parameter_for_wizard SW_FOUNDATION_TEST_ENABLED
 
 exit /b
@@ -273,7 +273,7 @@ rem ###########################################################################
 call :sw_normalize_bool_parameter_for_saving SW_STDLIB_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_saving SW_OBJC_PATCH_ENABLED
 call :sw_normalize_bool_parameter_for_saving SW_SWIFT_TEST_ENABLED
-call :sw_normalize_bool_parameter_for_saving SW_DISPATCH_TEST_ENABLED
+call :sw_normalize_bool_parameter_for_saving SW_SKIP_SDK_DISPATCH_TEST
 call :sw_normalize_bool_parameter_for_saving SW_FOUNDATION_TEST_ENABLED
 
 exit /b
@@ -460,14 +460,14 @@ exit /b
 
 rem ###########################################################################
 :sw_ask_dispatch_test
-set SW_ORIGINAL_VALUE=%SW_DISPATCH_TEST_ENABLED%
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_DISPATCH_TEST%
 
 :sw_ask_dispatch_test_input
-set /p SW_DISPATCH_TEST_ENABLED="Enable Dispatch test (%SW_DISPATCH_TEST_ENABLED%)?: "
-call :sw_normalize_bool_input SW_DISPATCH_TEST_ENABLED
-call :sw_validate_bool_input SW_DISPATCH_TEST_ENABLED
+set /p SW_SKIP_SDK_DISPATCH_TEST="Skip Dispatch test (%SW_SKIP_SDK_DISPATCH_TEST%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_DISPATCH_TEST
+call :sw_validate_bool_input SW_SKIP_SDK_DISPATCH_TEST
 if errorlevel 1 (
-  set SW_DISPATCH_TEST_ENABLED=%SW_ORIGINAL_VALUE%
+  set SW_SKIP_SDK_DISPATCH_TEST=%SW_ORIGINAL_VALUE%
   goto sw_ask_dispatch_test_input
 )
 

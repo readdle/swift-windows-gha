@@ -55,7 +55,7 @@ jobs:
            --build-dir %SW_WORK_DIR%\b^
            --install-dir %SW_WORK_DIR%\i^
            --test-swift=NO^
-           --test-dispatch=NO^
+           --skip-dispatch-test=YES^
            --test-foundation=NO^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}
 
