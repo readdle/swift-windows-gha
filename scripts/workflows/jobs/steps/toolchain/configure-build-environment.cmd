@@ -9,10 +9,10 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
   call scripts\tools\set-env.cmd SW_DISPATCH_REF release/5.3
   call scripts\tools\set-env.cmd SW_SWIFT_REF release/5.3
 ) else (
-  call scripts\tools\set-env.cmd SW_LLVM_REF swift/master
-  call scripts\tools\set-env.cmd SW_CMARK_REF master
-  call scripts\tools\set-env.cmd SW_DISPATCH_REF master
-  call scripts\tools\set-env.cmd SW_SWIFT_REF master
+  call scripts\tools\set-env.cmd SW_LLVM_REF swift/main
+  call scripts\tools\set-env.cmd SW_CMARK_REF main
+  call scripts\tools\set-env.cmd SW_DISPATCH_REF main
+  call scripts\tools\set-env.cmd SW_SWIFT_REF main
 )
 
 if [%SW_SWIFT_SDK_SPEC%]==[readdle] (

@@ -337,8 +337,8 @@ jobs:
         shell: cmd
 
     env:
-      SW_FOUNDATION_REF: 'master'
-      SW_XCTEST_REF: 'master'
+      SW_FOUNDATION_REF: 'main'
+      SW_XCTEST_REF: 'main'
 
     steps:
       - name: Checkout
