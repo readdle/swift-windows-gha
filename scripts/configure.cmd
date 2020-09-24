@@ -158,11 +158,22 @@ echo.>>%SW_CONFIG_FILE%
 echo set SW_OBJC_PATCH_ENABLED=%SW_OBJC_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
+echo set SW_SKIP_ICU=%SW_SKIP_ICU%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_TOOLCHAIN=%SW_SKIP_TOOLCHAIN%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_TOOLCHAIN_SWIFT_TEST=%SW_SKIP_TOOLCHAIN_SWIFT_TEST%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_ZLIB=%SW_SKIP_ZLIB%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_XML2=%SW_SKIP_XML2%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_CURL=%SW_SKIP_CURL%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK=%SW_SKIP_SDK%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_CHECKOUT=%SW_SKIP_SDK_CHECKOUT%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_STDLIB=%SW_SKIP_SDK_STDLIB%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_DISPATCH=%SW_SKIP_SDK_DISPATCH%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_FOUNDATION=%SW_SKIP_SDK_FOUNDATION%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_XCTEST=%SW_SKIP_SDK_XCTEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_DISPATCH_TEST=%SW_SKIP_SDK_DISPATCH_TEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_FOUNDATION_TEST=%SW_SKIP_SDK_FOUNDATION_TEST%>>%SW_CONFIG_FILE%
 
-%SW_LOG_INFO% --message="Configuration saved. Run build.cmd."
+%SW_LOG_INFO% --message="Configuration saved. Run build.cmd --config %SW_CONFIG_FILE%."
 
 goto :eof
 endlocal
@@ -207,6 +218,8 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--build-dir" (                 set NEXT_ARG=SW_BUILD_DIR
 ) else if "%CURRENT_ARG%"=="--install-dir" (               set NEXT_ARG=SW_INSTALL_DIR
 ) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
+) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
+) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--skip-icu" (                  set NEXT_ARG=SW_SKIP_ICU
 ) else if "%CURRENT_ARG%"=="--skip-toolchain" (            set NEXT_ARG=SW_SKIP_TOOLCHAIN
 ) else if "%CURRENT_ARG%"=="--skip-toolchain-swift-test" ( set NEXT_ARG=SW_SKIP_TOOLCHAIN_SWIFT_TEST
@@ -221,8 +234,6 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--skip-sdk-xctest" (           set NEXT_ARG=SW_SKIP_SDK_XCTEST
 ) else if "%CURRENT_ARG%"=="--skip-sdk-dispatch-test" (    set NEXT_ARG=SW_SKIP_SDK_DISPATCH_TEST
 ) else if "%CURRENT_ARG%"=="--skip-sdk-foundation-test" (  set NEXT_ARG=SW_SKIP_SDK_FOUNDATION_TEST
-) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
-) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--help" (                      goto help
 ) else (
   %SW_LOG_ERROR% --message="Unknown argument: %CURRENT_ARG%"
@@ -426,6 +437,7 @@ set VALUE=!%PARAMETER%!
 
 if "%VALUE%"=="Y" set VALUE=YES
 if "%VALUE%"=="N" set VALUE=NO
+if "%VALUE%"=="" set VALUE=NO
 
 (
   endlocal
