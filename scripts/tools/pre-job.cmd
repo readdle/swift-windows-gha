@@ -15,7 +15,7 @@ if [%CURRENT_ARG%]==[--flag] set NEXT_ARG=SW_FLAG
 if [%CURRENT_ARG%]==[--help] goto help
 
 if not defined NEXT_ARG (
-  call %SW_LOG_ERROR% --scope "step" --prefix "Unknown parameter:" --message "%CURRENT_ARG%"
+  call %SW_LOG_ERROR% --scope "job" --prefix "Unknown parameter:" --message "%CURRENT_ARG%"
   exit /b 1
 )
 
@@ -30,11 +30,16 @@ shift
 goto sw_parse_argument
 :sw_parse_argumens_end
 
+if "%SW_SCOPE%"=="" set SW_SCOPE=build
 
+%SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="**********************************************************************"
+%SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="** " --message="Job: %SW_NAME%"
 if "!%SW_FLAG%!"=="YES" (
-  %SW_LOG_WARNING% --scope=%SW_SCOPE% --prefix="** " --message="Skipping: %SW_NAME%"
+  %SW_LOG_WARNING% --scope=%SW_SCOPE% --prefix="** " --message="Skipping"
+  %SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="**********************************************************************"
   exit /b 1
 )
-%SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="** " --message="Starting step: %SW_NAME%"
+%SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="** " --message="Starting"
+%SW_LOG_INFO% --scope=%SW_SCOPE% --prefix="**********************************************************************"
 
 endlocal
