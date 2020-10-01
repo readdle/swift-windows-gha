@@ -6,6 +6,7 @@ call "%~f0\..\tools\log.cmd" > nul
 
 set SW_LOG_INFO=%SW_LOG_INFO% --scope config
 set SW_LOG_ERROR=%SW_LOG_ERROR% --scope config
+set SW_LOG_WARNING=%SW_LOG_WARNING% --scope config
 
 set SW_INTERACTIVE=YES
 
@@ -53,6 +54,10 @@ if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
 ) else if /i "%SW_SWIFT_SDK_SPEC%"=="readdle" (
   set SW_SWIFT_SDK_SPEC_NUM=2
 )
+
+set SW_DEFAULT_JOBS_CONFIGURATION=Y
+set SW_DEFAULT_TOOLCHAIN_CONFIGURATION=Y
+set SW_DEFAULT_SDK_CONFIGURATION=Y
 
 :sw_wizard_start
 
@@ -587,7 +592,160 @@ exit /b
 
 rem ###########################################################################
 :sw_ask_fine_tune
+set SW_ORIGINAL_VALUE=%SW_DEFAULT_JOBS_CONFIGURATION%
+
+:sw_ask_fine_tune_input
+set /p SW_DEFAULT_JOBS_CONFIGURATION="Use default jobs/steps configuration (%SW_DEFAULT_JOBS_CONFIGURATION%)?: "
+call :sw_normalize_bool_input SW_DEFAULT_JOBS_CONFIGURATION
+call :sw_validate_bool_input SW_DEFAULT_JOBS_CONFIGURATION
+if errorlevel 1 (
+  set SW_DEFAULT_JOBS_CONFIGURATION=%SW_ORIGINAL_VALUE%
+  goto sw_ask_fine_tune_input
+)
+
+if "%SW_DEFAULT_JOBS_CONFIGURATION%"=="Y" exit /b
+
+call :sw_ask_icu
+call :sw_ask_toolchain
+call :sw_ask_zlib
+call :sw_ask_xml2
+call :sw_ask_curl
+call :sw_ask_sdk
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_icu
+set SW_ORIGINAL_VALUE=%SW_SKIP_ICU%
+
+:sw_ask_icu
+set /p SW_SKIP_ICU="Skip ICU (%SW_SKIP_ICU%)?: "
+call :sw_normalize_bool_input SW_SKIP_ICU
+call :sw_validate_bool_input SW_SKIP_ICU
+if errorlevel 1 (
+  set SW_SKIP_ICU=%SW_ORIGINAL_VALUE%
+  goto sw_ask_icu
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_toolchain
+set SW_ORIGINAL_VALUE=%SW_SKIP_TOOLCHAIN%
+
+:sw_ask_toolchain
+set /p SW_SKIP_TOOLCHAIN="Skip Toolchain (%SW_SKIP_TOOLCHAIN%)?: "
+call :sw_normalize_bool_input SW_SKIP_TOOLCHAIN
+call :sw_validate_bool_input SW_SKIP_TOOLCHAIN
+if errorlevel 1 (
+  set SW_SKIP_TOOLCHAIN=%SW_ORIGINAL_VALUE%
+  goto sw_ask_toolchain
+)
+
+if "%SW_SKIP_TOOLCHAIN%"=="Y" exit /b
+
+set SW_ORIGINAL_VALUE=%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%
+
+:sw_ask_toolchain_fine_tune_input
+set /p SW_DEFAULT_TOOLCHAIN_CONFIGURATION="Use default Toolchain steps configuration (%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%)?: "
+call :sw_normalize_bool_input SW_DEFAULT_TOOLCHAIN_CONFIGURATION
+call :sw_validate_bool_input SW_DEFAULT_TOOLCHAIN_CONFIGURATION
+if errorlevel 1 (
+  set SW_DEFAULT_TOOLCHAIN_CONFIGURATION=%SW_ORIGINAL_VALUE%
+  goto sw_ask_toolchain_fine_tune_input
+)
+
+if "%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%"=="Y" exit /b
+
 call :sw_ask_swift_test
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_zlib
+set SW_ORIGINAL_VALUE=%SW_SKIP_ZLIB%
+
+:sw_ask_zlib
+set /p SW_SKIP_ZLIB="Skip zlib (%SW_SKIP_ZLIB%)?: "
+call :sw_normalize_bool_input SW_SKIP_ZLIB
+call :sw_validate_bool_input SW_SKIP_ZLIB
+if errorlevel 1 (
+  set SW_SKIP_ZLIB=%SW_ORIGINAL_VALUE%
+  goto sw_ask_zlib
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_xml2
+set SW_ORIGINAL_VALUE=%SW_SKIP_XML2%
+
+:sw_ask_xml2
+set /p SW_SKIP_XML2="Skip libxml2 (%SW_SKIP_XML2%)?: "
+call :sw_normalize_bool_input SW_SKIP_XML2
+call :sw_validate_bool_input SW_SKIP_XML2
+if errorlevel 1 (
+  set SW_SKIP_XML2=%SW_ORIGINAL_VALUE%
+  goto sw_ask_xml2
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_curl
+set SW_ORIGINAL_VALUE=%SW_SKIP_CURL%
+
+:sw_ask_curl
+set /p SW_SKIP_CURL="Skip curl (%SW_SKIP_CURL%)?: "
+call :sw_normalize_bool_input SW_SKIP_CURL
+call :sw_validate_bool_input SW_SKIP_CURL
+if errorlevel 1 (
+  set SW_SKIP_CURL=%SW_ORIGINAL_VALUE%
+  goto sw_ask_curl
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK%
+
+:sw_ask_sdk
+set /p SW_SKIP_SDK="Skip SDK (%SW_SKIP_SDK%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK
+call :sw_validate_bool_input SW_SKIP_SDK
+if errorlevel 1 (
+  set SW_SKIP_SDK=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk
+)
+
+if "%SW_SKIP_SDK%"=="Y" exit /b
+
+set SW_ORIGINAL_VALUE=%SW_DEFAULT_SDK_CONFIGURATION%
+
+:sw_ask_sdk_fine_tune_input
+set /p SW_DEFAULT_SDK_CONFIGURATION="Use default SDK steps configuration (%SW_DEFAULT_SDK_CONFIGURATION%)?: "
+call :sw_normalize_bool_input SW_DEFAULT_SDK_CONFIGURATION
+call :sw_validate_bool_input SW_DEFAULT_SDK_CONFIGURATION
+if errorlevel 1 (
+  set SW_DEFAULT_SDK_CONFIGURATION=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_fine_tune_input
+)
+
+if "%SW_DEFAULT_SDK_CONFIGURATION%"=="Y" exit /b
+
 call :sw_ask_dispatch_test
 call :sw_ask_foundation_test
 
