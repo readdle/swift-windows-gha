@@ -125,6 +125,10 @@ if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabl
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build Foundation Tests" )
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (CTest)" )
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (XCTest)" )
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="master" (
+  %SW_LOG_INFO%
+  %SW_LOG_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3 is not guaranteed."
+)
 %SW_LOG_INFO%
 
 if "%SW_INTERACTIVE%"=="NO" goto sw_save_config
