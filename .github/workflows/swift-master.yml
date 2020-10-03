@@ -222,9 +222,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Disable Windows Defender
-        continue-on-error: true
-        run: scripts\tools\disable-windefend.cmd
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.x
 
       - name: Configure Build Environment
         run: scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
