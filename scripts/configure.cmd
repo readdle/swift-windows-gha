@@ -746,8 +746,13 @@ if errorlevel 1 (
 
 if "%SW_DEFAULT_SDK_CONFIGURATION%"=="Y" exit /b
 
-call :sw_ask_dispatch_test
-call :sw_ask_foundation_test
+call :sw_ask_sdk_checkout
+call :sw_ask_sdk_stdlib
+call :sw_ask_sdk_dispatch
+call :sw_ask_sdk_foundation
+call :sw_ask_sdk_xctest
+call :sw_ask_sdk_dispatch_test
+call :sw_ask_sdk_foundation_test
 
 exit /b
 
@@ -771,16 +776,16 @@ exit /b
 
 
 rem ###########################################################################
-:sw_ask_dispatch_test
-set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_DISPATCH_TEST%
+:sw_ask_sdk_checkout
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_CHECKOUT%
 
-:sw_ask_dispatch_test_input
-set /p SW_SKIP_SDK_DISPATCH_TEST="Skip Dispatch test (%SW_SKIP_SDK_DISPATCH_TEST%)?: "
-call :sw_normalize_bool_input SW_SKIP_SDK_DISPATCH_TEST
-call :sw_validate_bool_input SW_SKIP_SDK_DISPATCH_TEST
+:sw_ask_sdk_checkout_input
+set /p SW_SKIP_SDK_CHECKOUT="Skip SDK chekout (%SW_SKIP_SDK_CHECKOUT%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_CHECKOUT
+call :sw_validate_bool_input SW_SKIP_SDK_CHECKOUT
 if errorlevel 1 (
-  set SW_SKIP_SDK_DISPATCH_TEST=%SW_ORIGINAL_VALUE%
-  goto sw_ask_dispatch_test_input
+  set SW_SKIP_SDK_CHECKOUT=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_checkout_input
 )
 
 exit /b
@@ -788,16 +793,101 @@ exit /b
 
 
 rem ###########################################################################
-:sw_ask_foundation_test
+:sw_ask_sdk_stdlib
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_STDLIB%
+
+:sw_ask_sdk_stdlib_input
+set /p SW_SKIP_SDK_STDLIB="Skip StdLib (%SW_SKIP_SDK_STDLIB%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_STDLIB
+call :sw_validate_bool_input SW_SKIP_SDK_STDLIB
+if errorlevel 1 (
+  set SW_SKIP_SDK_STDLIB=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_stdlib_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_dispatch
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_DISPATCH%
+
+:sw_ask_sdk_dispatch_input
+set /p SW_SKIP_SDK_DISPATCH="Skip Dispatch (%SW_SKIP_SDK_DISPATCH%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_DISPATCH
+call :sw_validate_bool_input SW_SKIP_SDK_DISPATCH
+if errorlevel 1 (
+  set SW_SKIP_SDK_DISPATCH=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_dispatch_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_foundation
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_FOUNDATION%
+
+:sw_ask_sdk_foundation_input
+set /p SW_SKIP_SDK_FOUNDATION="Skip Foundation (%SW_SKIP_SDK_FOUNDATION%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_FOUNDATION
+call :sw_validate_bool_input SW_SKIP_SDK_FOUNDATION
+if errorlevel 1 (
+  set SW_SKIP_SDK_FOUNDATION=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_foundation_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_xctest
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_XCTEST%
+
+:sw_ask_sdk_xctest_input
+set /p SW_SKIP_SDK_XCTEST="Skip XCTest (%SW_SKIP_SDK_XCTEST%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_XCTEST
+call :sw_validate_bool_input SW_SKIP_SDK_XCTEST
+if errorlevel 1 (
+  set SW_SKIP_SDK_XCTEST=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_xctest_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_dispatch_test
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_DISPATCH_TEST%
+
+:sw_ask_sdk_dispatch_test_input
+set /p SW_SKIP_SDK_DISPATCH_TEST="Skip Dispatch test (%SW_SKIP_SDK_DISPATCH_TEST%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_DISPATCH_TEST
+call :sw_validate_bool_input SW_SKIP_SDK_DISPATCH_TEST
+if errorlevel 1 (
+  set SW_SKIP_SDK_DISPATCH_TEST=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_dispatch_test_input
+)
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_sdk_foundation_test
 set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_FOUNDATION_TEST%
 
-:sw_ask_foundation_test_input
+:sw_ask_sdk_foundation_test_input
 set /p SW_SKIP_SDK_FOUNDATION_TEST="Skip Foundation test (%SW_SKIP_SDK_FOUNDATION_TEST%)?: "
 call :sw_normalize_bool_input SW_SKIP_SDK_FOUNDATION_TEST
 call :sw_validate_bool_input SW_SKIP_SDK_FOUNDATION_TEST
 if errorlevel 1 (
   set SW_SKIP_SDK_FOUNDATION_TEST=%SW_ORIGINAL_VALUE%
-  goto sw_ask_foundation_test_input
+  goto sw_ask_sdk_foundation_test_input
 )
 
 exit /b
