@@ -370,24 +370,24 @@ exit /b 1
 
 rem ###########################################################################
 :sw_normalize_parameters_for_wizard
-
-call :sw_normalize_bool_parameter_for_wizard SW_OBJC_PATCH_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_STDLIB_PATCH_ENABLED
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_ICU
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_TOOLCHAIN
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_TOOLCHAIN_SWIFT_TEST
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_ZLIB
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_XML2
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_CURL
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_CHECKOUT
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_STDLIB
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_FOUNDATION
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_XCTEST
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_DISPATCH_TEST
-call :sw_normalize_bool_parameter_for_wizard SW_SKIP_SDK_FOUNDATION_TEST
-
+for %%G in (SW_OBJC_PATCH_ENABLED^
+ SW_STDLIB_PATCH_ENABLED^
+ SW_SKIP_ICU^
+ SW_SKIP_TOOLCHAIN^
+ SW_SKIP_TOOLCHAIN_SWIFT_TEST^
+ SW_SKIP_ZLIB^
+ SW_SKIP_XML2^
+ SW_SKIP_CURL^
+ SW_SKIP_SDK^
+ SW_SKIP_SDK_CHECKOUT^
+ SW_SKIP_SDK_STDLIB^
+ SW_SKIP_SDK_DISPATCH^
+ SW_SKIP_SDK_FOUNDATION^
+ SW_SKIP_SDK_XCTEST^
+ SW_SKIP_SDK_DISPATCH_TEST^
+ SW_SKIP_SDK_FOUNDATION_TEST) do (
+  call :sw_normalize_bool_parameter_for_wizard %%G
+)
 exit /b
 
 
