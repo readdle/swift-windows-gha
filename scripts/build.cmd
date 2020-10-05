@@ -2,7 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-call "%~f0\..\tools\init-log.cmd"
+call %~dp0\tools\init-build.cmd
 
 set SW_LOG_BUILD_INFO=%SW_LOG_INFO% --scope build
 set SW_LOG_BUILD_WARNING=%SW_LOG_WARNING% --scope build
@@ -12,10 +12,6 @@ set SW_CONFIG_FILE=config.cmd
 
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
-
-set "SW_WORKSPACE=%~dp0\.."
-call :sw_normalize_path SW_WORKSPACE %SW_WORKSPACE%
-set SW_JOBS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs
 
 %SW_LOG_BUILD_INFO% --prefix="Using configuration from " --message="%SW_CONFIG_FILE%"
 call %SW_CONFIG_FILE%
@@ -38,28 +34,54 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO%
-%SW_LOG_BUILD_INFO% --prefix="Swift test enabled:      " --message="%SW_SWIFT_TEST_ENABLED%"
-%SW_LOG_BUILD_INFO% --prefix="Dispatch test enabled:   " --message="%SW_DISPATCH_TEST_ENABLED%"
-%SW_LOG_BUILD_INFO% --prefix="Foundation test enabled: " --message="%SW_FOUNDATION_TEST_ENABLED%"
-%SW_LOG_BUILD_INFO%
-if "%SW_SKIP_ICU%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="ICU" )
-if "%SW_SKIP_TOOLCHAIN%"=="YES" ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="Toolchain" )
-if "%SW_SKIP_ZLIB%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="zlib" )
-if "%SW_SKIP_XML2%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="libxml2" )
-if "%SW_SKIP_CURL%"=="YES"      ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="curl" )
-if "%SW_SKIP_SDK%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="SDK" )
+if "%SW_SKIP_ICU%"=="YES"                  ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="ICU" )
+if "%SW_SKIP_TOOLCHAIN%"=="YES"            ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="Toolchain" )
+if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="Toolchain - Configure Test Environment" )
+if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="Toolchain - Test Swift" )
+if "%SW_SKIP_ZLIB%"=="YES"                 ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="zlib" )
+if "%SW_SKIP_XML2%"=="YES"                 ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="libxml2" )
+if "%SW_SKIP_CURL%"=="YES"                 ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="curl" )
+if "%SW_SKIP_SDK%"=="YES"                  ( %SW_LOG_BUILD_WARNING% --prefix="Job disabled:            " --message="SDK" )
+if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Checkout Foundation" )
+if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Checkout XCTest" )
+if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Patch StdLib" )
+if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure llvm" )
+if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure StdLib" )
+if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build StdLib" )
+if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure libdispatch" )
+if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build libdispatch" )
+if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure Foundation" )
+if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build Foundation" )
+if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure XCTest" )
+if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build XCTest" )
+if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Install StdLib" )
+if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Install libdispatch" )
+if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Install Foundation" )
+if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Install XCTest" )
+if "%SW_SKIP_SDK_DISPATCH_TEST%"=="YES"    ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure libdispatch Tests" )
+if "%SW_SKIP_SDK_DISPATCH_TEST%"=="YES"    ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build libdispatch Tests" )
+if "%SW_SKIP_SDK_DISPATCH_TEST%"=="YES"    ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Test libdispatch" )
+if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure Foundation Test Environment" )
+if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Configure Foundation Tests" )
+if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Build Foundation Tests" )
+if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Test Foundation (CTest)" )
+if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_WARNING% --prefix="Step disabled:           " --message="SDK - Test Foundation (XCTest)" )
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="master" (
+  %SW_LOG_BUILD_INFO%
+  %SW_LOG_BUILD_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3 is not guaranteed."
+)
 %SW_LOG_BUILD_INFO%
 
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
 set SW_IGNORE_TEST_FAILURES=1
 
-call %SW_JOBS_DIR%\icu.cmd^
- && call %SW_JOBS_DIR%\toolchain.cmd^
- && call %SW_JOBS_DIR%\zlib.cmd^
- && call %SW_JOBS_DIR%\libxml2.cmd^
- && call %SW_JOBS_DIR%\curl.cmd^
- && call %SW_JOBS_DIR%\sdk.cmd
+call %SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\toolchain.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\zlib.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\curl.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\sdk.cmd
  
 endlocal
 goto :eof
@@ -134,10 +156,3 @@ exit /b
 %SW_LOG_BUILD_ERROR% --message="%PARAMETER% - Invalid value: %VALUE%"
 endlocal
 exit /b 1
-
-
-
-:: ###########################################################################
-:sw_normalize_path <output_var> <path>
-set "%1=%~f2"
-exit /b

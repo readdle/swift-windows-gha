@@ -1,7 +1,7 @@
-if [%SW_DISPATCH_TEST_ENABLED%]==[NO] (
-    echo Skipping Dispatch tests configuration
-    goto :eof
-)
+setlocal enabledelayedexpansion
+
+%SW_PRE_STEP% --scope="sdk" --name="Configure libdispatch Tests" --flag=SW_SKIP_SDK_DISPATCH_TEST
+if errorlevel 1 exit /b 0
 
 cmake^
  -G Ninja^
@@ -14,3 +14,5 @@ cmake^
  -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D BUILD_TESTING=YES^
  -D ENABLE_SWIFT=YES
+
+endlocal

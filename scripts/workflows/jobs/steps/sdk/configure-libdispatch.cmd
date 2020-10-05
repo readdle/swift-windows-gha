@@ -1,5 +1,8 @@
 setlocal enabledelayedexpansion
 
+%SW_PRE_STEP% --scope="sdk" --name="Configure libdispatch" --flag=SW_SKIP_SDK_DISPATCH
+if errorlevel 1 exit /b 0
+
 if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
     set SW_DISPATCH_PDB=-D DISPATCH_ENABLE_PDB=ON
 )

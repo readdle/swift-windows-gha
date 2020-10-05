@@ -3,11 +3,8 @@ setlocal
 set SW_LOG_CURL_INFO=%SW_LOG_INFO% --scope curl
 set SW_LOG_CURL_WARNING=%SW_LOG_WARNING% --scope curl
 
-if "%SW_SKIP_CURL%"=="YES" (
-  %SW_LOG_CURL_WARNING% --message="Skipping job"
-  goto :eof
-)
-%SW_LOG_CURL_INFO% --message="Starting job"
+%SW_PRE_JOB% --name="curl" --flag=SW_SKIP_CURL
+if errorlevel 1 exit /b 0
 
 set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\curl
 

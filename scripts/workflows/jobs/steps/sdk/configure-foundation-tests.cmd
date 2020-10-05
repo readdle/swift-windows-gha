@@ -1,7 +1,7 @@
-if [%SW_FOUNDATION_TEST_ENABLED%]==[NO] (
-    echo Skipping Foundation tests configuration
-    goto :eof
-)
+setlocal enabledelayedexpansion
+
+%SW_PRE_STEP% --scope="sdk" --name="Configure Foundation Tests" --flag=SW_SKIP_SDK_FOUNDATION_TEST
+if errorlevel 1 exit /b 0
 
 cmake^
  -G Ninja^
@@ -28,3 +28,5 @@ cmake^
  -D CURL_NO_CURL_CMAKE=YES^
  -D CURL_DIR=%SW_CURL_PATH%\usr\lib\cmake\CURL^
  -D ENABLE_TESTING=YES
+
+endlocal

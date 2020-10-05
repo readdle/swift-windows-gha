@@ -1,3 +1,8 @@
+setlocal enabledelayedexpansion
+
+%SW_PRE_STEP% --scope="sdk" --name="Configure XCTest" --flag=SW_SKIP_SDK_XCTEST
+if errorlevel 1 exit /b 0
+
 cmake^
  -G Ninja^
  -S %SW_XCTEST_SOURCES_DIR%^
@@ -10,3 +15,5 @@ cmake^
  -D ENABLE_TESTING=NO^
  -D dispatch_DIR=%SW_DISPATCH_BUILD_DIR%\cmake\modules^
  -D Foundation_DIR=%SW_FOUNDATION_BUILD_DIR%\cmake\modules
+
+endlocal

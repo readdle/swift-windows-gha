@@ -3,11 +3,8 @@ setlocal enabledelayedexpansion
 set SW_LOG_TOOLCHAIN_INFO=%SW_LOG_INFO% --scope toolchain
 set SW_LOG_TOOLCHAIN_WARNING=%SW_LOG_WARNING% --scope toolchain
 
-if "%SW_SKIP_TOOLCHAIN%"=="YES" (
-  %SW_LOG_TOOLCHAIN_WARNING% --message="Skipping job"
-  goto :eof
-)
-%SW_LOG_TOOLCHAIN_INFO% --message="Starting job"
+%SW_PRE_JOB% --name="Toolchain" --flag=SW_SKIP_TOOLCHAIN
+if errorlevel 1 exit /b 0
 
 set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\toolchain
 

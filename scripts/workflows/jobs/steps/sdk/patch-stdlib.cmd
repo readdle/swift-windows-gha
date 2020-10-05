@@ -1,4 +1,7 @@
-setlocal
+setlocal enabledelayedexpansion
+
+%SW_PRE_STEP% --scope="sdk" --name="Patch StdLib" --flag=SW_SKIP_SDK_CHECKOUT
+if errorlevel 1 exit /b 0
 
 set SW_PUSHDIR=%CD%
 
