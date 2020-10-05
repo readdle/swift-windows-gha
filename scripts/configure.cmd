@@ -33,6 +33,11 @@ set SW_SKIP_SDK_DISPATCH_TEST=NO
 set SW_SKIP_SDK_FOUNDATION_TEST=NO
 set SW_CONFIG_FILE=%CD%\config.cmd
 
+if defined pythonLocation (
+  set SW_PYTHON_DIR=%pythonLocation%
+) else (
+  set SW_PYTHON_DIR=C:\Python
+)
 call :sw_parse_arguments %* && call :sw_validate_parameters
 if errorlevel 1 goto :eof
 
@@ -87,6 +92,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
 %SW_LOG_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
 %SW_LOG_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
+%SW_LOG_INFO% --prefix="Python directory:        " --message="%SW_PYTHON_DIR%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
 %SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
@@ -156,6 +162,7 @@ echo set SW_SOURCES_DIR=%SW_SOURCES_DIR%>>%SW_CONFIG_FILE%
 echo set SW_BUILD_DIR=%SW_BUILD_DIR%>>%SW_CONFIG_FILE%
 echo set SW_INSTALL_DIR=%SW_INSTALL_DIR%>>%SW_CONFIG_FILE%
 echo set SW_ARTIFACTS_DIR=%SW_ARTIFACTS_DIR%>>%SW_CONFIG_FILE%
+echo set SW_PYTHON_DIR=%SW_PYTHON_DIR%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_CURL_VERSION=%SW_CURL_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_ICU_VERSION=%SW_ICU_VERSION%>>%SW_CONFIG_FILE%
@@ -198,6 +205,7 @@ if "%NEXT_ARG%"=="SW_SWIFT_SDK_SPEC"                    goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_SOURCES_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_PYTHON_DIR"                        goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
@@ -224,6 +232,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--sources-dir" (               set NEXT_ARG=SW_SOURCES_DIR
 ) else if "%CURRENT_ARG%"=="--build-dir" (                 set NEXT_ARG=SW_BUILD_DIR
 ) else if "%CURRENT_ARG%"=="--install-dir" (               set NEXT_ARG=SW_INSTALL_DIR
+) else if "%CURRENT_ARG%"=="--python-dir" (                set NEXT_ARG=SW_PYTHON_DIR
 ) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
@@ -270,6 +279,7 @@ for %%G in (SW_INTERACTIVE^
  SW_SOURCES_DIR^
  SW_BUILD_DIR^
  SW_INSTALL_DIR^
+ SW_PYTHON_DIR^
  SW_CONFIG_FILE^
  SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
@@ -316,6 +326,8 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
 ) else if "%PARAMETER%"=="SW_BUILD_DIR" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_INSTALL_DIR" (
+  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+) else if "%PARAMETER%"=="SW_PYTHON_DIR" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_CONFIG_FILE" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
@@ -551,6 +563,7 @@ rem ###########################################################################
 set /p SW_SOURCES_DIR="Enter directory for source files (%SW_SOURCES_DIR%): "
 set /p SW_BUILD_DIR="Enter directory for build output (%SW_BUILD_DIR%): "
 set /p SW_INSTALL_DIR="Enter directory to install into (%SW_INSTALL_DIR%): "
+set /p SW_INSTALL_DIR="Enter Python directory (%SW_PYTHON_DIR%): "
 
 exit /b
 
