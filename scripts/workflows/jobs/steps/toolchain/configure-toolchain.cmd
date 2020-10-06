@@ -1,10 +1,10 @@
 setlocal enabledelayedexpansion
 
-if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (
-  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%pythonLocation%\python.exe"
+if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe"
 )
 if "%SW_SWIFT_BRANCH_SPEC%"=="master" (
-  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%pythonLocation%\python.exe" -D Python3_ROOT_DIR="%pythonLocation%"
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe" -D Python3_ROOT_DIR="%SW_PYTHON_DIR%"
 )
 
 cmake^

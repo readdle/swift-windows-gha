@@ -25,6 +25,10 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Build output directory:  " --message="%SW_BUILD_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
+%SW_LOG_BUILD_INFO% --prefix="Python directory:        " --message="%SW_PYTHON_DIR%"
+if not exist "%VALUE%" (
+  %SW_LOG_BUILD_WARNING% --prefix="                         " --message="Path not exists"
+)
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"

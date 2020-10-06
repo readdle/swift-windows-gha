@@ -221,6 +221,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
+          set SW_PYTHON_DIR=%pythonLocation%
           call scripts\tools\init-build.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
@@ -359,8 +360,14 @@ jobs:
           echo ::set-env name=SW_SWIFT_REF::%SW_SWIFT_REF%
           echo ::set-env name=SW_DISPATCH_REF::%SW_DISPATCH_REF%
 
+      - name: Use Python 2.7.x
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 2.7.x
+
       - name: Configure Build Environment
         run: |
+          set SW_PYTHON_DIR=%pythonLocation%
           call scripts\tools\init-build.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 

@@ -8,7 +8,7 @@ if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
 )
 
 if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (
-  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE=%pythonLocation%\python.exe
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe"
 )
 
 cmake^
