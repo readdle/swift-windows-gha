@@ -10,7 +10,7 @@ set SW_LOG_PATCH_ERROR=%SW_LOG_ERROR% --scope patch-stdlib
 
 set SW_PATCH_PRINT_FLUSH=%SW_WORKSPACE%\patch\swift\stdlib\print-flush-%SW_SWIFT_BRANCH_SPEC%.patch
 set SW_PATCH_INSTALL_PDB=%SW_WORKSPACE%\patch\swift\stdlib\install-pdb.patch
-set SW_PATCH_PRINT_BACKTRACE=%SW_WORKSPACE%\patch\swift\stdlib\print-backtrace.patch
+set SW_PATCH_PRINT_BACKTRACE=%SW_WORKSPACE%\patch\swift\stdlib\print-backtrace-%SW_SWIFT_BRANCH_SPEC%.patch
 
 if [%SW_STDLIB_PATCH_ENABLED%]==[YES] (
   %SW_LOG_PATCH_INFO% --message="Will apply %SW_PATCH_PRINT_FLUSH%"
