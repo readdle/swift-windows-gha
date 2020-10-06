@@ -78,7 +78,12 @@ if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="master" (
 
 call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
 
+:: Forces build to continue when testing fails
 set SW_IGNORE_TEST_FAILURES=1
+:: Steps in workflow are executed in isolated environment.
+:: Steps in build script has one global environment.
+:: This option hints set-env script how to work with environment variables.
+set SW_BUILD_ENVIRONMENT=script
 
 call %SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd^
  && call %SW_WORKSPACE%\scripts\workflows\jobs\toolchain.cmd^
