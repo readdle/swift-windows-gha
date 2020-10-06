@@ -26,7 +26,7 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Install directory:       " --message="%SW_INSTALL_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
 %SW_LOG_BUILD_INFO% --prefix="Python directory:        " --message="%SW_PYTHON_DIR%"
-if not exist "%VALUE%" (
+if not exist "%SW_PYTHON_DIR%" (
   %SW_LOG_BUILD_WARNING% --prefix="                         " --message="Path not exists"
 )
 %SW_LOG_BUILD_INFO%
