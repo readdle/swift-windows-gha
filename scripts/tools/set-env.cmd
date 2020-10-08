@@ -20,4 +20,4 @@ if "%SW_BUILD_ENVIRONMENT%"=="script" goto :eof
 :: No sense to try GitHub Actions Workflow command when running outside of Github Actions
 if not defined GITHUB_ACTIONS goto :eof
 
-echo name=%1::%~2>>%GITHUB_ENV%
+echo %1=%~2>>%GITHUB_ENV%

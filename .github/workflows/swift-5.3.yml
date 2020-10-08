@@ -365,9 +365,9 @@ jobs:
           echo swift rev is %SW_SWIFT_REF%
           echo swift-corelibs-libdispatch rev is %SW_DISPATCH_REF%
 
-          echo name=SW_LLVM_REF::%SW_LLVM_REF%>>%GITHUB_ENV%
-          echo name=SW_SWIFT_REF::%SW_SWIFT_REF%>>%GITHUB_ENV%
-          echo name=SW_DISPATCH_REF::%SW_DISPATCH_REF%>>%GITHUB_ENV%
+          echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
+          echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
 
       - name: Use Python 2.7.x
         uses: actions/setup-python@v1.1.1
