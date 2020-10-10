@@ -90,7 +90,8 @@ call %SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd^
  && call %SW_WORKSPACE%\scripts\workflows\jobs\zlib.cmd^
  && call %SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd^
  && call %SW_WORKSPACE%\scripts\workflows\jobs\curl.cmd^
- && call %SW_WORKSPACE%\scripts\workflows\jobs\sdk.cmd
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\sdk.cmd^
+ && call %SW_WORKSPACE%\scripts\workflows\jobs\sqlite.cmd
  
 endlocal
 goto :eof
