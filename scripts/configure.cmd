@@ -31,7 +31,8 @@ set SW_SKIP_SDK_FOUNDATION=NO
 set SW_SKIP_SDK_XCTEST=NO
 set SW_SKIP_SDK_DISPATCH_TEST=NO
 set SW_SKIP_SDK_FOUNDATION_TEST=NO
-set SW_SKIP_SQLITE=NO
+set SW_SKIP_SQLITE=YES
+set SW_SKIP_DEVTOOLS=YES
 
 set SW_CONFIG_FILE=%CD%\config.cmd
 
@@ -65,6 +66,7 @@ if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
 set SW_DEFAULT_JOBS_CONFIGURATION=Y
 set SW_DEFAULT_TOOLCHAIN_CONFIGURATION=Y
 set SW_DEFAULT_SDK_CONFIGURATION=Y
+set SW_DEFAULT_DEVTOOLS_CONFIGURATION=Y
 
 :sw_wizard_start
 
@@ -195,6 +197,7 @@ echo set SW_SKIP_SDK_XCTEST=%SW_SKIP_SDK_XCTEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_DISPATCH_TEST=%SW_SKIP_SDK_DISPATCH_TEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_FOUNDATION_TEST=%SW_SKIP_SDK_FOUNDATION_TEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SQLITE=%SW_SKIP_SQLITE%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_DEVTOOLS=%SW_SKIP_DEVTOOLS%>>%SW_CONFIG_FILE%
 
 %SW_LOG_INFO% --message="Configuration saved. Run build.cmd --config %SW_CONFIG_FILE%."
 
@@ -232,6 +235,7 @@ if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION"               goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_SKIP_SDK_XCTEST"                   goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH_TEST"            goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION_TEST"          goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_DEVTOOLS"                     goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SQLITE"                       goto sw_parse_arguments_accept
 
 if not defined CURRENT_ARG goto sw_parse_argumens_end
@@ -261,6 +265,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--skip-sdk-dispatch-test" (    set NEXT_ARG=SW_SKIP_SDK_DISPATCH_TEST
 ) else if "%CURRENT_ARG%"=="--skip-sdk-foundation-test" (  set NEXT_ARG=SW_SKIP_SDK_FOUNDATION_TEST
 ) else if "%CURRENT_ARG%"=="--skip-sqlite" (               set NEXT_ARG=SW_SKIP_SQLITE
+) else if "%CURRENT_ARG%"=="--skip-devtools" (             set NEXT_ARG=SW_SKIP_DEVTOOLS
 ) else if "%CURRENT_ARG%"=="--help" (                      goto help
 ) else (
   %SW_LOG_ERROR% --message="Unknown argument: %CURRENT_ARG%"
@@ -308,7 +313,8 @@ for %%G in (SW_INTERACTIVE^
  SW_SKIP_SDK_XCTEST^
  SW_SKIP_SDK_DISPATCH_TEST^
  SW_SKIP_SDK_FOUNDATION_TEST^
- SW_SKIP_SQLITE) do (
+ SW_SKIP_SQLITE^
+ SW_SKIP_DEVTOOLS) do (
   call :sw_validate_parameter %%G
   if errorlevel 1 goto sw_validate_parameters_fail
 )
@@ -377,6 +383,8 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   goto :sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SQLITE" (
   goto :sw_validate_parameter_bool
+) else if "%PARAMETER%"=="SW_SKIP_DEVTOOLS" (
+  goto :sw_validate_parameter_bool
 )
 endlocal
 exit /b
@@ -412,7 +420,8 @@ for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_SKIP_SDK_XCTEST^
  SW_SKIP_SDK_DISPATCH_TEST^
  SW_SKIP_SDK_FOUNDATION_TEST^
- SW_SKIP_SQLITE) do (
+ SW_SKIP_SQLITE^
+ SW_SKIP_DEVTOOLS) do (
   call :sw_normalize_bool_parameter_for_wizard %%G
 )
 exit /b
@@ -438,7 +447,8 @@ for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_SKIP_SDK_XCTEST^
  SW_SKIP_SDK_DISPATCH_TEST^
  SW_SKIP_SDK_FOUNDATION_TEST^
- SW_SKIP_SQLITE) do (
+ SW_SKIP_SQLITE^
+ SW_SKIP_DEVTOOLS) do (
   call :sw_normalize_bool_parameter_for_saving %%G
 )
 exit /b
@@ -642,6 +652,7 @@ call :sw_ask_xml2
 call :sw_ask_curl
 call :sw_ask_sdk
 call :sw_ask_sqlite
+call :sw_ask_devtools
 
 exit /b
 
@@ -801,6 +812,40 @@ if errorlevel 1 (
   set SW_SKIP_SQLITE=%SW_ORIGINAL_VALUE%
   goto sw_ask_sqlite_input
 )
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_devtools
+set SW_ORIGINAL_VALUE=%SW_SKIP_DEVTOOLS%
+
+:sw_ask_devtools_input
+set /p SW_SKIP_DEVTOOLS="Skip DevTools (%SW_SKIP_DEVTOOLS%)?: "
+call :sw_normalize_bool_input SW_SKIP_DEVTOOLS
+call :sw_validate_bool_input SW_SKIP_DEVTOOLS
+if errorlevel 1 (
+  set SW_SKIP_DEVTOOLS=%SW_ORIGINAL_VALUE%
+  goto sw_ask_devtools_input
+)
+
+if "%SW_SKIP_DEVTOOLS%"=="Y" exit /b
+
+set SW_ORIGINAL_VALUE=%SW_DEFAULT_DEVTOOLS_CONFIGURATION%
+
+:sw_ask_devtools_fine_tune_input
+set /p SW_DEFAULT_DEVTOOLS_CONFIGURATION="Use default DevTools steps configuration (%SW_DEFAULT_DEVTOOLS_CONFIGURATION%)?: "
+call :sw_normalize_bool_input SW_DEFAULT_DEVTOOLS_CONFIGURATION
+call :sw_validate_bool_input SW_DEFAULT_DEVTOOLS_CONFIGURATION
+if errorlevel 1 (
+  set SW_DEFAULT_DEVTOOLS_CONFIGURATION=%SW_ORIGINAL_VALUE%
+  goto sw_ask_devtools_fine_tune_input
+)
+
+if "%SW_DEFAULT_DEVTOOLS_CONFIGURATION%"=="Y" exit /b
+
+%SW_LOG_WARNING% --message="Not yet implemented"
 
 exit /b
 
