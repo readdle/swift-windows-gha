@@ -14,10 +14,14 @@ if errorlevel 1 exit /b 0
 
 call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-llbuild.cmd^
+ && call %SW_STEPS_DIR%\checkout-tsc.cmd^
  && call %SW_STEPS_DIR%\checkout-yams.cmd^
  && call %SW_STEPS_DIR%\configure-llbuild.cmd^
  && call %SW_STEPS_DIR%\build-llbuild.cmd^
  && call %SW_STEPS_DIR%\install-llbuild.cmd^
+ && call %SW_STEPS_DIR%\configure-tsc.cmd^
+ && call %SW_STEPS_DIR%\build-tsc.cmd^
+ && call %SW_STEPS_DIR%\install-tsc.cmd^
  && call %SW_STEPS_DIR%\configure-yams.cmd^
  && call %SW_STEPS_DIR%\build-yams.cmd^
  && call %SW_STEPS_DIR%\install-yams.cmd
