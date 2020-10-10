@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1.1.1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -46,7 +46,7 @@ jobs:
         run: |
           call scripts\tools\get-free-drive.cmd
           subst %SW_FREE_DRIVE% ${{ github.workspace }}
-          echo ::set-env name=SW_WORK_DIR::%SW_FREE_DRIVE%
+          echo SW_WORK_DIR=%SW_FREE_DRIVE%>>%GITHUB_ENV%
 
       - name: Configure
         run: |
