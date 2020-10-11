@@ -6,6 +6,7 @@
 %SW_SET_ENV% SW_SAP_REF main
 %SW_SET_ENV% SW_SWIFT_DRIVER_REF main
 %SW_SET_ENV% SW_SPM_REF main
+%SW_SET_ENV% SW_INDEXSTORE_DB_REF main
 
 %SW_SET_ENV% SW_LLBUILD_SOURCES_DIR %SW_SOURCES_DIR%\swift-llbuild
 %SW_SET_ENV% SW_LLBUILD_BUILD_DIR %SW_BUILD_DIR%\swift-llbuild
@@ -19,6 +20,8 @@
 %SW_SET_ENV% SW_SWIFT_DRIVER_BUILD_DIR %SW_BUILD_DIR%\swift-driver
 %SW_SET_ENV% SW_SPM_SOURCES_DIR %SW_SOURCES_DIR%\swift-package-manager
 %SW_SET_ENV% SW_SPM_BUILD_DIR %SW_BUILD_DIR%\swift-package-manager
+%SW_SET_ENV% SW_INDEXSTORE_DB_SOURCES_DIR %SW_SOURCES_DIR%\indexstore-db
+%SW_SET_ENV% SW_INDEXSTORE_DB_BUILD_DIR %SW_BUILD_DIR%\indexstore-db
 
 %SW_SET_ENV% SW_TOOLCHAIN_DIR %SW_ARTIFACTS_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
 %SW_SET_ENV% SW_SDK_DIR %SW_ARTIFACTS_DIR%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk

@@ -19,6 +19,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-sap.cmd^
  && call %SW_STEPS_DIR%\checkout-swift-driver.cmd^
  && call %SW_STEPS_DIR%\checkout-spm.cmd^
+ && call %SW_STEPS_DIR%\checkout-indexstore-db.cmd^
  && call %SW_STEPS_DIR%\configure-llbuild.cmd^
  && call %SW_STEPS_DIR%\build-llbuild.cmd^
  && call %SW_STEPS_DIR%\install-llbuild.cmd^
@@ -36,6 +37,9 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\install-swift-driver.cmd^
  && call %SW_STEPS_DIR%\configure-spm.cmd^
  && call %SW_STEPS_DIR%\build-spm.cmd^
- && call %SW_STEPS_DIR%\install-spm.cmd
+ && call %SW_STEPS_DIR%\install-spm.cmd^
+ && call %SW_STEPS_DIR%\configure-indexstore-db.cmd^
+ && call %SW_STEPS_DIR%\build-indexstore-db.cmd^
+ && call %SW_STEPS_DIR%\install-indexstore-db.cmd
 
 endlocal
