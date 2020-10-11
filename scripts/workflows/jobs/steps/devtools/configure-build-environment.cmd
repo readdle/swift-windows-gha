@@ -4,6 +4,7 @@
 %SW_SET_ENV% SW_TSC_REF main
 %SW_SET_ENV% SW_YAMS_REF master
 %SW_SET_ENV% SW_SAP_REF main
+%SW_SET_ENV% SW_SWIFT_DRIVER_REF main
 
 %SW_SET_ENV% SW_LLBUILD_SOURCES_DIR %SW_SOURCES_DIR%\swift-llbuild
 %SW_SET_ENV% SW_LLBUILD_BUILD_DIR %SW_BUILD_DIR%\swift-llbuild
@@ -13,6 +14,8 @@
 %SW_SET_ENV% SW_YAMS_BUILD_DIR %SW_BUILD_DIR%\Yams
 %SW_SET_ENV% SW_SAP_SOURCES_DIR %SW_SOURCES_DIR%\swift-argument-parser
 %SW_SET_ENV% SW_SAP_BUILD_DIR %SW_BUILD_DIR%\swift-argument-parser
+%SW_SET_ENV% SW_SWIFT_DRIVER_SOURCES_DIR %SW_SOURCES_DIR%\swift-driver
+%SW_SET_ENV% SW_SWIFT_DRIVER_BUILD_DIR %SW_BUILD_DIR%\swift-driver
 
 %SW_SET_ENV% SW_TOOLCHAIN_DIR %SW_ARTIFACTS_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
 %SW_SET_ENV% SW_SDK_DIR %SW_ARTIFACTS_DIR%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk
