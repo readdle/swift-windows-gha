@@ -16,7 +16,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-llbuild.cmd^
  && call %SW_STEPS_DIR%\checkout-tsc.cmd^
  && call %SW_STEPS_DIR%\checkout-yams.cmd^
- && call %SW_STEPS_DIR%\checkout-swift-argument-parser.cmd^
+ && call %SW_STEPS_DIR%\checkout-sap.cmd^
  && call %SW_STEPS_DIR%\checkout-swift-driver.cmd^
  && call %SW_STEPS_DIR%\configure-llbuild.cmd^
  && call %SW_STEPS_DIR%\build-llbuild.cmd^
@@ -27,9 +27,9 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\configure-yams.cmd^
  && call %SW_STEPS_DIR%\build-yams.cmd^
  && call %SW_STEPS_DIR%\install-yams.cmd^
- && call %SW_STEPS_DIR%\configure-swift-argument-parser.cmd^
- && call %SW_STEPS_DIR%\build-swift-argument-parser.cmd^
- && call %SW_STEPS_DIR%\install-swift-argument-parser.cmd^
+ && call %SW_STEPS_DIR%\configure-sap.cmd^
+ && call %SW_STEPS_DIR%\build-sap.cmd^
+ && call %SW_STEPS_DIR%\install-sap.cmd^
  && call %SW_STEPS_DIR%\configure-swift-driver.cmd^
  && call %SW_STEPS_DIR%\build-swift-driver.cmd^
  && call %SW_STEPS_DIR%\install-swift-driver.cmd
