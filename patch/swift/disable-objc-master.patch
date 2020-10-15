@@ -89,4 +89,4 @@ index 9f9be824..fe60c713 100644
 +
    if (DeclResult.isNonNull()) {
      Decl *D = DeclResult.get();
-     if (!declWasHandledAlready(D))
+     if (!HandlerAlreadyCalled)
