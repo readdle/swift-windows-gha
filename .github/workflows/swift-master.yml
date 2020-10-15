@@ -200,8 +200,10 @@ jobs:
         include:
           - patch: clean
             enable-no-objc-patch: NO
+            skip-swift-test: NO
           - patch: no-objc
             enable-no-objc-patch: YES
+            skip-swift-test: YES
 
     defaults:
       run:
@@ -209,6 +211,7 @@ jobs:
 
     env:
       SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
+      SW_SKIP_TOOLCHAIN_SWIFT_TEST: ${{ matrix.skip-swift-test }}
 
     steps:
       - name: Checkout 
@@ -259,6 +262,9 @@ jobs:
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+
+      - name: Patch Swift
+        run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
 
       - name: Download ICU
         uses: actions/download-artifact@v1
