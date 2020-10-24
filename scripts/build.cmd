@@ -2,7 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-call %~dp0\workflows\configure-build-environment.cmd
+call "%~dp0\workflows\configure-build-environment.cmd"
 if errorlevel 1 exit /b
 
 set SW_CONFIG_FILE=config.cmd
