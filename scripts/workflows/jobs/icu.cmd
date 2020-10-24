@@ -13,6 +13,6 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\install-icu.cmd
 
 set SW_ERROR=%ERRORLEVEL%
-subst T: /d
+subst /d %SW_ICU_DRIVE%
 
 endlocal & exit /b %SW_ERROR%
