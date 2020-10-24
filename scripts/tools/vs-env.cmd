@@ -7,4 +7,4 @@ for /f "usebackq delims=*" %%i in (`"C:\Program Files (x86)\Microsoft Visual Stu
 
 if not defined GITHUB_ACTIONS goto :eof
 
-set>>%GITHUB_ENV%
+set>%GITHUB_ENV%

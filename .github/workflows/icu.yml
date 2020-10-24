@@ -54,6 +54,7 @@ jobs:
           call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
 
       - name: Checkout ICU
         run: scripts\workflows\jobs\steps\icu\checkout-icu.cmd
