@@ -1,8 +1,5 @@
 setlocal
 
-set SW_LOG_ICU_INFO=%SW_LOG_INFO% --scope icu
-set SW_LOG_ICU_WARNING=%SW_LOG_WARNING% --scope icu
-
 %SW_PRE_JOB% --name="ICU" --flag=SW_SKIP_ICU
 if errorlevel 1 exit /b 0
 
