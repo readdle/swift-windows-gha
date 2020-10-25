@@ -15,7 +15,6 @@ set SW_SWIFT_SDK_SPEC=apple
 set SW_SOURCES_DIR=%CD%\w\s
 set SW_BUILD_DIR=%CD%\w\b
 set SW_INSTALL_DIR=%CD%\w\i
-set SW_ARTIFACTS_DIR=%CD%\w\i
 set SW_OBJC_PATCH_ENABLED=NO
 set SW_STDLIB_PATCH_ENABLED=NO
 set SW_SKIP_ICU=NO
@@ -89,6 +88,8 @@ call :sw_ask_fine_tune
 call :sw_ask_config_file
 
 :configure
+
+if not defined SW_ARTIFACTS_DIR set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 
 call :sw_normalize_parameters_for_saving
 

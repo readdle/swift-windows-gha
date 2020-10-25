@@ -47,8 +47,8 @@ call scripts\tools\set-env.cmd SW_DISPATCH_BUILD_DIR %SW_BUILD_DIR%\libdispatch
 call scripts\tools\set-env.cmd SW_FOUNDATION_BUILD_DIR %SW_BUILD_DIR%\foundation
 call scripts\tools\set-env.cmd SW_XCTEST_BUILD_DIR %SW_BUILD_DIR%\xctest
 
-set SW_PLATFORM_PATH %SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform
-set SW_SDK_PATH %SW_PLATFORM_PATH%\Developer\SDKs\Windows.sdk
+set SW_PLATFORM_PATH=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform
+set SW_SDK_PATH=%SW_PLATFORM_PATH%\Developer\SDKs\Windows.sdk
 
 call scripts\tools\set-env.cmd SW_SDK_INSTALL_DIR %SW_SDK_PATH%\usr
 call scripts\tools\set-env.cmd SW_XCTEST_INSTALL_PATH %SW_PLATFORM_PATH%\Developer\Library\XCTest-development\usr
