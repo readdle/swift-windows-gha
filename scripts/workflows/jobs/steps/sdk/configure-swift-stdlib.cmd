@@ -11,6 +11,9 @@ if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (
   set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe"
 )
 
+where clang-cl
+%SW_LOG_SDK_INFO% --prefix="PATH:" --message="%PATH%"
+
 cmake^
  -G Ninja^
  -S %SW_SWIFT_SOURCES_DIR%^
