@@ -350,8 +350,6 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_INSTALL_DIR" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
-) else if "%PARAMETER%"=="SW_ARTIFACTS_DIR" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_PYTHON_DIR" (
   if "%VALUE%"=="" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_CONFIG_FILE" (
