@@ -2,7 +2,10 @@ name: swift-5.3
 on:
   push:
     paths-ignore: 
+      - .github/workflows/icu.yml
+      - .github/workflows/swift-build-script.yml
       - .github/workflows/swift-master.yml
+      - doc/**
       - LICENSE
       - README.md
 
@@ -35,7 +38,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
 
       - name: Checkout ICU
@@ -78,7 +81,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
 
       - name: Checkout curl
@@ -123,7 +126,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
 
       - name: Checkout libxml2
@@ -162,7 +165,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
 
       - name: Checkout zlib
@@ -225,7 +228,7 @@ jobs:
       - name: Configure Build Environment
         run: |
           set SW_PYTHON_DIR=%pythonLocation%
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
 
       - name: Configure Git
@@ -377,7 +380,7 @@ jobs:
       - name: Configure Build Environment
         run: |
           set SW_PYTHON_DIR=%pythonLocation%
-          call scripts\tools\init-build.cmd
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
 
       - name: Configure Git

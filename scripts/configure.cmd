@@ -2,7 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-call "%~f0\..\tools\log.cmd" > nul
+call "%~dp0\tools\init-log.cmd"
 
 set SW_LOG_INFO=%SW_LOG_INFO% --scope config
 set SW_LOG_ERROR=%SW_LOG_ERROR% --scope config
@@ -33,6 +33,13 @@ set SW_SKIP_SDK_DISPATCH_TEST=NO
 set SW_SKIP_SDK_FOUNDATION_TEST=NO
 set SW_SKIP_SQLITE=YES
 set SW_SKIP_DEVTOOLS=YES
+
+set SW_ICU_VERSION=67
+set SW_CURL_VERSION=development
+set SW_XML2_VERSION=development
+set SW_ZLIB_VERSION=1.2.11
+set SW_SQLITE_RELEASE=3300100
+set SW_SQLITE_VERSION=3.30.1
 
 set SW_CONFIG_FILE=%CD%\config.cmd
 
@@ -81,13 +88,8 @@ call :sw_ask_fine_tune
 call :sw_ask_config_file
 
 :configure
-set SW_ICU_VERSION=67
-set SW_CURL_VERSION=development
-set SW_XML2_VERSION=development
-set SW_ZLIB_VERSION=1.2.11
-set SW_SQLITE_RELEASE=3300100
-set SW_SQLITE_VERSION=3.30.1
-set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
+
+if not defined SW_ARTIFACTS_DIR set SW_ARTIFACTS_DIR=%SW_INSTALL_DIR%
 
 call :sw_normalize_parameters_for_saving
 
@@ -217,6 +219,7 @@ if "%NEXT_ARG%"=="SW_SWIFT_SDK_SPEC"                    goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_SOURCES_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_ARTIFACTS_DIR"                     goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_PYTHON_DIR"                        goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
@@ -246,6 +249,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--sources-dir" (               set NEXT_ARG=SW_SOURCES_DIR
 ) else if "%CURRENT_ARG%"=="--build-dir" (                 set NEXT_ARG=SW_BUILD_DIR
 ) else if "%CURRENT_ARG%"=="--install-dir" (               set NEXT_ARG=SW_INSTALL_DIR
+) else if "%CURRENT_ARG%"=="--artifacts-dir" (             set NEXT_ARG=SW_ARTIFACTS_DIR
 ) else if "%CURRENT_ARG%"=="--python-dir" (                set NEXT_ARG=SW_PYTHON_DIR
 ) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
@@ -295,6 +299,7 @@ for %%G in (SW_INTERACTIVE^
  SW_SOURCES_DIR^
  SW_BUILD_DIR^
  SW_INSTALL_DIR^
+ SW_ARTIFACTS_DIR^
  SW_PYTHON_DIR^
  SW_CONFIG_FILE^
  SW_OBJC_PATCH_ENABLED^

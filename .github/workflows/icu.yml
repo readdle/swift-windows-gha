@@ -1,0 +1,77 @@
+name: icu
+on:
+  push:
+    paths: 
+      - .github/workflows/icu.yml
+      - cmake/icu/**
+      - scripts/build.cmd
+      - scripts/configure.cmd
+      - scripts/tools/**
+      - scripts/workflows/*
+      - scripts/workflows/jobs/icu.cmd
+      - scripts/workflows/jobs/steps/icu/**
+
+  schedule:
+    - cron: '30 21 * * *'
+
+jobs:
+  icu:
+
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Prepare Build Drive
+        run: |
+          call scripts\tools\get-free-drive.cmd
+          subst %SW_FREE_DRIVE% ${{ github.workspace }}
+          echo SW_WORK_DIR=%SW_FREE_DRIVE%>>%GITHUB_ENV%
+
+      - name: Configure Build
+        run: |
+          subst
+
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir %SW_WORK_DIR%\s^
+           --build-dir %SW_WORK_DIR%\b^
+           --install-dir %SW_WORK_DIR%\i^
+           --artifacts-dir %SW_WORK_DIR%\a^
+           --skip-toolchain=YES^
+           --skip-curl=YES^
+           --skip-xml2=YES^
+           --skip-zlib=YES^
+           --skip-sdk=YES^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+           
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout ICU
+        run: scripts\workflows\jobs\steps\icu\checkout-icu.cmd
+
+      - name: Patch ICU
+        run: scripts\workflows\jobs\steps\icu\patch-icu.cmd
+
+      - name: Configure ICU
+        run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
+
+      - name: Build ICU
+        run: scripts\workflows\jobs\steps\icu\build-icu.cmd
+
+      - name: Install ICU
+        run: scripts\workflows\jobs\steps\icu\install-icu.cmd
+
+      - name: Remove Build Drive
+        if: always()
+        run: subst /d %SW_WORK_DIR%

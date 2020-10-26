@@ -1,8 +1,5 @@
 setlocal
 
-set SW_LOG_ICU_INFO=%SW_LOG_INFO% --scope icu
-set SW_LOG_ICU_WARNING=%SW_LOG_WARNING% --scope icu
-
 %SW_PRE_JOB% --name="ICU" --flag=SW_SKIP_ICU
 if errorlevel 1 exit /b 0
 
@@ -16,6 +13,6 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\install-icu.cmd
 
 set SW_ERROR=%ERRORLEVEL%
-subst T: /d
+subst /d %SW_ICU_DRIVE%
 
 endlocal & exit /b %SW_ERROR%

@@ -2,8 +2,10 @@ name: swift-build-script
 on:
   push:
     paths-ignore: 
-      - .github/workflows/swift-master.yml
+      - .github/workflows/icu.yml
       - .github/workflows/swift-5.3.yml
+      - .github/workflows/swift-master.yml
+      - doc/**
       - LICENSE
       - README.md
 
