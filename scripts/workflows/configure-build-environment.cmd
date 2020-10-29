@@ -18,6 +18,7 @@ set SW_LOG_BUILD_ERROR=%SW_LOG_ERROR% --scope build
 set SW_SET_ENV=call "%SW_WORKSPACE%\scripts\tools\set-env.cmd"
 set SW_PRE_STEP=call "%SW_WORKSPACE%\scripts\tools\pre-step.cmd"
 set SW_PRE_JOB=call "%SW_WORKSPACE%\scripts\tools\pre-job.cmd"
+set SW_PLUTIL=powershell -ExecutionPolicy Bypass "%SW_WORKSPACE%\scripts\tools\plutil.ps1"
 
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="Workspace:               " --message="%SW_WORKSPACE%"
