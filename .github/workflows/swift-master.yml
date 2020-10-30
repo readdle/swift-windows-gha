@@ -496,6 +496,9 @@ jobs:
       - name: Install libdispatch
         run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
+      - name: Generate plists
+        run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
