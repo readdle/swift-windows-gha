@@ -198,12 +198,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        patch: [clean, no-objc]
+        spec: [apple, readdle]
         include:
-          - patch: clean
+          - spec: apple
             enable-no-objc-patch: NO
             skip-swift-test: NO
-          - patch: no-objc
+          - spec: readdle
             enable-no-objc-patch: YES
             skip-swift-test: YES
 
@@ -214,6 +214,7 @@ jobs:
     env:
       SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
       SW_SKIP_TOOLCHAIN_SWIFT_TEST: ${{ matrix.skip-swift-test }}
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
 
     steps:
       - name: Checkout 
@@ -252,7 +253,7 @@ jobs:
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-libdispatch'
+          repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
@@ -276,7 +277,7 @@ jobs:
 
       - name: Collect Checkout Info
         run: |
-          mkdir %GITHUB_WORKSPACE%\checkout
+          mkdir %SW_WORKSPACE%\checkout
           git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\llvm-project.txt
           git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift-cmark.txt
           git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %SW_WORKSPACE%\checkout\swift.txt
@@ -285,7 +286,7 @@ jobs:
       - name: Upload Checkout Info
         uses: actions/upload-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.spec }}
           path: 'checkout'
 
       - name: Configure LLVM Build Tools
@@ -318,7 +319,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: toolchain-${{ matrix.patch }}
+          name: toolchain-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure Test Environment
@@ -328,21 +329,27 @@ jobs:
         continue-on-error: true
         run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
 
-      - name: Check Windows Defender
-        run: |
-          sc query WinDefend
-
   sdk:
 
     runs-on: windows-latest
     needs: [curl, icu, libxml2, toolchain, zlib]
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: [apple, readdle]
+        include:
+          - spec: apple
+            stdlib-patch-enabled: NO 
+          - spec: readdle
+            stdlib-patch-enabled: YES
+
     defaults:
       run:
         shell: cmd
 
     env:
-      SW_FOUNDATION_REF: 'main'
-      SW_XCTEST_REF: 'main'
+      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
+      SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
 
     steps:
       - name: Checkout
@@ -351,7 +358,7 @@ jobs:
       - name: Download Checkout Info
         uses: actions/download-artifact@v1
         with:
-          name: checkout
+          name: checkout-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}/checkout'
 
       - name: Read Checkout Info
@@ -401,7 +408,7 @@ jobs:
       - name: Checkout libdispatch
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-libdispatch'
+          repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
           fetch-depth: 1
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
@@ -409,7 +416,7 @@ jobs:
       - name: Checkout foundation
         uses: actions/checkout@v2
         with:
-          repository: 'apple/swift-corelibs-foundation'
+          repository: ${{ env.SW_FOUNDATION_REPO }}
           ref: ${{ env.SW_FOUNDATION_REF }}
           fetch-depth: 1
           path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
@@ -451,7 +458,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
-          name: toolchain-clean
+          name: toolchain-${{ matrix.spec }}
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
       - name: Configure SDK Modules
@@ -502,7 +509,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: sdk
+          name: sdk-${{ matrix.spec }}
           path: ${{ env.SW_INSTALL_DIR }}
 
       - name: Configure libdispatch Tests

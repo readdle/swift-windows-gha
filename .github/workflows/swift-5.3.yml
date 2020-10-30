@@ -525,7 +525,7 @@ jobs:
       - name: Build Foundation Tests
         run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
-      - name: Test Foundation
+      - name: Test Foundation (CTest)
         continue-on-error: true
         run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
 
