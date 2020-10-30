@@ -55,6 +55,18 @@ if /i [%SW_LEVEL%]==[info] (
   set SW_LEVEL=ERR
 )
 
+if defined GITHUB_ACTIONS (
+  if /i [%SW_LEVEL%]==[WRN] (
+    set "SW_LEVEL_INDICATOR=::warning ::"
+  ) else if /i [%SW_LEVEL%]==[ERR] (
+    set "SW_LEVEL_INDICATOR=::error ::"
+  ) else (
+    set "SW_LEVEL_INDICATOR=[%SW_LEVEL_COLOR%%SW_LEVEL%%SW_LOG_RESET%] "
+  )
+) else (
+  set "SW_LEVEL_INDICATOR=[%SW_LEVEL_COLOR%%SW_LEVEL%%SW_LOG_RESET%] "
+)
+
 if defined SW_SCOPE call :escape_and_dequote SW_SCOPE %SW_SCOPE%
 if defined SW_PREFIX call :escape_and_dequote SW_PREFIX %SW_PREFIX%
 if defined SW_MESSAGE call :escape_and_dequote SW_MESSAGE %SW_MESSAGE%
@@ -63,7 +75,7 @@ rem *** Add spacers
 if defined SW_SCOPE set "SW_SCOPE=%SW_SCOPE% "
 if defined SW_PREFIX set "SW_PREFIX=%SW_PREFIX% "
 
-echo.[%SW_LEVEL_COLOR%%SW_LEVEL%%SW_LOG_RESET%] %SW_SCOPE%%SW_LOG_MAGENTA%%SW_PREFIX%%SW_LOG_RESET%%SW_MESSAGE%
+echo.%SW_LEVEL_INDICATOR%%SW_SCOPE%%SW_LOG_MAGENTA%%SW_PREFIX%%SW_LOG_RESET%%SW_MESSAGE%
 
 endlocal
 goto :eof
