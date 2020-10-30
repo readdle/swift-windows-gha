@@ -5,6 +5,9 @@ if errorlevel 1 exit /b 0
 
 cmake --build %SW_DISPATCH_BUILD_DIR% --target ExperimentalTest
 
-if %SW_IGNORE_TEST_FAILURES% neq 0 exit /b 0
+if errorlevel 1 (
+  %SW_LOG_WARNING% --scope="sdk" --message="libdispatch test failed"
+)
+exit /b 0
 
 endlocal

@@ -12,9 +12,6 @@ if errorlevel 1 goto :eof
 
 call "%SW_WORKSPACE%\scripts\workflows\load-configuration.cmd"
 
-:: Forces build to continue when testing fails
-set SW_IGNORE_TEST_FAILURES=1
-
 :: Steps in workflow are executed in isolated environment.
 :: Steps in build script has one global environment.
 :: This option hints set-env script how to work with environment variables.

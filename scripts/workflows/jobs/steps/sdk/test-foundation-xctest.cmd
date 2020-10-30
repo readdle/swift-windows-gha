@@ -5,6 +5,9 @@ if errorlevel 1 exit /b 0
 
 %SW_FOUNDATION_BUILD_DIR%\TestFoundation.app\TestFoundation.exe
 
-if %SW_IGNORE_TEST_FAILURES% neq 0 exit /b 0
+if errorlevel 1 (
+  %SW_LOG_WARNING% --scope="sdk" --message="Foundation test (XCTest) failed"
+)
+exit /b 0
 
 endlocal

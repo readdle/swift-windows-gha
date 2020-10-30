@@ -5,6 +5,9 @@ if errorlevel 1 exit /b 0
 
 cmake --build %SW_TOOLCHAIN_BUILD_DIR% --target check-swift
 
-if %SW_IGNORE_TEST_FAILURES% neq 0 exit /b 0
+if errorlevel 1 (
+  %SW_LOG_WARNING% --scope="toolchain" --message="Swift check failed"
+)
+exit /b 0
 
 endlocal
