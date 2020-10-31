@@ -229,7 +229,7 @@ jobs:
       - name: Download ICU
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: icu
+          workflow: icu.yml
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
@@ -287,7 +287,7 @@ jobs:
   sdk:
 
     runs-on: windows-latest
-    needs: [curl, icu, libxml2, toolchain, zlib]
+    needs: [curl, libxml2, toolchain, zlib]
     strategy:
       fail-fast: false
       matrix:
@@ -391,8 +391,9 @@ jobs:
         run: scripts\workflows\jobs\steps\sdk\patch-stdlib.cmd
 
       - name: Download ICU
-        uses: actions/download-artifact@v1
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: icu.yml
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download curl
