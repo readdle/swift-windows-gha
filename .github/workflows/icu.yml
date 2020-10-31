@@ -72,6 +72,12 @@ jobs:
       - name: Install ICU
         run: scripts\workflows\jobs\steps\icu\install-icu.cmd
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: icu
+          path: ${{ env.SW_INSTALL_DIR }}
+
       - name: Remove Build Drive
         if: always()
         run: subst /d %SW_WORK_DIR%
