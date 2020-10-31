@@ -25,48 +25,6 @@ env:
   SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
-  icu:
-
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
-
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
-      - name: Configure Build Environment
-        run: |
-          call scripts\workflows\configure-build-environment.cmd
-          call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
-
-      - name: Checkout ICU
-        uses: actions/checkout@v2
-        with:
-          repository: 'unicode-org/icu'
-          ref: '${{ env.SW_ICU_REF }}'
-          fetch-depth: 1
-          path: '${{ env.SW_ICU_SOURCES_DIR }}'
-
-      - name: Patch ICU
-        run: scripts\workflows\jobs\steps\icu\patch-icu.cmd
-
-      - name: Configure ICU
-        run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
-
-      - name: Build ICU
-        run: scripts\workflows\jobs\steps\icu\build-icu.cmd
-
-      - name: Install ICU
-        run: scripts\workflows\jobs\steps\icu\install-icu.cmd
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: icu
-          path: ${{ env.SW_INSTALL_DIR }}
-
   curl:
 
     runs-on: windows-latest
@@ -194,7 +152,6 @@ jobs:
   toolchain:
 
     runs-on: windows-latest
-    needs: [icu]
     strategy:
       fail-fast: false
       matrix:
@@ -270,8 +227,9 @@ jobs:
         run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
 
       - name: Download ICU
-        uses: actions/download-artifact@v1
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: icu
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
