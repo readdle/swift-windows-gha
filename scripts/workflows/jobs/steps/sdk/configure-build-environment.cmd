@@ -93,3 +93,5 @@ call scripts\tools\set-env.cmd PATH "%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
 %SW_LOG_SDK_INFO% --prefix="XML2 dir:                " --message="%SW_XML2_PATH%"
 %SW_LOG_SDK_INFO% --prefix="ZLIB dir:                " --message="%SW_ZLIB_PATH%"
 %SW_LOG_SDK_INFO%
+%SW_LOG_SDK_INFO% --prefix="PATH:                    " --message="%PATH%"
+%SW_LOG_SDK_INFO%
