@@ -29,7 +29,6 @@ jobs:
   curl:
 
     runs-on: windows-latest
-    needs: [zlib]
     defaults:
       run:
         shell: cmd
@@ -52,8 +51,9 @@ jobs:
           path: '${{ env.SW_CURL_SOURCES_DIR }}'
 
       - name: Download zlib
-        uses: actions/download-artifact@v1
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: zlib.yml
           name: zlib
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
@@ -109,45 +109,6 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: libxml2
-          path: ${{ env.SW_INSTALL_DIR }}
-
-  zlib:
-
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
-
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
-      - name: Configure Build Environment
-        run: |
-          call scripts\workflows\configure-build-environment.cmd
-          call scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
-
-      - name: Checkout zlib
-        uses: actions/checkout@v2
-        with:
-          repository: 'madler/zlib'
-          ref: '${{ env.SW_ZLIB_REF }}'
-          fetch-depth: 1
-          path: '${{ env.SW_ZLIB_SOURCES_DIR }}'
-
-      - name: Configure zlib
-        run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
-
-      - name: Build zlib
-        run: scripts\workflows\jobs\steps\zlib\build-zlib.cmd
-
-      - name: Install zlib
-        run: scripts\workflows\jobs\steps\zlib\install-zlib.cmd
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: zlib
           path: ${{ env.SW_INSTALL_DIR }}
 
   toolchain:
@@ -291,7 +252,7 @@ jobs:
   sdk:
 
     runs-on: windows-latest
-    needs: [curl, libxml2, toolchain, zlib]
+    needs: [curl, libxml2, toolchain]
     strategy:
       fail-fast: false
       matrix:
@@ -400,6 +361,12 @@ jobs:
           workflow: icu.yml
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: zlib.yml
+          name: zlib
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download curl
         uses: actions/download-artifact@v1
         with:
@@ -409,11 +376,6 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: libxml2
-          path: '${{ env.SW_ARTIFACTS_DIR }}'
-      - name: Download zlib
-        uses: actions/download-artifact@v1
-        with:
-          name: zlib
           path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download toolchain
         uses: actions/download-artifact@v1
