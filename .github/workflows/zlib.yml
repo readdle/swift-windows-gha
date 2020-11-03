@@ -1,0 +1,67 @@
+name: zlib
+on:
+  push:
+    paths: 
+      - .github/workflows/zlib.yml
+      - cmake/caches/windows-x86_64.cmake
+      - scripts/build.cmd
+      - scripts/configure.cmd
+      - scripts/tools/**
+      - scripts/workflows/*
+      - scripts/workflows/jobs/steps/zlib/**
+
+  schedule:
+    - cron: '30 21 * * *'
+
+jobs:
+  zlib:
+
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir %GITHUB_WORKSPACE%\s^
+           --build-dir %GITHUB_WORKSPACE%\b^
+           --install-dir %GITHUB_WORKSPACE%\i^
+           --artifacts-dir %GITHUB_WORKSPACE%\a^
+           --skip-icu=YES^
+           --skip-toolchain=YES^
+           --skip-curl=YES^
+           --skip-xml2=YES^
+           --skip-sdk=YES^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+           
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout zlib
+        run: scripts\workflows\jobs\steps\zlib\checkout-zlib.cmd
+
+      - name: Configure zlib
+        run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
+
+      - name: Build zlib
+        run: scripts\workflows\jobs\steps\zlib\build-zlib.cmd
+
+      - name: Install zlib
+        run: scripts\workflows\jobs\steps\zlib\install-zlib.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: zlib
+          path: ${{ env.SW_INSTALL_DIR }}

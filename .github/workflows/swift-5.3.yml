@@ -5,6 +5,7 @@ on:
       - .github/workflows/icu.yml
       - .github/workflows/swift-build-script.yml
       - .github/workflows/swift-master.yml
+      - .github/workflows/zlib.yml
       - doc/**
       - LICENSE
       - README.md

@@ -4,11 +4,11 @@ on:
     paths: 
       - .github/workflows/icu.yml
       - cmake/icu/**
+      - cmake/caches/windows-x86_64.cmake
       - scripts/build.cmd
       - scripts/configure.cmd
       - scripts/tools/**
       - scripts/workflows/*
-      - scripts/workflows/jobs/icu.cmd
       - scripts/workflows/jobs/steps/icu/**
 
   schedule:
