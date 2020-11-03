@@ -65,9 +65,9 @@ if defined SW_PREFIX set "SW_PREFIX=%SW_PREFIX% "
 
 if defined GITHUB_ACTIONS (
   if /i [%SW_LEVEL%]==[WRN] (
-    echo ::warning ::%SW_SCOPE%%SW_PREFIX%%SW_MESSAGE%
+    echo.::warning ::%SW_SCOPE%%SW_PREFIX%%SW_MESSAGE%
   ) else if /i [%SW_LEVEL%]==[ERR] (
-    echo ::error ::%SW_SCOPE%%SW_PREFIX%%SW_MESSAGE%
+    echo.::error ::%SW_SCOPE%%SW_PREFIX%%SW_MESSAGE%
   ) else (
     echo.[%SW_LEVEL_COLOR%%SW_LEVEL%%SW_LOG_RESET%] %SW_SCOPE%%SW_LOG_MAGENTA%%SW_PREFIX%%SW_LOG_RESET%%SW_MESSAGE%
   )
