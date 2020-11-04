@@ -1,0 +1,75 @@
+name: zlcurlib
+on:
+  push:
+    paths: 
+      - .github/workflows/curl.yml
+      - cmake/caches/curl.cmake
+      - cmake/caches/windows-x86_64.cmake
+      - scripts/build.cmd
+      - scripts/configure.cmd
+      - scripts/tools/**
+      - scripts/workflows/*
+      - scripts/workflows/jobs/steps/curl/**
+
+  schedule:
+    - cron: '40 21 * * *'
+
+jobs:
+  curl:
+
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir %GITHUB_WORKSPACE%\s^
+           --build-dir %GITHUB_WORKSPACE%\b^
+           --install-dir %GITHUB_WORKSPACE%\i^
+           --artifacts-dir %GITHUB_WORKSPACE%\a^
+           --skip-icu=YES^
+           --skip-toolchain=YES^
+           --skip-xml2=YES^
+           --skip-zlib=YES^
+           --skip-sdk=YES^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout curl
+        run: scripts\workflows\jobs\steps\curl\checkout-curl.cmd
+
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: zlib.yml
+          name: zlib
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
+
+      - name: Configure curl
+        run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
+
+      - name: Build curl
+        run: scripts\workflows\jobs\steps\curl\build-curl.cmd
+
+      - name: Install curl
+        run: scripts\workflows\jobs\steps\curl\install-curl.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: curl
+          path: ${{ env.SW_INSTALL_DIR }}
