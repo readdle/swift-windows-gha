@@ -1,4 +1,4 @@
-name: zlcurlib
+name: curl
 on:
   push:
     paths: 
