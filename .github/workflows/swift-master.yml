@@ -2,6 +2,7 @@ name: swift-master
 on:
   push:
     paths-ignore: 
+      - .github/workflows/curl.yml
       - .github/workflows/icu.yml
       - .github/workflows/swift-5.3.yml
       - .github/workflows/swift-build-script.yml
