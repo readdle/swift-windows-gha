@@ -27,52 +27,6 @@ env:
   SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
-  curl:
-
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Configure Build Environment
-        run: |
-          call scripts\workflows\configure-build-environment.cmd
-          call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
-
-      - name: Checkout curl
-        uses: actions/checkout@v2
-        with:
-          repository: 'curl/curl'
-          ref: '${{ env.SW_CURL_REF }}'
-          fetch-depth: 1
-          path: '${{ env.SW_CURL_SOURCES_DIR }}'
-
-      - name: Download zlib
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: zlib.yml
-          name: zlib
-          path: '${{ env.SW_ARTIFACTS_DIR }}'
-
-      - name: Configure curl
-        run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
-
-      - name: Build curl
-        run: scripts\workflows\jobs\steps\curl\build-curl.cmd
-
-      - name: Install curl
-        run: scripts\workflows\jobs\steps\curl\install-curl.cmd
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: curl
-          path: ${{ env.SW_INSTALL_DIR }}
-
   libxml2:
 
     runs-on: windows-latest
@@ -250,7 +204,7 @@ jobs:
   sdk:
 
     runs-on: windows-latest
-    needs: [curl, libxml2, toolchain]
+    needs: [libxml2, toolchain]
     strategy:
       fail-fast: false
       matrix:
@@ -365,9 +319,10 @@ jobs:
           workflow: zlib.yml
           name: zlib
           path: '${{ env.SW_ARTIFACTS_DIR }}'
-      - name: Download curl
-        uses: actions/download-artifact@v1
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: curl.yml
           name: curl
           path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download libxml2
