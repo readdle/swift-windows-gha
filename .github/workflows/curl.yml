@@ -1,20 +1,21 @@
-name: zlib
+name: curl
 on:
   push:
     paths: 
-      - .github/workflows/zlib.yml
+      - .github/workflows/curl.yml
+      - cmake/caches/curl.cmake
       - cmake/caches/windows-x86_64.cmake
       - scripts/build.cmd
       - scripts/configure.cmd
       - scripts/tools/**
       - scripts/workflows/*
-      - scripts/workflows/jobs/steps/zlib/**
+      - scripts/workflows/jobs/steps/curl/**
 
   schedule:
-    - cron: '30 21 * * *'
+    - cron: '40 21 * * *'
 
 jobs:
-  zlib:
+  curl:
 
     runs-on: windows-latest
     defaults:
@@ -35,8 +36,8 @@ jobs:
            --artifacts-dir %GITHUB_WORKSPACE%\a^
            --skip-icu=YES^
            --skip-toolchain=YES^
-           --skip-curl=YES^
            --skip-xml2=YES^
+           --skip-zlib=YES^
            --skip-sdk=YES^
            --skip-sqlite=YES^
            --skip-devtools=YES
@@ -45,23 +46,30 @@ jobs:
         run: |
           call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
-          call scripts\workflows\jobs\steps\zlib\configure-build-environment.cmd
+          call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
 
-      - name: Checkout zlib
-        run: scripts\workflows\jobs\steps\zlib\checkout-zlib.cmd
+      - name: Checkout curl
+        run: scripts\workflows\jobs\steps\curl\checkout-curl.cmd
 
-      - name: Configure zlib
-        run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: zlib.yml
+          name: zlib
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
 
-      - name: Build zlib
-        run: scripts\workflows\jobs\steps\zlib\build-zlib.cmd
+      - name: Configure curl
+        run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
 
-      - name: Install zlib
-        run: scripts\workflows\jobs\steps\zlib\install-zlib.cmd
+      - name: Build curl
+        run: scripts\workflows\jobs\steps\curl\build-curl.cmd
+
+      - name: Install curl
+        run: scripts\workflows\jobs\steps\curl\install-curl.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: zlib
+          name: curl
           path: ${{ env.SW_INSTALL_DIR }}

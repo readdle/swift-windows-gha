@@ -49,7 +49,7 @@ jobs:
            --skip-sdk=YES^
            --skip-sqlite=YES^
            --skip-devtools=YES
-           
+
       - name: Configure Environment
         run: |
           call scripts\workflows\configure-build-environment.cmd
