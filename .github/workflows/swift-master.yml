@@ -28,45 +28,6 @@ env:
   SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
-  libxml2:
-
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
-
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
-      - name: Configure Build Environment
-        run: |
-          call scripts\workflows\configure-build-environment.cmd
-          call scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
-
-      - name: Checkout libxml2
-        uses: actions/checkout@v2
-        with:
-          repository: 'compnerd/libxml2'
-          ref: '${{ env.SW_XML2_REF }}'
-          fetch-depth: 1
-          path: '${{ env.SW_XML2_SOURCES_DIR }}'
-
-      - name: Configure libxml2
-        run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
-
-      - name: Build libxml2
-        run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
-
-      - name: Install libxml2
-        run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: libxml2
-          path: ${{ env.SW_INSTALL_DIR }}
-
   toolchain:
 
     runs-on: windows-latest
@@ -208,7 +169,7 @@ jobs:
   sdk:
 
     runs-on: windows-latest
-    needs: [libxml2, toolchain]
+    needs: [toolchain]
     strategy:
       fail-fast: false
       matrix:
@@ -323,15 +284,16 @@ jobs:
           workflow: zlib.yml
           name: zlib
           path: '${{ env.SW_ARTIFACTS_DIR }}'
-      - name: Download zlib
+      - name: Download curl
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: curl.yml
           name: curl
           path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download libxml2
-        uses: actions/download-artifact@v1
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: libxml2.yml
           name: libxml2
           path: '${{ env.SW_ARTIFACTS_DIR }}'
       - name: Download toolchain
