@@ -1,0 +1,68 @@
+name: libxml2
+on:
+  push:
+    paths: 
+      - .github/workflows/libxml2.yml
+      - cmake/caches/libxml2.cmake
+      - cmake/caches/windows-x86_64.cmake
+      - scripts/build.cmd
+      - scripts/configure.cmd
+      - scripts/tools/**
+      - scripts/workflows/*
+      - scripts/workflows/jobs/steps/libxml2/**
+
+  schedule:
+    - cron: '30 21 * * *'
+
+jobs:
+  libxml2:
+
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir %GITHUB_WORKSPACE%\s^
+           --build-dir %GITHUB_WORKSPACE%\b^
+           --install-dir %GITHUB_WORKSPACE%\i^
+           --artifacts-dir %GITHUB_WORKSPACE%\a^
+           --skip-icu=YES^
+           --skip-toolchain=YES^
+           --skip-curl=YES^
+           --skip-zlib=YES^
+           --skip-sdk=YES^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout libxml2
+        run: scripts\workflows\jobs\steps\libxml2\checkout-libxml2.cmd
+
+      - name: Configure libxml2
+        run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
+
+      - name: Build libxml2
+        run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
+
+      - name: Install libxml2
+        run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: libxml2
+          path: ${{ env.SW_INSTALL_DIR }}

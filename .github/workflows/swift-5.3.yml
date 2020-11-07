@@ -4,6 +4,7 @@ on:
     paths-ignore: 
       - .github/workflows/curl.yml
       - .github/workflows/icu.yml
+      - .github/workflows/libxml2.yml
       - .github/workflows/swift-build-script.yml
       - .github/workflows/swift-master.yml
       - .github/workflows/zlib.yml
