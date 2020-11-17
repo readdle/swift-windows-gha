@@ -344,6 +344,9 @@ jobs:
       - name: Install libdispatch
         run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
+      - name: Install Module Maps
+        run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
+
       - name: Generate plists
         run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
 

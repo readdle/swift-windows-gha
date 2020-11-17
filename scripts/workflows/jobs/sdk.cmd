@@ -25,6 +25,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\install-foundation.cmd^
  && call %SW_STEPS_DIR%\install-xctest.cmd^
  && call %SW_STEPS_DIR%\install-libdispatch.cmd^
+ && call %SW_STEPS_DIR%\install-module-maps.cmd^
  && call %SW_STEPS_DIR%\generate-plists.cmd^
  && call %SW_STEPS_DIR%\configure-libdispatch-tests.cmd^
  && call %SW_STEPS_DIR%\build-libdispatch-tests.cmd^
