@@ -64,7 +64,7 @@ index 9f9be824..fe60c713 100644
    }
  
 +  if (auto SF = CurDeclContext->getParentSourceFile()) {
-+    if (!getScopeInfo().isInactiveConfigBlock()) {
++    if (!InInactiveClauseEnvironment) {
 +
 +      bool ObjCAttrDisabled = Context.LangOpts.DisableObjCAttr
 +        && !Context.LangOpts.EnableObjCInterop; // do nothing if ObjCInterop enabled
