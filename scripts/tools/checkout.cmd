@@ -45,7 +45,7 @@ set SW_PUSHDIR=%CD%
 rem *** Check and preprocess ref.
 rem     If ref parameter is exactly 40 characters long and consists 
 rem     only hex digits, it is considered as commit hash.
-if [%SW_REF%]==[] set SW_REF=master
+if [%SW_REF%]==[] set SW_REF=main
 echo.%SW_REF%| findstr /r /c:"^[0-9a-fA-F]*$" >nul 2>&1
 if not errorlevel 1 (
   echo %SW_REF%> ref.tmp& for %%? in (ref.tmp) do set /a SW_STRLEN=%%~z? - 2 & del ref.tmp

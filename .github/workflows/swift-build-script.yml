@@ -6,7 +6,7 @@ on:
       - .github/workflows/icu.yml
       - .github/workflows/libxml2.yml
       - .github/workflows/swift-5.3.yml
-      - .github/workflows/swift-master.yml
+      - .github/workflows/swift-main.yml
       - .github/workflows/zlib.yml
       - doc/**
       - LICENSE
@@ -26,14 +26,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [master, 5.3]
+        branch: [main, 5.3]
         patch: [clean, no-objc]
         include:
           - patch: clean
             enable-no-objc-patch: NO
           - patch: no-objc
             enable-no-objc-patch: YES
-          - branch: master
+          - branch: main
             python-version: 3.7.x
           - branch: 5.3
             python-version: 2.7.x

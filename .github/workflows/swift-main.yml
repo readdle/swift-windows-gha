@@ -1,4 +1,4 @@
-name: swift-master
+name: swift-main
 on:
   push:
     paths-ignore: 
@@ -16,7 +16,7 @@ on:
     - cron: '0 22 * * *'
 
 env:
-  SW_SWIFT_BRANCH_SPEC: master
+  SW_SWIFT_BRANCH_SPEC: main
   SW_CURL_VERSION: development
   SW_ICU_VERSION: 67
   SW_XML2_VERSION: development

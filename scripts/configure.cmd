@@ -10,7 +10,7 @@ set SW_LOG_WARNING=%SW_LOG_WARNING% --scope config
 
 set SW_INTERACTIVE=YES
 
-set SW_SWIFT_BRANCH_SPEC=master
+set SW_SWIFT_BRANCH_SPEC=main
 set SW_SWIFT_SDK_SPEC=apple
 set SW_SOURCES_DIR=%CD%\w\s
 set SW_BUILD_DIR=%CD%\w\b
@@ -58,7 +58,7 @@ if "%SW_INTERACTIVE%"=="NO" (
   %SW_LOG_INFO% --message="Interactive mode"
 )
 
-if /i "%SW_SWIFT_BRANCH_SPEC%"=="master" (
+if /i "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   set SW_BRANCH_NUM=1
 ) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
   set SW_BRANCH_NUM=2
@@ -146,7 +146,7 @@ if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabl
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (CTest)" )
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (XCTest)" )
 if "%SW_SKIP_SQLITE%"=="YES"               ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="SQLite" )
-if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="master" (
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   %SW_LOG_INFO%
   %SW_LOG_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3 is not guaranteed."
 )
@@ -341,7 +341,7 @@ set VALUE=!%PARAMETER%!
 if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
-  if /i not "%VALUE%"=="master" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
   if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
@@ -547,13 +547,13 @@ set SW_ORIGINAL_VALUE=%SW_BRANCH_NUM%
 
 :sw_ask_branch_input
 echo Available branches:
-echo.  1. master
+echo.  1. main
 echo.  2. 5.3
 
 set /p SW_BRANCH_NUM="Enter branch number to build (%SW_BRANCH_NUM%): "
 
 if "%SW_BRANCH_NUM%"=="1" (
-  set SW_SWIFT_BRANCH_SPEC=master
+  set SW_SWIFT_BRANCH_SPEC=main
 ) else if "%SW_BRANCH_NUM%"=="2" (
   set SW_SWIFT_BRANCH_SPEC=5.3
 ) else (
