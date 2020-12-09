@@ -1,6 +1,6 @@
 setlocal enabledelayedexpansion
 
-if not "%SW_SWIFT_BRANCH_SPEC%"=="master" (
+if not "%SW_SWIFT_BRANCH_SPEC%"=="main" (
    echo Skipping swift-serialize-diagnostics
    goto :eof
 )
