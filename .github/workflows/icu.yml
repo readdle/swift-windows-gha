@@ -38,10 +38,10 @@ jobs:
 
           scripts\configure.cmd^
            --interactive=NO^
-           --sources-dir %SW_WORK_DIR%\s^
-           --build-dir %SW_WORK_DIR%\b^
-           --install-dir %SW_WORK_DIR%\i^
-           --artifacts-dir %SW_WORK_DIR%\a^
+           --sources-dir=%SW_WORK_DIR%\s^
+           --build-dir=%SW_WORK_DIR%\b^
+           --install-dir=%SW_WORK_DIR%\i^
+           --artifacts-dir=%SW_WORK_DIR%\a^
            --skip-toolchain=YES^
            --skip-curl=YES^
            --skip-xml2=YES^
