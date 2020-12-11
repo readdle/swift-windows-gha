@@ -16,11 +16,6 @@ on:
     - cron: '0 22 * * *'
 
 env:
-  SW_SWIFT_BRANCH_SPEC: 5.3
-  SW_CURL_VERSION: development
-  SW_ICU_VERSION: 67
-  SW_XML2_VERSION: development
-  SW_ZLIB_VERSION: 1.2.11
   SW_WORKSPACE: ${{ github.workspace }}
   SW_SOURCES_DIR: ${{ github.workspace }}\s
   SW_BUILD_DIR: ${{ github.workspace }}\b
@@ -47,11 +42,6 @@ jobs:
       run:
         shell: cmd
 
-    env:
-      SW_OBJC_PATCH_ENABLED: ${{ matrix.enable-no-objc-patch }}
-      SW_SKIP_TOOLCHAIN_SWIFT_TEST: ${{ matrix.skip-swift-test }}
-      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -61,11 +51,33 @@ jobs:
         with:
           python-version: 2.7.x
 
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --branch=5.3^
+           --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
+           --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
+           --sdk=${{ matrix.spec }}^
+           --skip-icu=YES^
+           --skip-toolchain=NO^
+           --skip-curl=YES^
+           --skip-xml2=YES^
+           --skip-zlib=YES^
+           --skip-sdk=YES^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+
       - name: Configure Build Environment
         run: |
-          set SW_PYTHON_DIR=%pythonLocation%
           call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
 
       - name: Configure Git
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
@@ -181,10 +193,6 @@ jobs:
       run:
         shell: cmd
 
-    env:
-      SW_SWIFT_SDK_SPEC: ${{ matrix.spec }}
-      SW_STDLIB_PATCH_ENABLED: ${{ matrix.stdlib-patch-enabled }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -214,11 +222,32 @@ jobs:
         with:
           python-version: 2.7.x
 
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --branch=5.3^
+           --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
+           --sdk=${{ matrix.spec }}^
+           --skip-icu=YES^
+           --skip-toolchain=YES^
+           --skip-curl=YES^
+           --skip-xml2=YES^
+           --skip-zlib=YES^
+           --skip-sdk=NO^
+           --skip-sqlite=YES^
+           --skip-devtools=YES
+
       - name: Configure Build Environment
         run: |
-          set SW_PYTHON_DIR=%pythonLocation%
           call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
 
       - name: Configure Git
         run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
