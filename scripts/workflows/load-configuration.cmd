@@ -56,6 +56,8 @@ if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_INFO% --prefix="Step 
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="SDK - Build Foundation Tests" )
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (CTest)" )
 if "%SW_SKIP_SDK_FOUNDATION_TEST%"=="YES"  ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="SDK - Test Foundation (XCTest)" )
+if "%SW_SKIP_SQLITE%"=="YES"               ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="SQLite" )
+if "%SW_SKIP_DEVTOOLS%"=="YES"             ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="DevTools" )
 if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   %SW_LOG_BUILD_INFO%
   %SW_LOG_BUILD_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3 is not guaranteed."
