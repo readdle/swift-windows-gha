@@ -61,15 +61,7 @@ jobs:
            --branch=main^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
-           --sdk=${{ matrix.spec }}^
-           --skip-icu=YES^
-           --skip-toolchain=NO^
-           --skip-curl=YES^
-           --skip-xml2=YES^
-           --skip-zlib=YES^
-           --skip-sdk=YES^
-           --skip-sqlite=YES^
-           --skip-devtools=YES
+           --sdk=${{ matrix.spec }}
 
       - name: Configure Build Environment
         run: |
@@ -234,15 +226,7 @@ jobs:
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
            --branch=main^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
-           --sdk=${{ matrix.spec }}^
-           --skip-icu=YES^
-           --skip-toolchain=YES^
-           --skip-curl=YES^
-           --skip-xml2=YES^
-           --skip-zlib=YES^
-           --skip-sdk=NO^
-           --skip-sqlite=YES^
-           --skip-devtools=YES
+           --sdk=${{ matrix.spec }}
 
       - name: Configure Build Environment
         run: |
