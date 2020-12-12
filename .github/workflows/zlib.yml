@@ -32,14 +32,7 @@ jobs:
            --sources-dir=%GITHUB_WORKSPACE%\s^
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
-           --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --skip-icu=YES^
-           --skip-toolchain=YES^
-           --skip-curl=YES^
-           --skip-xml2=YES^
-           --skip-sdk=YES^
-           --skip-sqlite=YES^
-           --skip-devtools=YES
+           --artifacts-dir=%GITHUB_WORKSPACE%\a
 
       - name: Configure Environment
         run: |
