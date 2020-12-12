@@ -27,12 +27,14 @@ jobs:
       fail-fast: false
       matrix:
         branch: [main, 5.3]
-        patch: [clean, no-objc]
+        spec: [apple, readdle]
         include:
-          - patch: clean
+          - spec: apple
             enable-no-objc-patch: NO
-          - patch: no-objc
+            stdlib-patch-enabled: NO
+          - spec: readdle
             enable-no-objc-patch: YES
+            stdlib-patch-enabled: YES
           - branch: main
             python-version: 3.7.x
           - branch: 5.3
@@ -66,7 +68,8 @@ jobs:
            --skip-toolchain-swift-test=YES^
            --skip-sdk-dispatch-test=YES^
            --skip-sdk-foundation-test=YES^
-           --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}
+           --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}^
+           --enable-print-patch=${{ matrix.stdlib-patch-enabled }}
 
       - name: Build
         run: scripts\build.cmd
