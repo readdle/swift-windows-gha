@@ -1,5 +1,3 @@
-call scripts\tools\vs-env.cmd -arch=x64 -host_arch=x64
-
 call scripts\tools\set-env.cmd SW_DISPATCH_REPO apple/swift-corelibs-libdispatch
 call scripts\tools\set-env.cmd SW_DISPATCH_ORIGIN_URL git://github.com/%SW_DISPATCH_REPO%.git
 
