@@ -6,6 +6,7 @@ on:
       - .github/workflows/icu.yml
       - .github/workflows/libxml2.yml
       - .github/workflows/swift-5.3.yml
+      - .github/workflows/swift-5.4.yml
       - .github/workflows/swift-main.yml
       - .github/workflows/zlib.yml
       - doc/**
@@ -26,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [main, 5.3]
+        branch: [main, 5.4, 5.3]
         spec: [apple, readdle]
         include:
           - spec: apple
@@ -36,6 +37,8 @@ jobs:
             enable-no-objc-patch: YES
             stdlib-patch-enabled: YES
           - branch: main
+            python-version: 3.7.x
+          - branch: 5.4
             python-version: 3.7.x
           - branch: 5.3
             python-version: 2.7.x

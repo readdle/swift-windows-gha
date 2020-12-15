@@ -60,8 +60,10 @@ if "%SW_INTERACTIVE%"=="NO" (
 
 if /i "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   set SW_BRANCH_NUM=1
-) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
+) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.4" (
   set SW_BRANCH_NUM=2
+) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
+  set SW_BRANCH_NUM=3
 )
 
 if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
@@ -342,7 +344,7 @@ set VALUE=!%PARAMETER%!
 if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
-  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.4" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
   if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto :sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
@@ -549,13 +551,16 @@ set SW_ORIGINAL_VALUE=%SW_BRANCH_NUM%
 :sw_ask_branch_input
 echo Available branches:
 echo.  1. main
-echo.  2. 5.3
+echo.  2. 5.4
+echo.  3. 5.3
 
 set /p SW_BRANCH_NUM="Enter branch number to build (%SW_BRANCH_NUM%): "
 
 if "%SW_BRANCH_NUM%"=="1" (
   set SW_SWIFT_BRANCH_SPEC=main
 ) else if "%SW_BRANCH_NUM%"=="2" (
+  set SW_SWIFT_BRANCH_SPEC=5.4
+) else if "%SW_BRANCH_NUM%"=="3" (
   set SW_SWIFT_BRANCH_SPEC=5.3
 ) else (
   set SW_BRANCH_NUM=%SW_ORIGINAL_VALUE%

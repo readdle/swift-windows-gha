@@ -1,11 +1,16 @@
 set SW_DISPATCH_REPO=apple/swift-corelibs-libdispatch
 set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
 
-if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
+if %SW_SWIFT_BRANCH_SPEC%==5.3 (
   set SW_LLVM_REF=swift/release/5.3
   set SW_CMARK_REF=release/5.3
   set SW_DISPATCH_REF=release/5.3
   set SW_SWIFT_REF=release/5.3
+) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
+  set SW_LLVM_REF=swift/release/5.4
+  set SW_CMARK_REF=release/5.4
+  set SW_DISPATCH_REF=release/5.4
+  set SW_SWIFT_REF=release/5.4
 ) else (
   set SW_LLVM_REF=swift/main
   set SW_CMARK_REF=main

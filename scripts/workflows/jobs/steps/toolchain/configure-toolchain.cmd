@@ -1,11 +1,12 @@
 setlocal enabledelayedexpansion
 
-if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
+if %SW_SWIFT_BRANCH_SPEC%==5.3 (
   set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe"
-)
-if "%SW_SWIFT_BRANCH_SPEC%"=="main" (
+) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
   set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe" -D Python3_ROOT_DIR="%SW_PYTHON_DIR%"
-)
+) else if %SW_SWIFT_BRANCH_SPEC%==main (
+  set SW_PYTHON_OPTIONS=-D PYTHON_EXECUTABLE="%SW_PYTHON_DIR%\python.exe" -D Python3_ROOT_DIR="%SW_PYTHON_DIR%"
+) 
 
 cmake^
  -G Ninja^
