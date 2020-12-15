@@ -60,6 +60,6 @@ if "%SW_SKIP_SQLITE%"=="YES"               ( %SW_LOG_BUILD_INFO% --prefix="Job d
 if "%SW_SKIP_DEVTOOLS%"=="YES"             ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="DevTools" )
 if "%SW_SWIFT_SDK_SPEC%"=="readdle" if not "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   %SW_LOG_BUILD_INFO%
-  %SW_LOG_BUILD_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3 is not guaranteed."
+  %SW_LOG_BUILD_WARNING% --message="Readdle SDK is based on main branch. Compatibility with 5.3/5.4 is not guaranteed."
 )
 %SW_LOG_BUILD_INFO%

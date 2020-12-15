@@ -6,6 +6,7 @@ on:
       - .github/workflows/icu.yml
       - .github/workflows/libxml2.yml
       - .github/workflows/swift-5.3.yml
+      - .github/workflows/swift-5.4.yml
       - .github/workflows/swift-build-script.yml
       - .github/workflows/zlib.yml
       - doc/**

@@ -8,13 +8,20 @@ set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
 set SW_FOUNDATION_REPO=apple/swift-corelibs-foundation
 set SW_FOUNDATION_ORIGIN_URL=git://github.com/%SW_FOUNDATION_REPO%.git
 
-if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
+if %SW_SWIFT_BRANCH_SPEC%==5.3 (
   if not defined SW_LLVM_REF set SW_LLVM_REF=swift/release/5.3
   if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=release/5.3
   if not defined SW_SWIFT_REF set SW_SWIFT_REF=release/5.3
 
   set SW_FOUNDATION_REF=release/5.3
   set SW_XCTEST_REF=release/5.3
+) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
+  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/release/5.4
+  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=release/5.4
+  if not defined SW_SWIFT_REF set SW_SWIFT_REF=release/5.4
+
+  set SW_FOUNDATION_REF=release/5.4
+  set SW_XCTEST_REF=release/5.4
 ) else (
   if not defined SW_LLVM_REF set SW_LLVM_REF=swift/main
   if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=main
@@ -24,7 +31,7 @@ if [%SW_SWIFT_BRANCH_SPEC%]==[5.3] (
   set SW_XCTEST_REF=main
 )
 
-if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
+if %SW_SWIFT_SDK_SPEC%==readdle (
   set SW_FOUNDATION_REPO=readdle/swift-corelibs-foundation
   set SW_FOUNDATION_ORIGIN_URL=git://github.com/!SW_FOUNDATION_REPO!.git
   set SW_FOUNDATION_REF=swift-windows-dev-branch

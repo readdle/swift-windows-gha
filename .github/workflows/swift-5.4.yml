@@ -1,11 +1,11 @@
-name: swift-5.3
+name: swift-5.4
 on:
   push:
     paths-ignore: 
       - .github/workflows/curl.yml
       - .github/workflows/icu.yml
       - .github/workflows/libxml2.yml
-      - .github/workflows/swift-5.4.yml
+      - .github/workflows/swift-5.3.yml
       - .github/workflows/swift-build-script.yml
       - .github/workflows/swift-main.yml
       - .github/workflows/zlib.yml
@@ -17,7 +17,6 @@ on:
     - cron: '0 22 * * *'
 
 env:
-  SW_WORKSPACE: ${{ github.workspace }}
   SW_SOURCES_DIR: ${{ github.workspace }}\s
   SW_BUILD_DIR: ${{ github.workspace }}\b
   SW_INSTALL_DIR: ${{ github.workspace }}\i
@@ -47,10 +46,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Use Python 2.7.x
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 2.7.x
+          python-version: 3.7.x
 
       - name: Configure Build
         run: |
@@ -60,7 +59,7 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=5.3^
+           --branch=5.4^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
            --sdk=${{ matrix.spec }}
@@ -143,6 +142,9 @@ jobs:
       - name: Build LLDB Build Tools
         run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
 
+      - name: Build Diagnostics Serialization Tools
+        run: scripts\workflows\jobs\steps\toolchain\build-swift-serialize-diagnostics.cmd
+
       - name: Configure SDK Modules
         run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
 
@@ -210,10 +212,10 @@ jobs:
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
 
-      - name: Use Python 2.7.x
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 2.7.x
+          python-version: 3.7.x
 
       - name: Configure Build
         run: |
@@ -223,7 +225,7 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=5.3^
+           --branch=5.4^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
            --sdk=${{ matrix.spec }}
 
@@ -357,6 +359,9 @@ jobs:
 
       - name: Install Module Maps
         run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
+
+      - name: Generate plists
+        run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
