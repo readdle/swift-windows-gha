@@ -58,7 +58,7 @@ set "PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
 %SW_LOG_SDK_INFO% --prefix="Foundation sources dir:  " --message="%SW_FOUNDATION_SOURCES_DIR%"
 %SW_LOG_SDK_INFO% --prefix="XCTest sources dir:      " --message="%SW_XCTEST_SOURCES_DIR%"
 %SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="LLVB build dir:          " --message="%SW_LLVM_BUILD_DIR%"
+%SW_LOG_SDK_INFO% --prefix="LLVM build dir:          " --message="%SW_LLVM_BUILD_DIR%"
 %SW_LOG_SDK_INFO% --prefix="StdLib build dir:        " --message="%SW_STDLIB_BUILD_DIR%"
 %SW_LOG_SDK_INFO% --prefix="Dispatch build dir:      " --message="%SW_DISPATCH_BUILD_DIR%"
 %SW_LOG_SDK_INFO% --prefix="Foundation build dir:    " --message="%SW_FOUNDATION_BUILD_DIR%"
