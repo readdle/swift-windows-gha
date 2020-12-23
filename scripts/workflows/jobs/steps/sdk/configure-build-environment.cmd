@@ -29,21 +29,21 @@ set "SW_DISPATCH_BUILD_DIR=%SW_BUILD_DIR%\libdispatch"
 set "SW_FOUNDATION_BUILD_DIR=%SW_BUILD_DIR%\foundation"
 set "SW_XCTEST_BUILD_DIR=%SW_BUILD_DIR%\xctest"
 
-set "SW_PLATFORM_PATH=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform"
-set "SW_SDK_PATH=%SW_PLATFORM_PATH%\Developer\SDKs\Windows.sdk"
+set "SW_PLATFORM_DIR=%SW_INSTALL_DIR%\Library\Developer\Platforms\Windows.platform"
+set "SW_SDK_DIR=%SW_PLATFORM_DIR%\Developer\SDKs\Windows.sdk"
 
-set "SW_SDK_INSTALL_DIR=%SW_SDK_PATH%\usr"
-set "SW_XCTEST_INSTALL_PATH=%SW_PLATFORM_PATH%\Developer\Library\XCTest-development\usr"
+set "SW_SDK_INSTALL_DIR=%SW_SDK_DIR%\usr"
+set "SW_XCTEST_INSTALL_DIR=%SW_PLATFORM_DIR%\Developer\Library\XCTest-development\usr"
 
-set "SW_TOOLCHAIN_PATH=%SW_ARTIFACTS_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain"
-set "SW_CURL_PATH=%SW_ARTIFACTS_DIR%\Library\libcurl-%SW_CURL_VERSION%"
-set "SW_ICU_PATH=%SW_ARTIFACTS_DIR%\Library\icu-%SW_ICU_VERSION%"
-set "SW_XML2_PATH=%SW_ARTIFACTS_DIR%\Library\libxml2-%SW_XML2_VERSION%"
-set "SW_ZLIB_PATH=%SW_ARTIFACTS_DIR%\Library\zlib-%SW_ZLIB_VERSION%"
+set "SW_TOOLCHAIN_DIR=%SW_ARTIFACTS_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain"
+set "SW_CURL_DIR=%SW_ARTIFACTS_DIR%\Library\libcurl-%SW_CURL_VERSION%"
+set "SW_ICU_DIR=%SW_ARTIFACTS_DIR%\Library\icu-%SW_ICU_VERSION%"
+set "SW_XML2_DIR=%SW_ARTIFACTS_DIR%\Library\libxml2-%SW_XML2_VERSION%"
+set "SW_ZLIB_DIR=%SW_ARTIFACTS_DIR%\Library\zlib-%SW_ZLIB_VERSION%"
 
 set CTEST_OUTPUT_ON_FAILURE=1
 
-set "PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
+set "PATH=%SW_TOOLCHAIN_DIR%\usr\bin;%PATH%"
 
 %SW_LOG_SDK_INFO% --prefix="Dispatch origin:         " --message="%SW_DISPATCH_ORIGIN_URL%"
 %SW_LOG_SDK_INFO% --prefix="Foundation origin:       " --message="%SW_FOUNDATION_ORIGIN_URL%"
@@ -67,13 +67,13 @@ set "PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
 %SW_LOG_SDK_INFO% --prefix="XCTest build dir:        " --message="%SW_XCTEST_BUILD_DIR%"
 %SW_LOG_SDK_INFO%
 %SW_LOG_SDK_INFO% --prefix="SDK install dir:         " --message="%SW_SDK_INSTALL_DIR%"
-%SW_LOG_SDK_INFO% --prefix="XCTest install dir:      " --message="%SW_XCTEST_INSTALL_PATH%"
+%SW_LOG_SDK_INFO% --prefix="XCTest install dir:      " --message="%SW_XCTEST_INSTALL_DIR%"
 %SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="Toolchain dir:           " --message="%SW_TOOLCHAIN_PATH%"
-%SW_LOG_SDK_INFO% --prefix="CURL dir:                " --message="%SW_CURL_PATH%"
-%SW_LOG_SDK_INFO% --prefix="ICU dir:                 " --message="%SW_ICU_PATH%"
-%SW_LOG_SDK_INFO% --prefix="XML2 dir:                " --message="%SW_XML2_PATH%"
-%SW_LOG_SDK_INFO% --prefix="ZLIB dir:                " --message="%SW_ZLIB_PATH%"
+%SW_LOG_SDK_INFO% --prefix="Toolchain dir:           " --message="%SW_TOOLCHAIN_DIR%"
+%SW_LOG_SDK_INFO% --prefix="CURL dir:                " --message="%SW_CURL_DIR%"
+%SW_LOG_SDK_INFO% --prefix="ICU dir:                 " --message="%SW_ICU_DIR%"
+%SW_LOG_SDK_INFO% --prefix="XML2 dir:                " --message="%SW_XML2_DIR%"
+%SW_LOG_SDK_INFO% --prefix="ZLIB dir:                " --message="%SW_ZLIB_DIR%"
 %SW_LOG_SDK_INFO%
 %SW_LOG_SDK_INFO% --prefix="PATH:                    " --message="%PATH%"
 %SW_LOG_SDK_INFO%

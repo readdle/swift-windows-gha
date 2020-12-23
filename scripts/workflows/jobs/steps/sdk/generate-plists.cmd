@@ -3,8 +3,8 @@ setlocal enabledelayedexpansion
 %SW_PRE_STEP% --scope="sdk" --name="Generate plists" --flag=SW_SKIP_SDK_PLISTS
 if errorlevel 1 exit /b 0
 
-set SW_INFO_PLIST=%SW_PLATFORM_PATH%\Info.plist
-set SW_SDKSETTINGS_PLIST=%SW_SDK_PATH%\SDKSettings.plist
+set SW_INFO_PLIST=%SW_PLATFORM_DIR%\Info.plist
+set SW_SDKSETTINGS_PLIST=%SW_SDK_DIR%\SDKSettings.plist
 
 if exist %SW_INFO_PLIST% del %SW_INFO_PLIST%
 if exist %SW_SDKSETTINGS_PLIST% del %SW_SDKSETTINGS_PLIST%
