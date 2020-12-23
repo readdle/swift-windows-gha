@@ -278,7 +278,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
   %SW_LOG_ERROR% --message="Unknown argument: %CURRENT_ARG%"
   exit /b 1
 )
-goto :sw_parse_arguments_next
+goto sw_parse_arguments_next
 
 :sw_parse_arguments_accept
 set "%NEXT_ARG%=%CURRENT_ARG%"
@@ -342,64 +342,64 @@ set PARAMETER=%1
 set VALUE=!%PARAMETER%!
 
 if "%PARAMETER%"=="SW_INTERACTIVE" (
-  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
-  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.4" if /i not "%VALUE%"=="5.3" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.4" if /i not "%VALUE%"=="5.3" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
-  if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto :sw_validate_parameter_fail
+  if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_BUILD_DIR" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_INSTALL_DIR" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_PYTHON_DIR" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_CONFIG_FILE" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_OBJC_PATCH_ENABLED" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_STDLIB_PATCH_ENABLED" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_ICU" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_ZLIB" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_XML2" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_CURL" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_CHECKOUT" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_STDLIB" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_FOUNDATION" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_XCTEST" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH_TEST" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_FOUNDATION_TEST" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SQLITE" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_DEVTOOLS" (
-  goto :sw_validate_parameter_bool
+  goto sw_validate_parameter_bool
 )
 endlocal
 exit /b
 
 :sw_validate_parameter_bool
 call :sw_validate_bool_value %VALUE%
-if errorlevel 1 goto :sw_validate_parameter_fail
+if errorlevel 1 goto sw_validate_parameter_fail
 endlocal
 exit /b
 

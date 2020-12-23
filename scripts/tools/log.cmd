@@ -25,7 +25,7 @@ if not defined NEXT_ARG (
   exit /b 1
 )
 
-goto :sw_parse_argument_next
+goto sw_parse_argument_next
 
 :sw_parse_argument_accept
 set %NEXT_ARG%=%CURRENT_ARG%
