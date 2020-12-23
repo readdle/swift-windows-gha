@@ -46,7 +46,7 @@ if "%CURRENT_ARG%"=="--config" (
   %SW_LOG_BUILD_ERROR% --message="Unknown argument: %CURRENT_ARG%"
   exit /b 1
 )
-goto :sw_parse_arguments_next
+goto sw_parse_arguments_next
 
 :sw_parse_arguments_accept
 set "%NEXT_ARG%=%CURRENT_ARG%"
@@ -85,10 +85,10 @@ set PARAMETER=%1
 set VALUE=!%PARAMETER%!
 
 if "%PARAMETER%"=="SW_CONFIG_FILE" (
-  if "%VALUE%"=="" goto :sw_validate_parameter_fail
+  if "%VALUE%"=="" goto sw_validate_parameter_fail
   if not exist "%VALUE%" (
     %SW_LOG_BUILD_ERROR% --message="Configuration not found: %VALUE%"
-    goto :sw_validate_parameter_fail
+    goto sw_validate_parameter_fail
   )
 )
 
