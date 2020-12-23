@@ -393,5 +393,6 @@ jobs:
         run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
 
       - name: Test Foundation (XCTest)
+        timeout-minutes: 10
         continue-on-error: true
         run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
