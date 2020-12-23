@@ -3,43 +3,16 @@ set "SW_LOG_SDK_WARNING=%SW_LOG_WARNING% --scope sdk"
 
 %SW_LOG_SDK_INFO% --message="Configuring build environment"
 
-set SW_DISPATCH_REPO=apple/swift-corelibs-libdispatch
-set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
-set SW_FOUNDATION_REPO=apple/swift-corelibs-foundation
-set SW_FOUNDATION_ORIGIN_URL=git://github.com/%SW_FOUNDATION_REPO%.git
+set SW_FOUNDATION_ORIGIN_URL=git://github.com/%SW_SWIFT_SDK_SPEC%/swift-corelibs-foundation.git
+set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_SWIFT_SDK_SPEC%/swift-corelibs-libdispatch.git
 
-if %SW_SWIFT_BRANCH_SPEC%==5.3 (
-  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/release/5.3
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=release/5.3
-  if not defined SW_SWIFT_REF set SW_SWIFT_REF=release/5.3
+if %SW_SWIFT_SDK_SPEC%==readdle set SDK_SPEC_PREFIX=readdle/
 
-  set SW_FOUNDATION_REF=release/5.3
-  set SW_XCTEST_REF=release/5.3
-) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
-  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/release/5.4
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=release/5.4
-  if not defined SW_SWIFT_REF set SW_SWIFT_REF=release/5.4
-
-  set SW_FOUNDATION_REF=release/5.4
-  set SW_XCTEST_REF=release/5.4
-) else (
-  if not defined SW_LLVM_REF set SW_LLVM_REF=swift/main
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=main
-  if not defined SW_SWIFT_REF set SW_SWIFT_REF =main
-
-  set SW_FOUNDATION_REF=main
-  set SW_XCTEST_REF=main
-)
-
-if %SW_SWIFT_SDK_SPEC%==readdle (
-  set SW_FOUNDATION_REPO=readdle/swift-corelibs-foundation
-  set SW_FOUNDATION_ORIGIN_URL=git://github.com/!SW_FOUNDATION_REPO!.git
-  set SW_FOUNDATION_REF=swift-windows-dev-branch
-
-  set SW_DISPATCH_REPO=readdle/swift-corelibs-libdispatch
-  set SW_DISPATCH_ORIGIN_URL=git://github.com/!SW_DISPATCH_REPO!.git
-  if not defined SW_DISPATCH_REF set SW_DISPATCH_REF=swift-dev-windows-readdle
-)
+if not defined SW_LLVM_REF call :sw_get_ref SW_LLVM_REF swift/
+if not defined SW_SWIFT_REF call :sw_get_ref SW_SWIFT_REF
+if not defined SW_DISPATCH_REF call :sw_get_ref SW_DISPATCH_REF %SDK_SPEC_PREFIX%
+call :sw_get_ref SW_FOUNDATION_REF %SDK_SPEC_PREFIX%
+call :sw_get_ref SW_XCTEST_REF %SDK_SPEC_PREFIX%
 
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_LLVM_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\llvm"
@@ -102,3 +75,23 @@ set "PATH=%SW_TOOLCHAIN_PATH%\usr\bin;%PATH%"
 %SW_LOG_SDK_INFO%
 %SW_LOG_SDK_INFO% --prefix="PATH:                    " --message="%PATH%"
 %SW_LOG_SDK_INFO%
+
+exit /b 0
+
+
+rem ###########################################################################
+:sw_get_ref <result_var> <prefix>
+setlocal enabledelayedexpansion
+
+set PREFIX=%2
+
+if %SW_SWIFT_BRANCH_SPEC%==5.3 (
+  set REF=%PREFIX%release/5.3
+) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
+  set REF=%PREFIX%release/5.4
+) else (
+  set REF=%PREFIX%main
+)
+
+endlocal && set %1=%REF%
+exit /b
