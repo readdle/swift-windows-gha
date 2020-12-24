@@ -14,7 +14,7 @@ if not defined SW_LLVM_REF call :sw_get_ref SW_LLVM_REF swift/
 if not defined SW_SWIFT_REF call :sw_get_ref SW_SWIFT_REF
 if not defined SW_DISPATCH_REF call :sw_get_ref SW_DISPATCH_REF %SDK_SPEC_PREFIX%
 call :sw_get_ref SW_FOUNDATION_REF %SDK_SPEC_PREFIX%
-call :sw_get_ref SW_XCTEST_REF %SDK_SPEC_PREFIX%
+call :sw_get_ref SW_XCTEST_REF
 
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_LLVM_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\llvm"
