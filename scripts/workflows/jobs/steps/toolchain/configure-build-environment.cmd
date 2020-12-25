@@ -7,12 +7,24 @@ set "SW_LOG_TOOLCHAIN_WARNING=%SW_LOG_WARNING% --scope toolchain"
 set SW_DISPATCH_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-libdispatch
 set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
 
-if %SW_SWIFT_SDK_SPEC%==readdle set SDK_SPEC_PREFIX=readdle/
+if %SW_SWIFT_SDK_SPEC%==readdle set SW_SDK_SPEC_PREFIX=readdle/
 
-call :sw_get_ref SW_LLVM_REF swift/
-call :sw_get_ref SW_SWIFT_REF
-call :sw_get_ref SW_CMARK_REF
-call :sw_get_ref SW_DISPATCH_REF %SDK_SPEC_PREFIX%
+if defined SW_GIT_TAG (
+  set SW_LLVM_REF=%SW_GIT_TAG%
+  set SW_SWIFT_REF=%SW_GIT_TAG%
+  set SW_CMARK_REF=%SW_GIT_TAG%
+  :: We should respect global git tag for Apple repos, but not for Readdle repos.
+  if defined SW_SDK_SPEC_PREFIX (
+    call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%  
+  ) else (
+    set SW_DISPATCH_REF=%SW_GIT_TAG%
+  )
+) else (
+  call :sw_get_ref SW_LLVM_REF swift/
+  call :sw_get_ref SW_SWIFT_REF
+  call :sw_get_ref SW_CMARK_REF
+  call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
+)
 
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_LLVM_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\llvm"

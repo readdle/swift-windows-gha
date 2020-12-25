@@ -33,6 +33,7 @@ set SW_SKIP_SDK_DISPATCH_TEST=NO
 set SW_SKIP_SDK_FOUNDATION_TEST=NO
 set SW_SKIP_SQLITE=YES
 set SW_SKIP_DEVTOOLS=YES
+set SW_GIT_TAG=
 
 set SW_ICU_VERSION=67
 set SW_CURL_VERSION=development
@@ -83,6 +84,7 @@ call :sw_normalize_parameters_for_wizard
 
 call :sw_ask_branch
 call :sw_ask_sdk_spec
+call :sw_ask_git_tag
 call :sw_ask_directories
 call :sw_ask_swift_patch
 call :sw_ask_stdlib_patch
@@ -109,6 +111,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
 %SW_LOG_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
 %SW_LOG_INFO% --prefix="SQLite version:          " --message="%SW_SQLITE_VERSION% (%SW_SQLITE_RELEASE%)"
+%SW_LOG_INFO% --prefix="Git tag:                 " --message="%SW_GIT_TAG%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
 %SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
@@ -183,6 +186,7 @@ echo set SW_XML2_VERSION=%SW_XML2_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_ZLIB_VERSION=%SW_ZLIB_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_SQLITE_VERSION=%SW_SQLITE_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_SQLITE_RELEASE=%SW_SQLITE_RELEASE%>>%SW_CONFIG_FILE%
+echo set SW_GIT_TAG=%SW_GIT_TAG%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_OBJC_PATCH_ENABLED=%SW_OBJC_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
@@ -224,6 +228,7 @@ if "%NEXT_ARG%"=="SW_BUILD_DIR"                         goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_INSTALL_DIR"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_ARTIFACTS_DIR"                     goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_PYTHON_DIR"                        goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_GIT_TAG"                           goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
@@ -254,6 +259,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--install-dir" (               set NEXT_ARG=SW_INSTALL_DIR
 ) else if "%CURRENT_ARG%"=="--artifacts-dir" (             set NEXT_ARG=SW_ARTIFACTS_DIR
 ) else if "%CURRENT_ARG%"=="--python-dir" (                set NEXT_ARG=SW_PYTHON_DIR
+) else if "%CURRENT_ARG%"=="--git-tag" (                   set NEXT_ARG=SW_GIT_TAG
 ) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
@@ -590,6 +596,15 @@ if "%SW_SWIFT_SDK_SPEC_NUM%"=="1" (
   set SW_SWIFT_SDK_SPEC_NUM=%SW_ORIGINAL_VALUE%
   goto sw_ask_sdk_spec_input
 )
+
+exit /b
+
+
+
+rem ###########################################################################
+:sw_ask_git_tag
+
+set /p SW_GIT_TAG="Enter Git tag (e.g. release or snapshot tag) (%SW_GIT_TAG%): "
 
 exit /b
 
