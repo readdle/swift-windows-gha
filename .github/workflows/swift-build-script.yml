@@ -8,6 +8,7 @@ on:
       - .github/workflows/swift-5.3.yml
       - .github/workflows/swift-5.4.yml
       - .github/workflows/swift-main.yml
+      - .github/workflows/swift-snapshot.yml
       - .github/workflows/zlib.yml
       - doc/**
       - LICENSE

@@ -1,21 +1,14 @@
-name: swift-main
+name: swift-snapshot
 on:
-  push:
-    paths-ignore: 
-      - .github/workflows/curl.yml
-      - .github/workflows/icu.yml
-      - .github/workflows/libxml2.yml
-      - .github/workflows/swift-5.3.yml
-      - .github/workflows/swift-5.4.yml
-      - .github/workflows/swift-build-script.yml
-      - .github/workflows/swift-snapshot.yml
-      - .github/workflows/zlib.yml
-      - doc/**
-      - LICENSE
-      - README.md
-
-  schedule:
-    - cron: '0 22 * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to fetch'     
+        required: true
+      branch-spec:
+        description: 'Branch specification (main, 5.4, 5.3)'
+        required: true
+        default: 'main'
 
 env:
   SW_SOURCES_DIR: ${{ github.workspace }}\s
@@ -30,6 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        branch: ['${{ github.event.inputs.branch-spec }}']
         spec: [apple, readdle]
         include:
           - spec: apple
@@ -47,10 +41,19 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Setup Python
+      - name: Select Python Version
+        id: select-python-version
+        run: |
+          if "${{ matrix.branch }}"=="5.3" (
+            echo ::set-output name=python-version::2.7.x
+          ) else (
+            echo ::set-output name=python-version::3.7.x
+          )
+
+      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7.x
+          python-version: ${{ steps.select-python-version.outputs.python-version }}
 
       - name: Configure Build
         run: |
@@ -60,10 +63,11 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=main^
+           --branch=${{ matrix.branch }}^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
-           --sdk=${{ matrix.spec }}
+           --sdk=${{ matrix.spec }}^
+           --git-tag=${{ github.event.inputs.tag }}
 
       - name: Configure Build Environment
         run: |
@@ -178,6 +182,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        branch: ['${{ github.event.inputs.branch-spec }}']
         spec: [apple, readdle]
         include:
           - spec: apple
@@ -213,10 +218,19 @@ jobs:
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
 
-      - name: Setup Python
+      - name: Select Python Version
+        id: select-python-version
+        run: |
+          if "${{ matrix.branch }}"=="5.3" (
+            echo ::set-output name=python-version::2.7.x
+          ) else (
+            echo ::set-output name=python-version::3.7.x
+          )
+
+      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7.x
+          python-version: ${{ steps.select-python-version.outputs.python-version }}
 
       - name: Configure Build
         run: |
@@ -226,9 +240,10 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=main^
+           --branch=${{ matrix.branch }}^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
-           --sdk=${{ matrix.spec }}
+           --sdk=${{ matrix.spec }}^
+           --git-tag=${{ github.event.inputs.tag }}
 
       - name: Configure Build Environment
         run: |
