@@ -13,14 +13,13 @@ if %SW_SWIFT_SDK_SPEC%==readdle set SW_SDK_SPEC_PREFIX=readdle/
 if defined SW_GIT_TAG (
   set SW_LLVM_REF=%SW_GIT_TAG%
   set SW_SWIFT_REF=%SW_GIT_TAG%
+  set SW_XCTEST_REF=%SW_GIT_TAG%
   if defined SW_SDK_SPEC_PREFIX (
     if not defined SW_DISPATCH_REF call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
     call :sw_get_ref SW_FOUNDATION_REF %SW_SDK_SPEC_PREFIX%
-    call :sw_get_ref SW_XCTEST_REF
   ) else (
     set SW_DISPATCH_REF=%SW_GIT_TAG%
-    set SW_FOUNDATION_REF=%SW_GIT_TAG%
-    set SW_XCTEST_REF=%SW_GIT_TAG%
+    set SW_FOUNDATION_REF=%SW_GIT_TAG%    
   )
 ) else (
   if not defined SW_LLVM_REF call :sw_get_ref SW_LLVM_REF swift/
