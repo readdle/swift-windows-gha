@@ -37,11 +37,11 @@ index 3edcaa7b..e5d34ba9 100644
 @@ -204,6 +204,7 @@ void ToolChain::addCommonFrontendArgs(const OutputInfo &OI,
                         options::OPT_warn_swift3_objc_inference_minimal,
                         options::OPT_warn_swift3_objc_inference_complete);
+   inputArgs.AddLastArg(arguments, options::OPT_warn_concurrency);
    inputArgs.AddLastArg(arguments, options::OPT_warn_implicit_overrides);
 +  inputArgs.AddLastArg(arguments, options::OPT_experimental_disable_objc_attr);
    inputArgs.AddLastArg(arguments, options::OPT_typo_correction_limit);
    inputArgs.AddLastArg(arguments, options::OPT_enable_app_extension);
-   inputArgs.AddLastArg(arguments, options::OPT_enable_library_evolution);
 diff --git a/lib/Frontend/CompilerInvocation.cpp b/lib/Frontend/CompilerInvocation.cpp
 index 94ea2ec6..3b785eb4 100644
 --- a/lib/Frontend/CompilerInvocation.cpp
