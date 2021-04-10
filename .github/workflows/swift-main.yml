@@ -117,6 +117,13 @@ jobs:
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
 
+      - name: Download libxml2
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: libxml2.yml
+          name: libxml2
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Collect Checkout Info
         run: |
           mkdir %SW_WORKSPACE%\checkout
