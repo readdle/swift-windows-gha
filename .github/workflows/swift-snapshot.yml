@@ -55,6 +55,9 @@ jobs:
         with:
           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
+      - name: Get CMake 3.19.2
+        uses: lukka/get-cmake@v3.19.2
+
       - name: Configure Build
         run: |
           scripts\configure.cmd^
@@ -231,6 +234,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ steps.select-python-version.outputs.python-version }}
+
+      - name: Get CMake 3.19.2
+        uses: lukka/get-cmake@v3.19.2
 
       - name: Configure Build
         run: |
