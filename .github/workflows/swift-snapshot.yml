@@ -4,17 +4,11 @@ on:
     inputs:
       tag:
         description: 'Tag to fetch'     
-        required: true
+        required: false
       branch-spec:
         description: 'Branch specification (main, 5.4, 5.3)'
         required: true
         default: 'main'
-
-env:
-  SW_SOURCES_DIR: ${{ github.workspace }}\s
-  SW_BUILD_DIR: ${{ github.workspace }}\b
-  SW_INSTALL_DIR: ${{ github.workspace }}\i
-  SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
 
 jobs:
   toolchain:
