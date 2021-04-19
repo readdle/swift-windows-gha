@@ -1,0 +1,22 @@
+name: swift-snapshot-trigger
+
+on:
+  workflow_dispatch:
+
+jobs:
+  
+  trigger-snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger `main` Workflow
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: readdle
+          repo: swift-windows-gha
+          workflow_id: swift-snapshot
+          ref: ${{ github.sha }}
+          inputs: '{ "branch-spec": "main" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
