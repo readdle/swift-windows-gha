@@ -19,4 +19,4 @@ jobs:
           ref: 'master'
           inputs: '{ "branch-spec": "main" }'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
