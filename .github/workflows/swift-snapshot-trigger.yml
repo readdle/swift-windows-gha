@@ -15,7 +15,7 @@ jobs:
           route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
           owner: readdle
           repo: swift-windows-gha
-          workflow_id: swift-snapshot
+          workflow_id: swift-snapshot.yml
           ref: ${{ github.sha }}
           inputs: '{ "branch-spec": "main" }'
         env:
