@@ -16,7 +16,7 @@ jobs:
           owner: readdle
           repo: swift-windows-gha
           workflow_id: swift-snapshot.yml
-          ref: ${{ github.sha }}
+          ref: 'master'
           inputs: '{ "branch-spec": "main" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
