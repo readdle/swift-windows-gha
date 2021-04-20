@@ -1,5 +1,7 @@
 name: swift-build-script
 on:
+  workflow_dispatch:
+
   push:
     paths-ignore: 
       - .github/workflows/curl.yml

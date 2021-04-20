@@ -1,5 +1,7 @@
 name: curl
 on:
+  workflow_dispatch:
+
   push:
     paths: 
       - .github/workflows/curl.yml
