@@ -7,9 +7,13 @@ jobs:
   
   trigger-snapshot:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: ['main', '5.4', '5.3']
 
     steps:
-      - name: Trigger `main` Workflow
+      - name: Trigger `${{ matrix.spec }}` Workflow
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
@@ -17,6 +21,6 @@ jobs:
           repo: swift-windows-gha
           workflow_id: swift-snapshot.yml
           ref: 'master'
-          inputs: '{ "branch-spec": "main" }'
+          inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
