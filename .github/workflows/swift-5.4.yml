@@ -5,10 +5,10 @@ on:
       - .github/workflows/curl.yml
       - .github/workflows/icu.yml
       - .github/workflows/libxml2.yml
-      - .github/workflows/swift-5.3.yml
+      - .github/workflows/swift-5.*.yml
       - .github/workflows/swift-build-script.yml
       - .github/workflows/swift-main.yml
-      - .github/workflows/swift-snapshot.yml
+      - .github/workflows/swift-snapshot*.yml
       - .github/workflows/zlib.yml
       - doc/**
       - LICENSE
