@@ -9,7 +9,7 @@ jobs:
   
   trigger-snapshot:
     runs-on: ubuntu-latest
-    if: (contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '@ci test')) || github.event_name == 'workflow_dispatch'
+    if: (github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci test')) || github.event_name == 'workflow_dispatch'
 
     strategy:
       fail-fast: false
