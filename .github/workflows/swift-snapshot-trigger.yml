@@ -2,14 +2,11 @@ name: swift-snapshot-trigger
 
 on:
   workflow_dispatch:
-  issue_comment:
-    types: [created]
 
 jobs:
   
   trigger-snapshot:
     runs-on: ubuntu-latest
-    if: (github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci test')) || github.event_name == 'workflow_dispatch'
 
     strategy:
       fail-fast: false
@@ -23,9 +20,8 @@ jobs:
       - name: Trigger `${{ matrix.spec }}` Workflow
         uses: octokit/request-action@v2.x
         with:
-          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-          owner: readdle
-          repo: swift-windows-gha
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
           workflow_id: swift-snapshot.yml
           ref: ${{ github.ref }}
           inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
