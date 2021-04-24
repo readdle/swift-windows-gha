@@ -1,0 +1,40 @@
+name: swift-snapshot-trigger
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  
+  trigger-snapshot:
+    runs-on: ubuntu-latest
+    if: (github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci test')) || github.event_name == 'workflow_dispatch'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: ['main', '5.4', '5.3']
+
+    steps:
+      - name: Print Event Data
+        run: echo "${{ toJson(github) }}"
+
+      - name: Fetch Pull Request Info
+        id: fetch_pr_info
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/{repository}/pulls/{pull_number}
+          repository: ${{ github.repository }}
+          pull_number: $${{ github.event.issue.number }}
+
+      - name: Trigger `${{ matrix.spec }}` Workflow
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: readdle
+          repo: swift-windows-gha
+          workflow_id: swift-snapshot.yml
+          ref:  ${{ fromJson(steps.fetch_pr_info.outputs.data).merge_commit_sha }}
+          inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
