@@ -23,6 +23,8 @@ jobs:
           route: GET /repos/{repository}/pulls/{pull_number}
           repository: ${{ github.repository }}
           pull_number: $${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger `${{ matrix.spec }}` Workflow
         uses: octokit/request-action@v2.x
