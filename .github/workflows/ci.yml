@@ -16,9 +16,6 @@ jobs:
         spec: ['main', '5.4', '5.3']
 
     steps:
-      - name: Print Event Data
-        run: echo "${{ toJson(github) }}"
-
       - name: Fetch Pull Request Info
         id: fetch_pr_info
         uses: octokit/request-action@v2.x
