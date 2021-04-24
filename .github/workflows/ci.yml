@@ -30,9 +30,8 @@ jobs:
       - name: Trigger `${{ matrix.spec }}` Workflow
         uses: octokit/request-action@v2.x
         with:
-          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-          owner: readdle
-          repo: swift-windows-gha
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
           workflow_id: swift-snapshot.yml
           ref:  ${{ fromJson(steps.fetch_pr_info.outputs.data).merge_commit_sha }}
           inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
