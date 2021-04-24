@@ -22,7 +22,7 @@ jobs:
         with:
           route: GET /repos/{repository}/pulls/{pull_number}
           repository: ${{ github.repository }}
-          pull_number: $${{ github.event.issue.number }}
+          pull_number: ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
