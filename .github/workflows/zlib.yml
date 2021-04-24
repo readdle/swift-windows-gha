@@ -27,6 +27,8 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
+      - name: Print Debug Info
+        run: echo "${{ toJson(github) }}"
       - name: Configure Build
         run: |
           scripts\configure.cmd^
