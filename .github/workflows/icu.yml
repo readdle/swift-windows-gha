@@ -1,18 +1,6 @@
 name: icu
 on:
   workflow_dispatch:
-
-  push:
-    paths: 
-      - .github/workflows/icu.yml
-      - cmake/icu/**
-      - cmake/caches/windows-x86_64.cmake
-      - scripts/build.cmd
-      - scripts/configure.cmd
-      - scripts/tools/**
-      - scripts/workflows/*
-      - scripts/workflows/jobs/steps/icu/**
-
   schedule:
     - cron: '30 21 * * *'
 
