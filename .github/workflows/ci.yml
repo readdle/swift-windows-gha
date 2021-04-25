@@ -5,19 +5,16 @@ on:
     types: [created]
 
 jobs:
-  
-  trigger-snapshot:
+
+  trigger-workflows:
+    name: Trigger Workflows
+
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci test')
 
-    strategy:
-      fail-fast: false
-      matrix:
-        spec: ['main', '5.4', '5.3']
-
     steps:
       - name: Fetch Pull Request Info
-        id: fetch_pr_info
+        id: fetch-pr-info
         uses: octokit/request-action@v2.x
         with:
           route: GET /repos/{repository}/pulls/{pull_number}
@@ -26,13 +23,87 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Trigger `${{ matrix.spec }}` Workflow
+      - name: Detect Target Ref
+        id: detect-target-ref
+        run: |
+          echo "::set-output name=target-ref::${{ fromJson(steps.fetch-pr-info.outputs.data).head.ref }}"
+
+      - name: Trigger Swift Main Workflow
+        if: contains(github.event.comment.body, "swift-main") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
           repository: ${{ github.repository }}
           workflow_id: swift-snapshot.yml
-          ref:  ${{ fromJson(steps.fetch_pr_info.outputs.data).head.ref }}
-          inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+          inputs: '{ "branch-spec": "main" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger Swift 5.4 Workflow
+        if: contains(github.event.comment.body, "swift-5.4") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: swift-snapshot.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+          inputs: '{ "branch-spec": "5.4" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger Swift 5.3 Workflow
+        if: contains(github.event.comment.body, "swift-5.3") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: swift-snapshot.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+          inputs: '{ "branch-spec": "5.3" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger curl Workflow
+        if: contains(github.event.comment.body, "curl") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: curl.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger libxml2 Workflow
+        if: contains(github.event.comment.body, "libxml") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: libxml2.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger ICU4c Workflow
+        if: contains(github.event.comment.body, "icu") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: icu.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+
+      - name: Trigger zlib Workflow
+        if: contains(github.event.comment.body, "zlib") || contains(github.event.comment.body, "all")
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
+          repository: ${{ github.repository }}
+          workflow_id: zlib.yml
+          ref:  ${{ steps.detect-target-ref.outputs.target-ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
