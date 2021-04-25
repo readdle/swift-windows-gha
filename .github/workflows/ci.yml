@@ -29,7 +29,7 @@ jobs:
           echo "::set-output name=target-ref::${{ fromJson(steps.fetch-pr-info.outputs.data).head.ref }}"
 
       - name: Trigger Swift Main Workflow
-        if: contains(github.event.comment.body, "swift-main") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'swift-main') || contains(github.event.comment.body, 'swift-all') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -41,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger Swift 5.4 Workflow
-        if: contains(github.event.comment.body, "swift-5.4") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'swift-5.4') || contains(github.event.comment.body, 'swift-all') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -53,7 +53,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger Swift 5.3 Workflow
-        if: contains(github.event.comment.body, "swift-5.3") || contains(github.event.comment.body, "swift-all") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'swift-5.3') || contains(github.event.comment.body, 'swift-all') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger curl Workflow
-        if: contains(github.event.comment.body, "curl") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'curl') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger libxml2 Workflow
-        if: contains(github.event.comment.body, "libxml") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'libxml') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -87,7 +87,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger ICU4c Workflow
-        if: contains(github.event.comment.body, "icu") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'icu') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
@@ -98,7 +98,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
       - name: Trigger zlib Workflow
-        if: contains(github.event.comment.body, "zlib") || contains(github.event.comment.body, "all")
+        if: contains(github.event.comment.body, 'zlib') || contains(github.event.comment.body, 'all')
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
