@@ -97,8 +97,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
-      - name: Trigger zlib Workflow
+      - name: Evaluate Condition for zlib
+        id: evaluate-zlib
         if: contains(github.event.comment.body, 'zlib') || contains(github.event.comment.body, 'all')
+        
+      - name: Trigger zlib Workflow
+        if: steps.evaluate-zlib.conclusion == 'success'
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
