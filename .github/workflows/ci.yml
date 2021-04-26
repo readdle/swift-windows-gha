@@ -27,6 +27,7 @@ jobs:
         id: detect-target-ref
         run: |
           echo "::set-output name=target-ref::${{ fromJson(steps.fetch-pr-info.outputs.data).head.ref }}"
+          echo "::set-output name=target-sha::${{ fromJson(steps.fetch-pr-info.outputs.data).head.sha }}"
 
       - name: Trigger Swift Main Workflow
         if: contains(github.event.comment.body, 'swift-main') || contains(github.event.comment.body, 'swift-all') || contains(github.event.comment.body, 'all')
@@ -97,12 +98,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
 
-      - name: Evaluate Condition for zlib
-        id: evaluate-zlib
+      - name: Create zlib Check
+        id: zlib-check
         if: contains(github.event.comment.body, 'zlib') || contains(github.event.comment.body, 'all')
-        
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{repository}/check-runs
+          repository: ${{ github.repository }}
+          name: zlib
+          head_sha: ${{ steps.detect-target-ref.outputs.target-sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Trigger zlib Workflow
-        if: steps.evaluate-zlib.conclusion == 'success'
+        if: steps.zlib-check.conclusion == 'success'
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
