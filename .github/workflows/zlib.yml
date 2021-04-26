@@ -1,11 +1,14 @@
 name: zlib
 on:
   workflow_dispatch:
+  issue_comment:
+    types: [created]
   schedule:
     - cron: '30 21 * * *'
 
 jobs:
   zlib:
+    if: github.event.issue.pull_request && github.event.comment.author_association == 'MEMBER' && startsWith(github.event.comment.body, '/ci test') && (contains(github.event.comment.body, 'zlib') || contains(github.event.comment.body, 'all'))
 
     runs-on: windows-latest
     defaults:
