@@ -1,6 +1,8 @@
 name: curl
 on:
   workflow_dispatch:
+  issue_comment:
+    types: [created]
   schedule:
     - cron: '40 21 * * *'
 
