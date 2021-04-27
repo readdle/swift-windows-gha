@@ -7,6 +7,7 @@ on:
     types: [created, deleted]
   schedule:
     - cron: '40 21 * * *'
+  push:
 
 jobs:
   curl:
