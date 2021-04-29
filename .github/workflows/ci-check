@@ -1,0 +1,13 @@
+name: ci-check
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  create-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
