@@ -1,17 +1,6 @@
 name: zlib
 on:
   workflow_dispatch:
-
-  push:
-    paths: 
-      - .github/workflows/zlib.yml
-      - cmake/caches/windows-x86_64.cmake
-      - scripts/build.cmd
-      - scripts/configure.cmd
-      - scripts/tools/**
-      - scripts/workflows/*
-      - scripts/workflows/jobs/steps/zlib/**
-
   schedule:
     - cron: '30 21 * * *'
 

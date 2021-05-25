@@ -1,18 +1,5 @@
 name: swift-main
 on:
-  push:
-    paths-ignore: 
-      - .github/workflows/curl.yml
-      - .github/workflows/icu.yml
-      - .github/workflows/libxml2.yml
-      - .github/workflows/swift-5.*.yml
-      - .github/workflows/swift-build-script.yml
-      - .github/workflows/swift-snapshot*.yml
-      - .github/workflows/zlib.yml
-      - doc/**
-      - LICENSE
-      - README.md
-
   schedule:
     - cron: '0 22 * * *'
 

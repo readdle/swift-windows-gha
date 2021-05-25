@@ -1,18 +1,6 @@
 name: curl
 on:
   workflow_dispatch:
-
-  push:
-    paths: 
-      - .github/workflows/curl.yml
-      - cmake/caches/curl.cmake
-      - cmake/caches/windows-x86_64.cmake
-      - scripts/build.cmd
-      - scripts/configure.cmd
-      - scripts/tools/**
-      - scripts/workflows/*
-      - scripts/workflows/jobs/steps/curl/**
-
   schedule:
     - cron: '40 21 * * *'
 

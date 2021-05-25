@@ -1,18 +1,6 @@
 name: libxml2
 on:
   workflow_dispatch:
-
-  push:
-    paths: 
-      - .github/workflows/libxml2.yml
-      - cmake/caches/libxml2.cmake
-      - cmake/caches/windows-x86_64.cmake
-      - scripts/build.cmd
-      - scripts/configure.cmd
-      - scripts/tools/**
-      - scripts/workflows/*
-      - scripts/workflows/jobs/steps/libxml2/**
-
   schedule:
     - cron: '30 21 * * *'
 
