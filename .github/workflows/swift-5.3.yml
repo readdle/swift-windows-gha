@@ -62,7 +62,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\configure-build-environment.cmd 5.3
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
