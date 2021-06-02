@@ -27,10 +27,12 @@ set SW_PLUTIL=powershell -ExecutionPolicy Bypass "%SW_WORKSPACE%\scripts\tools\p
 %SW_LOG_BUILD_INFO% --prefix="pre-job command:         " --message="%SW_PRE_JOB%"
 
 %SW_LOG_BUILD_INFO% --message="Initializing Visual Studio environment"
-@echo on
-if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" set VC_VERSION_ARG=-vcvars_ver=14.28.29910
+
+:: A hack that allows us to switch to older VC toolset
+if "%1"=="5.3" set VC_VERSION_ARG=-vcvars_ver=14.28.29910
+
 call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=x64 -host_arch=x64 %VC_VERSION_ARG%
-@echo off
+
 exit /b 0
 
 
