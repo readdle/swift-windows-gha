@@ -27,7 +27,8 @@ set SW_PLUTIL=powershell -ExecutionPolicy Bypass "%SW_WORKSPACE%\scripts\tools\p
 %SW_LOG_BUILD_INFO% --prefix="pre-job command:         " --message="%SW_PRE_JOB%"
 
 %SW_LOG_BUILD_INFO% --message="Initializing Visual Studio environment"
-call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=x64 -host_arch=x64
+if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" set VC_VERSION_ARG=-vcvars_ver=14.28.29910
+call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=x64 -host_arch=x64 %VC_VERSION_ARG%
 
 exit /b 0
 
