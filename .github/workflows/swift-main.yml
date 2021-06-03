@@ -1,5 +1,6 @@
 name: swift-main
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 22 * * *'
 
@@ -146,6 +147,12 @@ jobs:
 
       - name: Install Toolchain
         run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
+
+      - name: Configure Compiler Runtime
+        run: scripts\workflows\jobs\steps\toolchain\configure-compiler-runtime.cmd
+
+      - name: Install Compiler Runtime
+        run: scripts\workflows\jobs\steps\toolchain\install-compiler-runtime.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
