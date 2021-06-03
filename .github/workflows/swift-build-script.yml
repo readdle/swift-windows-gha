@@ -1,8 +1,6 @@
 name: swift-build-script
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 22 * * *'
 
 defaults:
   run:
