@@ -24,6 +24,8 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\configure-toolchain.cmd^
  && call %SW_STEPS_DIR%\build-toolchain.cmd^
  && call %SW_STEPS_DIR%\install-toolchain.cmd^
+ && call %SW_STEPS_DIR%\configure-compiler-runtime.cmd^
+ && call %SW_STEPS_DIR%\install-compiler-runtime.cmd^
  && call %SW_STEPS_DIR%\configure-test-environment.cmd^
  && call %SW_STEPS_DIR%\check-swift.cmd
 
