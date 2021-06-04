@@ -66,7 +66,9 @@ jobs:
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}
 
       - name: Build
-        run: scripts\build.cmd
+        run: |
+          if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
+          scripts\build.cmd
 
       - name: Remove Build Drive
         if: always()
