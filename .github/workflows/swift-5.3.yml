@@ -10,6 +10,7 @@ env:
   SW_BUILD_DIR: ${{ github.workspace }}\b
   SW_INSTALL_DIR: ${{ github.workspace }}\i
   SW_ARTIFACTS_DIR: ${{ github.workspace }}\a
+  SW_VC_VERSION: 14.28.29910
 
 jobs:
   toolchain:
@@ -62,7 +63,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\workflows\configure-build-environment.cmd 5.3
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
@@ -237,7 +238,7 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\workflows\configure-build-environment.cmd 5.3
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
