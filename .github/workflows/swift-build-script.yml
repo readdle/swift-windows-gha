@@ -38,6 +38,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install VS 16.9
+        if: matrix.branch == 5.3
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise" --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL --quiet --norestart
+
       - name: Prepare Build Drive
         run: |
           call scripts\tools\get-free-drive.cmd
