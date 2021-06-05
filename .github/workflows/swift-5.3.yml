@@ -41,9 +41,6 @@ jobs:
         with:
           python-version: 2.7.x
 
-      - name: Get CMake 3.19.2
-        uses: lukka/get-cmake@v3.19.2
-
       - name: Install VS 16.9
         run: |
           "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise" --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL --quiet --norestart
