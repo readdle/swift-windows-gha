@@ -73,7 +73,8 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\workflows\configure-build-environment.cmd ${{ matrix.branch }}
+          if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
@@ -263,7 +264,8 @@ jobs:
 
       - name: Configure Build Environment
         run: |
-          call scripts\workflows\configure-build-environment.cmd ${{ matrix.branch }}
+          if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
+          call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
