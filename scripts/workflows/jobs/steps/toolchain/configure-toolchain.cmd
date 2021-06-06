@@ -12,7 +12,6 @@ cmake^
  -G Ninja^
  -S %SW_LLVM_SOURCES_DIR%^
  -B %SW_TOOLCHAIN_BUILD_DIR%^
- -D CMAKE_MT=mt^
  -C %SW_WORKSPACE%\cmake\caches\toolchain-%SW_SWIFT_BRANCH_SPEC%.cmake^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -C %SW_WORKSPACE%\cmake\caches\com.readdle.dt.cmake^
