@@ -39,8 +39,8 @@ jobs:
         with:
           python-version: 3.7.x
 
-      - name: Get CMake 3.19.2
-        uses: lukka/get-cmake@v3.19.2
+#       - name: Get CMake 3.19.2
+#         uses: lukka/get-cmake@v3.19.2
 
       - name: Configure Build
         run: |
