@@ -1,10 +1,55 @@
 name: zlib
 on:
   workflow_dispatch:
+    inputs:
+      check_run_id:
+        description: Check Run ID
+        required: false
   schedule:
     - cron: '30 21 * * *'
 
 jobs:
+
+  check-in:
+    name: Check In
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_run_id
+
+    steps:  
+      - name: Get Current Run
+        id: get_run
+        run: |
+          set -e
+          
+          http_code=$(curl -s -o run.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }})
+      
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Failed to fetch run ${{ github.run_id }}"
+            exit 1
+          fi
+          
+          HTML_URL=$(jq -r '.html_url' run.json)
+          
+          echo "Run HTML URL: $HTML_URL"          
+          echo "::set-output name=html_url::$HTML_URL"
+
+      - name: Update CI Check
+        env:
+          CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
+        run: |
+          set -e
+          
+          http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
+            -d '{"status":"in_progress","details_url":"${{ steps.get_run.outputs.html_url }}"}')
+          
+          echo $http_code
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Failed to update check run"
+            exit 1
+          fi
+
   zlib:
 
     runs-on: windows-latest
@@ -49,3 +94,83 @@ jobs:
         with:
           name: zlib
           path: ${{ env.SW_INSTALL_DIR }}
+
+  check-out:
+    name: Check Out
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [check-in, zlib]
+
+    steps:
+      - name: Update CI Check - Success
+        if: github.event.inputs.check_run_id && needs.zlib.result == 'success'
+        env:
+          CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
+        run: |
+          set -e
+          
+          http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
+            -d '{"conclusion":"success"}')
+          
+          echo $http_code
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Failed to update check run"
+            exit 1
+          fi
+
+      - name: Update CI Check - Failure
+        if: github.event.inputs.check_run_id && contains(needs.*.result, 'failure')
+        env:
+          CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
+        run: |
+          set -e
+          
+          http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
+            -d '{"conclusion":"failure"}')
+          
+          echo $http_code
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Failed to update check run"
+            exit 1
+          fi
+
+      - name: Update CI Check - Cancelled
+        if: github.event.inputs.check_run_id && contains(needs.*.result, 'cancelled')
+        env:
+          CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
+        run: |
+          set -e
+          
+          http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
+            -d '{"conclusion":"cancelled"}')
+          
+          echo $http_code
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Failed to update check run"
+            exit 1
+          fi
+
+      - name: Update Badge - Success
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        if: github.ref == 'refs/heads/master' && needs.zlib.result == 'success'
+        with:
+          auth: ${{ secrets.GISTS_TOKEN }}
+          gistID: e75dcdc92f031e71745ff1dbb56decd4
+          filename: ${{ github.workflow }}-badge.json
+          label: main
+          message: success
+          color: success
+
+      - name: Update Badge - Failure
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        if: github.ref == 'refs/heads/master' && contains(needs.*.result, 'failure')
+        with:
+          auth: ${{ secrets.GISTS_TOKEN }}
+          gistID: e75dcdc92f031e71745ff1dbb56decd4
+          filename: ${{ github.workflow }}-badge.json
+          label: main
+          message: failure
+          color: critical
