@@ -11,11 +11,10 @@ env:
       "curl" : { "check_name": "curl", "workflow_id": "curl.yml" },
       "libxml2" : { "check_name": "libxml2", "workflow_id": "libxml2.yml" },
       "zlib" : { "check_name": "zlib", "workflow_id": "zlib.yml" },
-      "ci" : { "check_name": "CI", "workflow_id": "ci.yml" },
-      "swift-5.3" : { "check_name": "swift-5.3", "workflow_id": "swift-snapshot.yml", "workflow_inputs": ", \"branch-spec\":\"5.3\""},
-      "swift-5.4" : { "check_name": "swift-5.4", "workflow_id": "swift-snapshot.yml", "workflow_inputs": ", \"branch-spec\":\"5.4\"" },
-      "swift-5.5" : { "check_name": "swift-5.5", "workflow_id": "swift-snapshot.yml", "workflow_inputs": ", \"branch-spec\":\"5.5\"" },
-      "swift-main" : { "check_name": "swift-main", "workflow_id": "swift-snapshot.yml", "workflow_inputs": ", \"branch-spec\":\"main\"" }
+      "swift-5.3" : { "check_name": "swift-5.3", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch-spec\":\"5.3\""},
+      "swift-5.4" : { "check_name": "swift-5.4", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch-spec\":\"5.4\"" },
+      "swift-5.5" : { "check_name": "swift-5.5", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch-spec\":\"5.5\"" },
+      "swift-main" : { "check_name": "swift-main", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch-spec\":\"main\"" }
     }
 
 jobs:
