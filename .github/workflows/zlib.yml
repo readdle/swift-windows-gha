@@ -51,8 +51,8 @@ jobs:
           fi
 
   zlib:
-
     runs-on: windows-latest
+    needs: [check-in]
     defaults:
       run:
         shell: cmd
