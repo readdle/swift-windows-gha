@@ -1,14 +1,16 @@
-name: swift-build-script
+name: build-script
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 22 * * 1'
 
 defaults:
   run:
     shell: cmd
 
 jobs:
-  swift:
-
+  build-script:
+    name: Check Build Script
     runs-on: windows-latest
     strategy:
       fail-fast: false
