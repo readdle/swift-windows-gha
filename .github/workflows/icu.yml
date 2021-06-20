@@ -53,6 +53,7 @@ jobs:
   icu:
     name: ICU
     runs-on: windows-latest
+    needs: [check-in]
     defaults:
       run:
         shell: cmd
