@@ -54,6 +54,7 @@ jobs:
     name: ICU
     runs-on: windows-latest
     needs: [check-in]
+    if: cancelled() == false
     defaults:
       run:
         shell: cmd
