@@ -160,7 +160,7 @@ jobs:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
           filename: ${{ github.workflow }}-badge.json
-          label: main
+          label: ${{ github.workflow }}
           message: success
           color: success
 
@@ -171,6 +171,6 @@ jobs:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
           filename: ${{ github.workflow }}-badge.json
-          label: main
+          label: ${{ github.workflow }}
           message: failure
           color: critical
