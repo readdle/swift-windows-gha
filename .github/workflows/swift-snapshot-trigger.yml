@@ -2,6 +2,8 @@ name: swift-snapshot-trigger
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 22 * * *'
 
 jobs:
   
@@ -15,12 +17,14 @@ jobs:
 
     steps:
       - name: Trigger `${{ matrix.spec }}` Workflow
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/{repository}/actions/workflows/{workflow_id}/dispatches
-          repository: ${{ github.repository }}
-          workflow_id: swift-snapshot.yml
-          ref: ${{ github.ref }}
-          inputs: '{ "branch-spec": "${{ matrix.spec }}" }'
-        env:
-          GITHUB_TOKEN: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+        run: |
+          set -e
+          
+          http_code=$(curl -s -w "%{http_code}" -H 'Authorization: token ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}' \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/swift.yml/dispatches \
+            -d '{"ref":"${{ github.ref }}","inputs":{"branch-spec":"${{ matrix.spec }}"}}')
+          
+          if [ "$http_code" != "204" ]; then
+            echo "::error::Failed to start workflow"
+            exit 1
+          fi
