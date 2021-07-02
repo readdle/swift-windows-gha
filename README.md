@@ -18,11 +18,11 @@ The goals of this project are to:
 - **_Git_**. https://git-scm.com/download/win 
 - **_Python 2_**. https://www.python.org/downloads/release/python-2718/. Not used by latest Swift main branch, but still required for 5.3 and older versions. **IMPORTANT: Should be installed to C:\Python27**.
 - **_Python 3_**. https://www.python.org/downloads/release/python-385/ 
-- **_Visual Studio 2019_**. Any edition. For minimal build system use **_Build Tools_**: https://aka.ms/vs/16/release/vs_buildtools.exe . Required components are:
-  - MSVC v142 - VS 2019 C++ x64/x86 build tools
+- **_Visual Studio 2019_**. Any edition. For minimal build system use **_Build Tools_**: https://aka.ms/vs/16/release/vs_buildtools.exe. Required components are:
+  - MSVC v142 - VS 2019 C++ x64/x86 build tools (Microsoft.VisualStudio.Component.VC.Tools.x86.x64)
+  - C++ ATL for v142 build tools (Microsoft.VisualStudio.Component.VC.ATL)
   - Windows 10 SDK
   - C++ CMake tools for Windows
-  - C++ ATL for v142 build tools
 
 ### Getting Started
 1. Run **elevated Command Prompt**. Elevation is required to install clang modules into Visual Studio directory. If you somehow omit this step (e.g. by commenting corresponding script line), elevation is not needed, but make sure you have modues installed already (either manually, or by previous build tool run).
