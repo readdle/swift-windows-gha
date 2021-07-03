@@ -15,19 +15,19 @@ The goals of this project are to:
 ### Requirements
 - **_Windows 10 RedStone 4 (10.0.17763.0)_** or newer
 - **_Developer Mode_**. Enable in _Settings > Update & Security > For developers_. Required to create symlinks without elevation.
-- **_Git_**. https://git-scm.com/download/win (or VS component Microsoft.VisualStudio.Component.Git)
+- **_Git_**. https://git-scm.com/download/win
 - **_Python 3_**. https://www.python.org/downloads/release/python-385/ 
 - **_Visual Studio 2019_**. Any edition. Use most recent version, or version from latest successfull check. For minimal build system use **_Build Tools_**: https://aka.ms/vs/16/release/vs_buildtools.exe. Required components are:
-  - MSVC v142 - VS 2019 C++ x64/x86 build tools (Microsoft.VisualStudio.Component.VC.Tools.x86.x64)
-  - C++ ATL for v142 build tools (Microsoft.VisualStudio.Component.VC.ATL)
-  - Windows 10 SDK (Microsoft.VisualStudio.Component.Windows10SDK.17763 or newer)
-  - C++ CMake tools for Windows (Microsoft.VisualStudio.Component.VC.CMake.Project)
+  - MSVC v142 - VS 2019 C++ x64/x86 build tools (_Microsoft.VisualStudio.Component.VC.Tools.x86.x64_)
+  - C++ ATL for v142 build tools (_Microsoft.VisualStudio.Component.VC.ATL_)
+  - Windows 10 SDK (_Microsoft.VisualStudio.Component.Windows10SDK.18362_ or newer)
+  - C++ CMake tools for Windows (_Microsoft.VisualStudio.Component.VC.CMake.Project_)
 
 ### Additional Requirements (Swift 5.3)
 - **_Python 2_**. https://www.python.org/downloads/release/python-2718/. **IMPORTANT: Should be installed to C:\Python27**.
 - **_Visual Studio 2019_**. Components:
-  - MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.28-16.9) (Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64)
-  - C++ v14.28 (16.9) ATL for v142 build tools (x86 & x64) (Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL)
+  - MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.28-16.9) (_Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64_)
+  - C++ v14.28 (16.9) ATL for v142 build tools (x86 & x64) (_Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL_)
   
 
 ### Getting Started
