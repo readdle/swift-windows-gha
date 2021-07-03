@@ -97,24 +97,24 @@ jobs:
       - name: Get CMake 3.19.2
         uses: lukka/get-cmake@v3.19.2
 
-      - name: Install VS 16.9
-        if: matrix.branch == '5.3'
-        run: |
-          "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
-           --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
+#       - name: Install VS 16.9
+#         if: matrix.branch == '5.3'
+#         run: |
+#           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
+#            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
+#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
+#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
           
-          if errorlevel 1 exit /b
+#           if errorlevel 1 exit /b
           
-          :check_setup
-          tasklist | find /I "setup.exe" > nul
-          if not errorlevel 1 (
-            echo Waiting for setup to complete...
-            ping -n 10 127.0.0.1 > nul
-            goto check_setup
-          )
-          exit /b 0
+#           :check_setup
+#           tasklist | find /I "setup.exe" > nul
+#           if not errorlevel 1 (
+#             echo Waiting for setup to complete...
+#             ping -n 10 127.0.0.1 > nul
+#             goto check_setup
+#           )
+#           exit /b 0
 
       - name: Configure Build
         run: |
@@ -304,24 +304,24 @@ jobs:
       - name: Get CMake 3.19.2
         uses: lukka/get-cmake@v3.19.2
 
-      - name: Install VS 16.9
-        if: matrix.branch == '5.3'
-        run: |
-          "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
-           --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
+#       - name: Install VS 16.9
+#         if: matrix.branch == '5.3'
+#         run: |
+#           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
+#            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
+#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
+#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
           
-          if errorlevel 1 exit /b
+#           if errorlevel 1 exit /b
           
-          :check_setup
-          tasklist | find /I "setup.exe" > nul
-          if not errorlevel 1 (
-            echo Waiting for setup to complete...
-            ping -n 10 127.0.0.1 > nul
-            goto check_setup
-          )
-          exit /b 0
+#           :check_setup
+#           tasklist | find /I "setup.exe" > nul
+#           if not errorlevel 1 (
+#             echo Waiting for setup to complete...
+#             ping -n 10 127.0.0.1 > nul
+#             goto check_setup
+#           )
+#           exit /b 0
 
       - name: Configure Build
         run: |
