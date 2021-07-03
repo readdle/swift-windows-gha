@@ -89,13 +89,13 @@ jobs:
             echo ::set-output name=python-version::3.7.x
           )
 
-      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ steps.select-python-version.outputs.python-version }}
+#       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
-      - name: Get CMake 3.19.2
-        uses: lukka/get-cmake@v3.19.2
+#       - name: Get CMake 3.19.2
+#         uses: lukka/get-cmake@v3.19.2
 
 #       - name: Install VS 16.9
 #         if: matrix.branch == '5.3'
@@ -296,13 +296,13 @@ jobs:
             echo ::set-output name=python-version::3.7.x
           )
 
-      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ steps.select-python-version.outputs.python-version }}
+#       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
-      - name: Get CMake 3.19.2
-        uses: lukka/get-cmake@v3.19.2
+#       - name: Get CMake 3.19.2
+#         uses: lukka/get-cmake@v3.19.2
 
 #       - name: Install VS 16.9
 #         if: matrix.branch == '5.3'
