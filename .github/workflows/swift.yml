@@ -84,15 +84,10 @@ jobs:
         id: select-python-version
         run: |
           if "${{ matrix.branch }}"=="5.3" (
-            echo ::set-output name=python-version::2.7.x
+            echo SW_PYTHON_DIR="C:\Python27">>%GITHUB_ENV%
           ) else (
-            echo ::set-output name=python-version::3.7.x
+            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
-
-      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ steps.select-python-version.outputs.python-version }}
 
 #       - name: Get CMake 3.19.2
 #         uses: lukka/get-cmake@v3.19.2
@@ -124,6 +119,7 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ matrix.branch }}^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
@@ -291,15 +287,10 @@ jobs:
         id: select-python-version
         run: |
           if "${{ matrix.branch }}"=="5.3" (
-            echo ::set-output name=python-version::2.7.x
+            echo SW_PYTHON_DIR="C:\Python27">>%GITHUB_ENV%
           ) else (
-            echo ::set-output name=python-version::3.7.x
+            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
-
-#       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
 #       - name: Get CMake 3.19.2
 #         uses: lukka/get-cmake@v3.19.2
