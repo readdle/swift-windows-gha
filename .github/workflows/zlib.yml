@@ -51,7 +51,7 @@ jobs:
           fi
 
   zlib:
-    runs-on: windows-latest
+    runs-on: self-hosted
     needs: [check-in]
     if: cancelled() == false
     defaults:
