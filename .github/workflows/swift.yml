@@ -56,7 +56,7 @@ jobs:
 
   toolchain:
     name: Toolchain
-    runs-on: self-hosted
+    runs-on: windows-latest
     needs: [check-in]
     if: cancelled() == false
     strategy:
@@ -84,32 +84,37 @@ jobs:
         id: select-python-version
         run: |
           if "${{ matrix.branch }}"=="5.3" (
-            echo SW_PYTHON_DIR="C:\Python27">>%GITHUB_ENV%
+            echo ::set-output name=python-version::2.7.x
           ) else (
-            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
+            echo ::set-output name=python-version::3.7.x
           )
 
-#       - name: Get CMake 3.19.2
-#         uses: lukka/get-cmake@v3.19.2
+      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ steps.select-python-version.outputs.python-version }}
 
-#       - name: Install VS 16.9
-#         if: matrix.branch == '5.3'
-#         run: |
-#           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
-#            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
-#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
-#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
+      - name: Get CMake 3.19.2
+        uses: lukka/get-cmake@v3.19.2
+
+      - name: Install VS 16.9
+        if: matrix.branch == '5.3'
+        run: |
+          "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
+           --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
+           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
+           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
           
-#           if errorlevel 1 exit /b
+          if errorlevel 1 exit /b
           
-#           :check_setup
-#           tasklist | find /I "setup.exe" > nul
-#           if not errorlevel 1 (
-#             echo Waiting for setup to complete...
-#             ping -n 10 127.0.0.1 > nul
-#             goto check_setup
-#           )
-#           exit /b 0
+          :check_setup
+          tasklist | find /I "setup.exe" > nul
+          if not errorlevel 1 (
+            echo Waiting for setup to complete...
+            ping -n 10 127.0.0.1 > nul
+            goto check_setup
+          )
+          exit /b 0
 
       - name: Configure Build
         run: |
@@ -119,7 +124,6 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ matrix.branch }}^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
@@ -274,11 +278,11 @@ jobs:
           set /p SW_LLVM_REF=< %SW_ARTIFACTS_DIR%\checkout\llvm-project.txt
           set /p SW_SWIFT_REF=< %SW_ARTIFACTS_DIR%\checkout\swift.txt
           set /p SW_DISPATCH_REF=< %SW_ARTIFACTS_DIR%\checkout\swift-corelibs-libdispatch.txt
-
+          
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
           echo swift-corelibs-libdispatch rev is %SW_DISPATCH_REF%
-
+          
           echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
@@ -287,32 +291,37 @@ jobs:
         id: select-python-version
         run: |
           if "${{ matrix.branch }}"=="5.3" (
-            echo SW_PYTHON_DIR="C:\Python27">>%GITHUB_ENV%
+            echo ::set-output name=python-version::2.7.x
           ) else (
-            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
+            echo ::set-output name=python-version::3.7.x
           )
 
-#       - name: Get CMake 3.19.2
-#         uses: lukka/get-cmake@v3.19.2
+      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ steps.select-python-version.outputs.python-version }}
 
-#       - name: Install VS 16.9
-#         if: matrix.branch == '5.3'
-#         run: |
-#           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
-#            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
-#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
-#            --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
+      - name: Get CMake 3.19.2
+        uses: lukka/get-cmake@v3.19.2
+
+      - name: Install VS 16.9
+        if: matrix.branch == '5.3'
+        run: |
+          "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
+           --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
+           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
+           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
           
-#           if errorlevel 1 exit /b
+          if errorlevel 1 exit /b
           
-#           :check_setup
-#           tasklist | find /I "setup.exe" > nul
-#           if not errorlevel 1 (
-#             echo Waiting for setup to complete...
-#             ping -n 10 127.0.0.1 > nul
-#             goto check_setup
-#           )
-#           exit /b 0
+          :check_setup
+          tasklist | find /I "setup.exe" > nul
+          if not errorlevel 1 (
+            echo Waiting for setup to complete...
+            ping -n 10 127.0.0.1 > nul
+            goto check_setup
+          )
+          exit /b 0
 
       - name: Configure Build
         run: |
@@ -390,24 +399,28 @@ jobs:
           workflow: icu.yml
           name: icu
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: zlib.yml
           name: zlib
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Download curl
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: curl.yml
           name: curl
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Download libxml2
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: libxml2.yml
           name: libxml2
           path: '${{ env.SW_ARTIFACTS_DIR }}'
+
       - name: Download toolchain
         uses: actions/download-artifact@v1
         with:
