@@ -5,7 +5,7 @@ on:
       tag:
         description: 'Tag to fetch'     
         required: false
-      branch-spec:
+      branch_spec:
         description: 'Branch specification (main, 5.4, 5.3)'
         required: true
         default: 'main'
@@ -66,7 +66,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: ['${{ github.event.inputs.branch-spec }}']
+        branch: ['${{ github.event.inputs.branch_spec }}']
         spec: [apple, readdle]
         runs_on: ['${{ github.event.inputs.runs_on }}']
         include:
@@ -266,7 +266,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: ['${{ github.event.inputs.branch-spec }}']
+        branch: ['${{ github.event.inputs.branch_spec }}']
         spec: [apple, readdle]
         runs_on: ['${{ github.event.inputs.runs_on }}']
         include:
@@ -528,6 +528,7 @@ jobs:
 
       - name: Test Foundation (CTest)
         continue-on-error: true
+        timeout-minutes: 10
         run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
 
       - name: Test Foundation (XCTest)
@@ -599,8 +600,8 @@ jobs:
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
-          filename: ${{ github.workflow }}-${{ github.event.inputs.branch-spec }}-badge.json
-          label: ${{ github.workflow }}-${{ github.event.inputs.branch-spec }}
+          filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
+          label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
           message: success
           color: success
 
@@ -610,7 +611,7 @@ jobs:
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
-          filename: ${{ github.workflow }}-${{ github.event.inputs.branch-spec }}-badge.json
-          label: ${{ github.workflow }}-${{ github.event.inputs.branch-spec }}
+          filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
+          label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
           message: failure
           color: critical

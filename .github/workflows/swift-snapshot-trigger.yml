@@ -14,6 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         spec: ['main', '5.4', '5.3']
+        runs_on: ['self-hosted', 'windows-latest']
 
     steps:
       - name: Trigger `${{ matrix.spec }}` Workflow
@@ -22,7 +23,7 @@ jobs:
           
           http_code=$(curl -s -w "%{http_code}" -H 'Authorization: token ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}' \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/swift.yml/dispatches \
-            -d '{"ref":"${{ github.ref }}","inputs":{"branch-spec":"${{ matrix.spec }}"}}')
+            -d '{"ref":"${{ github.ref }}","inputs":{"branch_spec":"${{ matrix.spec }}","runs_on":"${{ matrix.runs_on }}"}}')
           
           if [ "$http_code" != "204" ]; then
             echo "::error::Failed to start workflow"
