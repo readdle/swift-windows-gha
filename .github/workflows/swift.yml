@@ -131,6 +131,8 @@ jobs:
           exit /b 0
 
       - name: Configure Build
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
           scripts\configure.cmd^
            --interactive=NO^
@@ -143,7 +145,7 @@ jobs:
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
            --sdk=${{ matrix.spec }}^
-           --git-tag=${{ github.event.inputs.tag }}
+           --git-tag=%GIT_TAG%
 
       - name: Configure Build Environment
         run: |
@@ -349,6 +351,8 @@ jobs:
           exit /b 0
 
       - name: Configure Build
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
           scripts\configure.cmd^
            --interactive=NO^
@@ -360,7 +364,7 @@ jobs:
            --branch=${{ matrix.branch }}^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
            --sdk=${{ matrix.spec }}^
-           --git-tag=${{ github.event.inputs.tag }}
+           --git-tag=%GIT_TAG%
 
       - name: Configure Build Environment
         run: |
