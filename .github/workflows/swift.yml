@@ -87,14 +87,18 @@ jobs:
 
       - name: Select Python Version
         id: select-python-version
+        env:
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
-          if "${{ matrix.branch }}"=="5.3" (
+          setlocal enabledelayedexpansion
+          if "!MATRIX_BRANCH!"=="5.3" (
             echo ::set-output name=python-version::2.7.x
             echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
             echo ::set-output name=python-version::3.7.x
             echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
+          endlocal
 
       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
         if: github.event.inputs.runs_on != 'self-hosted'
@@ -133,7 +137,9 @@ jobs:
       - name: Configure Build
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
+          setlocal enabledelayedexpansion
           scripts\configure.cmd^
            --interactive=NO^
            --sources-dir=%GITHUB_WORKSPACE%\s^
@@ -141,20 +147,25 @@ jobs:
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
            --python-dir=%SW_PYTHON_DIR%^
-           --branch=${{ matrix.branch }}^
+           --branch=!MATRIX_BRANCH!^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
            --sdk=${{ matrix.spec }}^
-           --git-tag=%GIT_TAG%
+           --git-tag=!GIT_TAG!
+          endlocal
 
       - name: Configure Build Environment
+        env:
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
-          if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
+          setlocal enabledelayedexpansion
+          if "!MATRIX_BRANCH!"=="5.3" set SW_VC_VERSION=14.28.29910
           call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
-
+          endlocal
+          
       - name: Configure Git
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
 
@@ -307,14 +318,18 @@ jobs:
 
       - name: Select Python Version
         id: select-python-version
+        env:
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
-          if "${{ matrix.branch }}"=="5.3" (
+          setlocal enabledelayedexpansion
+          if "!MATRIX_BRANCH!"=="5.3" (
             echo ::set-output name=python-version::2.7.x
             echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
             echo ::set-output name=python-version::3.7.x
             echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
+          endlocal
 
       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
         if: github.event.inputs.runs_on != 'self-hosted'
@@ -353,7 +368,9 @@ jobs:
       - name: Configure Build
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
+          setlocal enabledelayedexpansion
           scripts\configure.cmd^
            --interactive=NO^
            --sources-dir=%GITHUB_WORKSPACE%\s^
@@ -361,18 +378,23 @@ jobs:
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
            --python-dir=%SW_PYTHON_DIR%^
-           --branch=${{ matrix.branch }}^
+           --branch=!MATRIX_BRANCH!^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
            --sdk=${{ matrix.spec }}^
-           --git-tag=%GIT_TAG%
+           --git-tag=!GIT_TAG!
+          endlocal
 
       - name: Configure Build Environment
+        env:
+          MATRIX_BRANCH: ${{ matrix.branch }}
         run: |
-          if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
+          setlocal enabledelayedexpansion
+          if "!MATRIX_BRANCH!"=="5.3" set SW_VC_VERSION=14.28.29910
           call scripts\workflows\configure-build-environment.cmd
           call scripts\workflows\load-configuration.cmd
           call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
+          endlocal
 
       - name: Configure Git
         run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
