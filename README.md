@@ -1,5 +1,12 @@
 # Swift Toolchain and SDK Build Tool
-[![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-main/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-main) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-5.4/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-5.4) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-5.3/badge.svg)](https://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-5.3) [![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/readdle/swift-windows-gha/actionshttps://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-build-script)
+![Swift main Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-main-badge.json&logo=github)
+![Swift 5.4 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.4-badge.json&logo=github)
+![Swift 5.3 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.3-badge.json&logo=github)
+[![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/readdle/swift-windows-gha/actionshttps://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-build-script)<br>
+![ICU Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/icu-badge.json&logo=github)
+![CURL Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/curl-badge.json&logo=github)
+![libxml2 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/libxml2-badge.json&logo=github)
+![zlib Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/zlib-badge.json&logo=github)
 
 ![Swift on Windows](doc/img/swift-windows-cover.png)
 _Based on [//swift/build](https://github.com/compnerd/swift-build) project_
