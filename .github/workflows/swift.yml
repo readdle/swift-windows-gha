@@ -9,6 +9,10 @@ on:
         description: 'Branch specification (main, 5.4, 5.3)'
         required: true
         default: 'main'
+      runs_on:
+        description: 'Runner label (windows-latest, self-hosted)'
+        required: true
+        default: 'windows-latest'
       check_run_id:
         description: Check Run ID
         required: false
@@ -56,7 +60,7 @@ jobs:
 
   toolchain:
     name: Toolchain
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runs_on }}
     needs: [check-in]
     if: cancelled() == false
     strategy:
@@ -64,6 +68,7 @@ jobs:
       matrix:
         branch: ['${{ github.event.inputs.branch-spec }}']
         spec: [apple, readdle]
+        runs_on: ['${{ github.event.inputs.runs_on }}']
         include:
           - spec: apple
             enable-no-objc-patch: NO
@@ -85,20 +90,29 @@ jobs:
         run: |
           if "${{ matrix.branch }}"=="5.3" (
             echo ::set-output name=python-version::2.7.x
+            echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
             echo ::set-output name=python-version::3.7.x
+            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
 
       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: actions/setup-python@v2
         with:
           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
+      - name: Export Python Path
+        if: github.event.inputs.runs_on != 'self-hosted'
+        run: |
+          echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
+
       - name: Get CMake 3.19.2
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: lukka/get-cmake@v3.19.2
 
       - name: Install VS 16.9
-        if: matrix.branch == '5.3'
+        if: matrix.branch == '5.3' && github.event.inputs.runs_on != 'self-hosted'
         run: |
           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
@@ -124,6 +138,7 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ matrix.branch }}^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
            --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
@@ -245,7 +260,7 @@ jobs:
 
   sdk:
     name: SDK
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runs_on }}
     needs: [toolchain]
     if: cancelled() == false && needs.toolchain.result == 'success'
     strategy:
@@ -253,6 +268,7 @@ jobs:
       matrix:
         branch: ['${{ github.event.inputs.branch-spec }}']
         spec: [apple, readdle]
+        runs_on: ['${{ github.event.inputs.runs_on }}']
         include:
           - spec: apple
             stdlib-patch-enabled: NO 
@@ -292,20 +308,29 @@ jobs:
         run: |
           if "${{ matrix.branch }}"=="5.3" (
             echo ::set-output name=python-version::2.7.x
+            echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
             echo ::set-output name=python-version::3.7.x
+            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
 
       - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: actions/setup-python@v2
         with:
           python-version: ${{ steps.select-python-version.outputs.python-version }}
 
+      - name: Export Python Path
+        if: github.event.inputs.runs_on != 'self-hosted'
+        run: |
+          echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
+
       - name: Get CMake 3.19.2
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: lukka/get-cmake@v3.19.2
 
       - name: Install VS 16.9
-        if: matrix.branch == '5.3'
+        if: matrix.branch == '5.3' && github.event.inputs.runs_on != 'self-hosted'
         run: |
           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
@@ -331,6 +356,7 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ matrix.branch }}^
            --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
            --sdk=${{ matrix.spec }}^
