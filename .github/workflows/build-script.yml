@@ -224,12 +224,12 @@ jobs:
 
       - name: Update Badge - Success
         uses: schneegans/dynamic-badges-action@v1.0.0
-        if: github.ref == 'refs/heads/master' && needs.curl.result == 'success'
+        if: github.ref == 'refs/heads/master' && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
-          filename: ${{ github.workflow }}-badge.json
-          label: ${{ github.workflow }}
+          filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
+          label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
           message: success
           color: success
 
@@ -239,7 +239,7 @@ jobs:
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
-          filename: ${{ github.workflow }}-badge.json
-          label: ${{ github.workflow }}
+          filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
+          label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
           message: failure
           color: critical
