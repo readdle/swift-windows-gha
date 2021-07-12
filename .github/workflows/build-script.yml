@@ -2,11 +2,20 @@ name: build-script
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        description: 'Tag to fetch'     
+        required: false
+      branch_spec:
+        description: 'Branch specification (main, 5.4, 5.3)'
+        required: true
+        default: 'main'
+      runs_on:
+        description: 'Runner label (windows-latest, self-hosted)'
+        required: true
+        default: 'windows-latest'
       check_run_id:
         description: Check Run ID
         required: false
-  schedule:
-    - cron: '0 22 * * 1'
 
 jobs:
 
@@ -52,7 +61,7 @@ jobs:
 
   build-script:
     name: Check Build Script
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runs_on }}
     needs: [check-in]
     if: cancelled() == false
     defaults:
@@ -61,8 +70,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [main, 5.4, 5.3]
+        branch: ['${{ github.event.inputs.branch_spec }}']
         spec: [apple, readdle]
+        runs_on: ['${{ github.event.inputs.runs_on }}']
         include:
           - spec: apple
             enable-no-objc-patch: NO
@@ -70,27 +80,39 @@ jobs:
           - spec: readdle
             enable-no-objc-patch: YES
             stdlib-patch-enabled: YES
-          - branch: main
-            python-version: 3.7.x
-          - branch: 5.4
-            python-version: 3.7.x
-          - branch: 5.3
-            python-version: 2.7.x
 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Use Python ${{ matrix.python-version }}
+      - name: Select Python Version
+        id: select-python-version
+        run: |
+          if "${{ matrix.branch }}"=="5.3" (
+            echo ::set-output name=python-version::2.7.x
+            echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
+          ) else (
+            echo ::set-output name=python-version::3.7.x
+            echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
+          )
+
+      - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ steps.select-python-version.outputs.python-version }}
+
+      - name: Export Python Path
+        if: github.event.inputs.runs_on != 'self-hosted'
+        run: |
+          echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
       - name: Get CMake 3.19.2
+        if: github.event.inputs.runs_on != 'self-hosted'
         uses: lukka/get-cmake@v3.19.2
 
       - name: Install VS 16.9
-        if: matrix.branch == 5.3
+        if: matrix.branch == '5.3' && github.event.inputs.runs_on != 'self-hosted'
         run: |
           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
            --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
@@ -123,12 +145,15 @@ jobs:
            --branch ${{ matrix.branch }}^
            --sources-dir %SW_WORK_DIR%\s^
            --build-dir %SW_WORK_DIR%\b^
+           --python-dir=%SW_PYTHON_DIR%^
            --install-dir %SW_WORK_DIR%\i^
            --skip-toolchain-swift-test=YES^
            --skip-sdk-dispatch-test=YES^
            --skip-sdk-foundation-test=YES^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}^
-           --enable-print-patch=${{ matrix.stdlib-patch-enabled }}
+           --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
+           --sdk=${{ matrix.spec }}^
+           --git-tag=${{ github.event.inputs.tag }}
 
       - name: Build
         run: |
