@@ -224,7 +224,7 @@ jobs:
 
       - name: Update Badge - Success
         uses: schneegans/dynamic-badges-action@v1.0.0
-        if: github.ref == 'refs/heads/master' && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
+        if: github.ref == 'refs/heads/master' && needs.build-script.result == 'success'
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
           gistID: e75dcdc92f031e71745ff1dbb56decd4
