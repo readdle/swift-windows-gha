@@ -104,6 +104,8 @@ if %SW_SWIFT_BRANCH_SPEC%==5.3 (
   set REF=%PREFIX%release/5.3
 ) else if %SW_SWIFT_BRANCH_SPEC%==5.4 (
   set REF=%PREFIX%release/5.4
+) else if %SW_SWIFT_BRANCH_SPEC%==5.5 (
+  set REF=%PREFIX%release/5.5
 ) else (
   set REF=%PREFIX%main
 )

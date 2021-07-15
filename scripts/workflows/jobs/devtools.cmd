@@ -4,7 +4,7 @@ set SW_STEPS_DIR=%SW_WORKSPACE%\scripts\workflows\jobs\steps\devtools
 
 call %SW_STEPS_DIR%\configure-job-environment.cmd
 
-if not "%SW_SWIFT_BRANCH_SPEC%"=="main" (
+if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
    %SW_LOG_DEVTOOLS_WARNING% --message="Not compatible with specified Swift release (%SW_SWIFT_BRANCH_SPEC%), skipping build"
    exit /b 0
 )
