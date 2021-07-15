@@ -2,7 +2,9 @@
 ![Swift main Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-main-badge.json&logo=github)
 ![Swift 5.4 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.4-badge.json&logo=github)
 ![Swift 5.3 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.3-badge.json&logo=github)
-[![Build Status](https://github.com/readdle/swift-windows-gha/workflows/swift-build-script/badge.svg)](https://github.com/readdle/swift-windows-gha/actionshttps://github.com/readdle/swift-windows-gha/actions?query=workflow%3Aswift-build-script)<br>
+![Build Script main Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-main-badge.json&logo=github)
+![Build Script 5.4 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.4-badge.json&logo=github)
+![Build Script 5.3 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.3-badge.json&logo=github)<br>
 ![ICU Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/icu-badge.json&logo=github)
 ![CURL Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/curl-badge.json&logo=github)
 ![libxml2 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/libxml2-badge.json&logo=github)
