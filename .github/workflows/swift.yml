@@ -595,7 +595,7 @@ jobs:
           fi
 
       - name: Update Badge - Success
-        uses: schneegans/dynamic-badges-action@v1.0.0
+        uses: schneegans/dynamic-badges-action@v1
         if: github.ref == 'refs/heads/master' && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
@@ -606,7 +606,7 @@ jobs:
           color: success
 
       - name: Update Badge - Failure
-        uses: schneegans/dynamic-badges-action@v1.0.0
+        uses: schneegans/dynamic-badges-action@v1
         if: github.ref == 'refs/heads/master' && contains(needs.*.result, 'failure')
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
