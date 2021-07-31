@@ -108,7 +108,7 @@ jobs:
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
       - name: Get CMake 3.19.2
-        if: github.event.inputs.runs_on != 'self-hosted'
+        if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != 'main'
         uses: lukka/get-cmake@v3.19.2
 
       - name: Install VS 16.9
