@@ -107,10 +107,10 @@ jobs:
         run: |
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
-      - name: Get CMake 3.19.8
-        if: github.event.inputs.runs_on != 'self-hosted'
-        run: |
-          choco install cmake --version=3.19.8
+#       - name: Get CMake 3.19.8
+#         if: github.event.inputs.runs_on != 'self-hosted'
+#         run: |
+#           choco install cmake --version=3.19.8
 
       - name: Configure Build
         run: |
@@ -307,10 +307,10 @@ jobs:
         run: |
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
-      - name: Get CMake 3.19.8
-        if: github.event.inputs.runs_on != 'self-hosted'
-        run: |
-          choco install cmake --version=3.19.8
+#       - name: Get CMake 3.19.8
+#         if: github.event.inputs.runs_on != 'self-hosted'
+#         run: |
+#           choco install cmake --version=3.19.8
 
       - name: Configure Build
         run: |
