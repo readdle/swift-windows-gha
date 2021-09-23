@@ -1,0 +1,14 @@
+diff --git a/llvm/cmake/modules/LLVMExternalProjectUtils.cmake b/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
+index 1b4a1f339..6b7c4233f 100644
+--- a/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
++++ b/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
+@@ -141,7 +141,8 @@ function(llvm_ExternalProject_Add name source_dir)
+       if(_cmake_system_name STREQUAL Windows)
+         set(compiler_args -DCMAKE_C_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
+                           -DCMAKE_CXX_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
+-                          -DCMAKE_ASM_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX})
++                          -DCMAKE_ASM_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
++                          -DCMAKE_MT=${CMAKE_MT})
+       else()
+         set(compiler_args -DCMAKE_C_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang${CMAKE_EXECUTABLE_SUFFIX}
+                           -DCMAKE_CXX_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang++${CMAKE_EXECUTABLE_SUFFIX}
