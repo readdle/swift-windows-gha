@@ -1,14 +1,13 @@
-diff --git a/llvm/cmake/modules/LLVMExternalProjectUtils.cmake b/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
-index 1b4a1f339..6b7c4233f 100644
---- a/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
-+++ b/llvm/cmake/modules/LLVMExternalProjectUtils.cmake
-@@ -141,7 +141,8 @@ function(llvm_ExternalProject_Add name source_dir)
-       if(_cmake_system_name STREQUAL Windows)
-         set(compiler_args -DCMAKE_C_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
-                           -DCMAKE_CXX_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
--                          -DCMAKE_ASM_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX})
-+                          -DCMAKE_ASM_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang-cl${CMAKE_EXECUTABLE_SUFFIX}
-+                          -DCMAKE_MT=${CMAKE_MT})
-       else()
-         set(compiler_args -DCMAKE_C_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang${CMAKE_EXECUTABLE_SUFFIX}
-                           -DCMAKE_CXX_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang++${CMAKE_EXECUTABLE_SUFFIX}
+diff --git a/llvm/runtimes/CMakeLists.txt b/llvm/runtimes/CMakeLists.txt
+index 57db5c378..c7cd7d9d5 100644
+--- a/llvm/runtimes/CMakeLists.txt
++++ b/llvm/runtimes/CMakeLists.txt
+@@ -427,7 +427,7 @@ ${error} Set RUNTIMES_BUILD_ALLOW_DARWIN to allow a single darwin triple.")
+                                         -DCMAKE_CXX_COMPILER_WORKS=ON
+                                         -DCMAKE_ASM_COMPILER_WORKS=ON
+                                         ${RUNTIMES_CMAKE_ARGS}
+-                             PASSTHROUGH_PREFIXES LLVM_ENABLE_RUNTIMES
++                             PASSTHROUGH_PREFIXES LLVM_ENABLE_RUNTIMES CMAKE_MT
+                                                   ${ARG_PREFIXES}
+                              EXTRA_TARGETS ${extra_targets}
+                                            ${test_targets}
