@@ -108,10 +108,15 @@ jobs:
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
       - name: Get CMake 3.21.3
-        if: github.event.inputs.runs_on != 'self-hosted'
+        if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != '5.3' && matrix.branch != '5.4'
         run: |
           choco install cmake --version=3.21.3
 
+      - name: Get CMake 3.19.8
+        if: github.event.inputs.runs_on != 'self-hosted' && (matrix.branch == '5.3' || matrix.branch == '5.4')
+        run: |
+          choco install cmake --version=3.19.8
+          
       - name: Configure Build
         run: |
           scripts\configure.cmd^
@@ -311,9 +316,14 @@ jobs:
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
       - name: Get CMake 3.21.3
-        if: github.event.inputs.runs_on != 'self-hosted'
+        if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != '5.3' && matrix.branch != '5.4'
         run: |
           choco install cmake --version=3.21.3
+
+      - name: Get CMake 3.19.8
+        if: github.event.inputs.runs_on != 'self-hosted' && (matrix.branch == '5.3' || matrix.branch == '5.4')
+        run: |
+          choco install cmake --version=3.19.8
 
       - name: Configure Build
         run: |
