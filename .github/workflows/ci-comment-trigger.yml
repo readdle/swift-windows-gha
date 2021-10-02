@@ -11,10 +11,10 @@ env:
       "curl" : { "check_name": "curl", "workflow_id": "curl.yml" },
       "libxml2" : { "check_name": "libxml2", "workflow_id": "libxml2.yml" },
       "zlib" : { "check_name": "zlib", "workflow_id": "zlib.yml" },
-      "swift-5.3" : { "check_name": "swift-5.3", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.3\", \"runs_on\":\"self-hosted\"" },
-      "swift-5.4" : { "check_name": "swift-5.4", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.4\", \"runs_on\":\"self-hosted\"" },
-      "swift-5.5" : { "check_name": "swift-5.5", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.5\", \"runs_on\":\"self-hosted\"" },
-      "swift-main" : { "check_name": "swift-main", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"main\", \"runs_on\":\"self-hosted\"" }
+      "swift-5.3" : { "check_name": "swift-5.3", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.3\"" },
+      "swift-5.4" : { "check_name": "swift-5.4", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.4\"" },
+      "swift-5.5" : { "check_name": "swift-5.5", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"5.5\"" },
+      "swift-main" : { "check_name": "swift-main", "workflow_id": "swift.yml", "workflow_inputs": ", \"branch_spec\":\"main\"" }
     }
 
 jobs:
@@ -26,6 +26,7 @@ jobs:
 
     outputs:
       matrix: ${{ steps.set_matrix.outputs.matrix }}
+      runner: ${{ steps.set_matrix.outputs.runner }}
       head_sha: ${{ steps.get_pr.outputs.head_sha }}
       head_ref: ${{ steps.get_pr.outputs.head_ref }}
 
@@ -63,6 +64,7 @@ jobs:
             exit 1
           fi
           
+          RUNNER=self-hosted
           declare -a MATRIX=()
           for COMMENT_TOKEN in $COMMENT_BODY; do
             case "$COMMENT_TOKEN" in
@@ -75,6 +77,10 @@ jobs:
                 MATRIX+=("\"swift-5.3\"" "\"swift-5.4\"" "\"swift-5.5\"" "\"swift-main\"")
                 ;;
               
+              cloud)
+                RUNNER=windows-latest
+                ;;
+                
               /ci | test)
                 ;;
               
@@ -87,7 +93,9 @@ jobs:
           
           MATRIX=$(echo ${MATRIX[@]} | tr ' ' ',')
           echo "Build matrix: $MATRIX"
+          echo "Runner : $RUNNER"
           echo "::set-output name=matrix::{\"workflow\":[$MATRIX]}"
+          echo "::set-output name=runner::$RUNNER"
 
   trigger-workflow:
     name: Trigger Workflow
@@ -126,7 +134,7 @@ jobs:
           
           http_code=$(curl -s -w "%{http_code}" -H 'Authorization: token ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}' \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_id }}/dispatches \
-            -d '{"ref":"${{ needs.configure.outputs.head_ref }}","inputs":{"check_run_id":"${{ steps.create_check.outputs.check_run_id }}"${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_inputs }}}}')
+            -d '{"ref":"${{ needs.configure.outputs.head_ref }}","inputs":{"check_run_id":"${{ steps.create_check.outputs.check_run_id }}"${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_inputs }}, "runs_on":"${{ needs.configure.outputs.runner }}"}}')
           
           if [ "$http_code" != "204" ]; then
             echo "::error::Failed to start workflow"
