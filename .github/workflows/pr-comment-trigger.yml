@@ -1,4 +1,4 @@
-name: CI Comment Trigger
+name: pr-comment-trigger
 
 on:
   issue_comment:
