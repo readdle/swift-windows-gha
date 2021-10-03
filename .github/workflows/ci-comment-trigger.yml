@@ -132,9 +132,13 @@ jobs:
         run: |
           set -e
           
+          if [ "${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_inputs }}" != "" ]; then
+            RUNS_ON=', "runs_on":"${{ needs.configure.outputs.runner }}"'
+          fi
+          
           http_code=$(curl -s -w "%{http_code}" -H 'Authorization: token ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}' \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_id }}/dispatches \
-            -d '{"ref":"${{ needs.configure.outputs.head_ref }}","inputs":{"check_run_id":"${{ steps.create_check.outputs.check_run_id }}"${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_inputs }}, "runs_on":"${{ needs.configure.outputs.runner }}"}}')
+            -d '{"ref":"${{ needs.configure.outputs.head_ref }}","inputs":{"check_run_id":"${{ steps.create_check.outputs.check_run_id }}"${{ fromJSON(env.WORKFLOW_DATA)[matrix.workflow].workflow_inputs }}'"$RUNS_ON"'}}')
           
           if [ "$http_code" != "204" ]; then
             echo "::error::Failed to start workflow"
