@@ -1,16 +1,23 @@
 setlocal enabledelayedexpansion
 
-:: No patches for LLVM yet
-goto :eof
+set SW_LOG_PATCH_INFO=%SW_LOG_INFO% --scope patch-swift
+set SW_LOG_PATCH_ERROR=%SW_LOG_ERROR% --scope patch-swift
 
-set SW_PUSHDIR=%CD%
+%SW_LOG_PATCH_INFO% --message="No patches for LLVM"
 
-cd /d %SW_LLVM_PROJECT_SOURCES_DIR%^
- && git config user.name 'builder'^
- && git config user.email 'swift-builder@readdle.com'^
- && git apply --verbose XXX.patch
+rem set SW_PATCH_CMAKE_MT=%SW_WORKSPACE%\patch\llvm-project\cmake-mt-%SW_SWIFT_BRANCH_SPEC%.patch
 
-set SW_ERROR=%ERRORLEVEL%
-cd /d %SW_PUSHDIR%
+rem %SW_LOG_PATCH_INFO% --message="Will apply %SW_PATCH_CMAKE_MT%"
+rem set SW_PATCH_CMAKE_MT=git apply --verbose %SW_PATCH_CMAKE_MT%
+
+rem set SW_PUSHDIR=%CD%
+
+rem cd /d %SW_LLVM_PROJECT_SOURCES_DIR%^
+rem  && git config user.name 'builder'^
+rem  && git config user.email 'swift-builder@readdle.com'^
+rem  && %SW_PATCH_CMAKE_MT%
+
+rem set SW_ERROR=%ERRORLEVEL%
+rem cd /d %SW_PUSHDIR%
 
 endlocal & exit /b %SW_ERROR%
