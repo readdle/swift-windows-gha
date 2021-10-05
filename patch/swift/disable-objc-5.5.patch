@@ -1,0 +1,92 @@
+diff --git a/include/swift/Basic/LangOptions.h b/include/swift/Basic/LangOptions.h
+index 60a9099d..f604f71e 100644
+--- a/include/swift/Basic/LangOptions.h
++++ b/include/swift/Basic/LangOptions.h
+@@ -201,6 +201,11 @@ namespace swift {
+     /// was not compiled with -enable-testing.
+     bool EnableTestableAttrRequiresTestableModule = true;
+ 
++    /// Experimental
++    /// Disables @objc and dynamic attrs
++    /// Ignored when EnableObjCInterop == true
++    bool DisableObjCAttr = false;
++
+     ///
+     /// Flags for developers
+     ///
+diff --git a/include/swift/Option/FrontendOptions.td b/include/swift/Option/FrontendOptions.td
+index 801bdcda..78a5c619 100644
+--- a/include/swift/Option/FrontendOptions.td
++++ b/include/swift/Option/FrontendOptions.td
+@@ -126,6 +126,11 @@ def verify_syntax_tree : Flag<["-"], "verify-syntax-tree">,
+ def show_diagnostics_after_fatal : Flag<["-"], "show-diagnostics-after-fatal">,
+   HelpText<"Keep emitting subsequent diagnostics after a fatal error">;
+   
++def experimental_disable_objc_attr : Flag<["-"], "experimental-disable-objc-attr">,
++  Flags<[FrontendOption]>,
++  HelpText<"Disables parsing @objc and dynamic attrs. "
++           "Ignored if Objective-C interop enabled">;
++
+ def enable_cross_import_overlays : Flag<["-"], "enable-cross-import-overlays">,
+   HelpText<"Automatically import declared cross-import overlays.">;
+ def disable_cross_import_overlays : Flag<["-"], "disable-cross-import-overlays">,
+diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
+index 3edcaa7b..e5d34ba9 100644
+--- a/lib/Driver/ToolChains.cpp
++++ b/lib/Driver/ToolChains.cpp
+@@ -204,6 +204,7 @@ void ToolChain::addCommonFrontendArgs(const OutputInfo &OI,
+                        options::OPT_enable_actor_data_race_checks,
+                        options::OPT_disable_actor_data_race_checks);
+   inputArgs.AddLastArg(arguments, options::OPT_warn_concurrency);
+   inputArgs.AddLastArg(arguments, options::OPT_warn_implicit_overrides);
++  inputArgs.AddLastArg(arguments, options::OPT_experimental_disable_objc_attr);
+   inputArgs.AddLastArg(arguments, options::OPT_typo_correction_limit);
+   inputArgs.AddLastArg(arguments, options::OPT_enable_app_extension);
+diff --git a/lib/Frontend/CompilerInvocation.cpp b/lib/Frontend/CompilerInvocation.cpp
+index 94ea2ec6..3b785eb4 100644
+--- a/lib/Frontend/CompilerInvocation.cpp
++++ b/lib/Frontend/CompilerInvocation.cpp
+@@ -489,6 +489,8 @@ static bool ParseLangArgs(LangOptions &Opts, ArgList &Args,
+ 
+   Opts.EnableThrowWithoutTry |= Args.hasArg(OPT_enable_throw_without_try);
+ 
++  Opts.DisableObjCAttr |= Args.hasArg(OPT_experimental_disable_objc_attr);
++
+   if (auto A = Args.getLastArg(OPT_enable_objc_attr_requires_foundation_module,
+                                OPT_disable_objc_attr_requires_foundation_module)) {
+     Opts.EnableObjCAttrRequiresFoundation
+diff --git a/lib/Parse/ParseDecl.cpp b/lib/Parse/ParseDecl.cpp
+index 9f9be824..fe60c713 100644
+--- a/lib/Parse/ParseDecl.cpp
++++ b/lib/Parse/ParseDecl.cpp
+@@ -4031,6 +4031,30 @@ Parser::parseDecl(ParseDeclOptions Flags,
+       return DeclResult;
+   }
+ 
++  if (auto SF = CurDeclContext->getParentSourceFile()) {
++    if (!InInactiveClauseEnvironment) {
++
++      bool ObjCAttrDisabled = Context.LangOpts.DisableObjCAttr
++        && !Context.LangOpts.EnableObjCInterop; // do nothing if ObjCInterop enabled
++
++      bool AttributesChanged = false;
++
++      for (auto Attr : Attributes) {
++        if (isa<ObjCAttr>(Attr)) {
++          if (ObjCAttrDisabled) {
++            Attr->setInvalid();
++            Attributes.removeAttribute(Attr);
++            AttributesChanged = true;
++          }
++        }
++      }
++
++      if (AttributesChanged) {
++        DeclResult.get()->getAttrs() = Attributes;
++      }
++    }
++  }
++
+   if (DeclResult.isNonNull()) {
+     Decl *D = DeclResult.get();
+     if (!HandlerAlreadyCalled)

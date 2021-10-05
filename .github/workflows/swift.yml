@@ -6,7 +6,7 @@ on:
         description: 'Tag to fetch'     
         required: false
       branch_spec:
-        description: 'Branch specification (main, 5.4, 5.3)'
+        description: 'Branch specification (main, 5.5, 5.4, 5.3)'
         required: true
         default: 'main'
       runs_on:

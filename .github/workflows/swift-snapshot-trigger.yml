@@ -13,11 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        spec: ['main', '5.4']
+        spec: ['main', '5.5', '5.4', '5.3']
         runs_on: ['self-hosted', 'windows-latest']
-        include:
+        exclude:
+          - spec: '5.4'
+            runs_on: 'windows-latest'
           - spec: '5.3'
-            runs_on: 'self-hosted'
+            runs_on: 'windows-latest'
 
     steps:
       - name: Trigger ${{ matrix.spec }}@${{ matrix.runs_on }} Workflow
