@@ -6,7 +6,7 @@ on:
         description: 'Tag to fetch'     
         required: false
       branch_spec:
-        description: 'Branch specification (main, 5.4, 5.3)'
+        description: 'Branch specification (main, 5.5, 5.4, 5.3)'
         required: true
         default: 'main'
       runs_on:
@@ -92,7 +92,7 @@ jobs:
             echo ::set-output name=python-version::2.7.x
             echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
-            echo ::set-output name=python-version::3.7.x
+            echo ::set-output name=python-version::3.x.x
             echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
 
@@ -107,9 +107,15 @@ jobs:
         run: |
           echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
-      - name: Get CMake 3.19.2
-        if: github.event.inputs.runs_on != 'self-hosted'
-        uses: lukka/get-cmake@v3.19.2
+      - name: Get CMake 3.21.3
+        if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != '5.3' && matrix.branch != '5.4'
+        run: |
+          choco install cmake --version=3.21.3
+
+      - name: Get CMake 3.19.8
+        if: github.event.inputs.runs_on != 'self-hosted' && (matrix.branch == '5.3' || matrix.branch == '5.4')
+        run: |
+          choco install cmake --version=3.19.8
 
       - name: Install VS 16.9
         if: matrix.branch == '5.3' && github.event.inputs.runs_on != 'self-hosted'
