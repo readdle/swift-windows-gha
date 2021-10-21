@@ -20,7 +20,7 @@ if defined SW_GIT_TAG (
     set SW_DISPATCH_REF=%SW_GIT_TAG%
   )
 ) else (
-  call :sw_get_ref SW_LLVM_REF swift/
+  call :sw_get_llvm_ref SW_LLVM_REF
   call :sw_get_ref SW_SWIFT_REF
   call :sw_get_ref SW_CMARK_REF
   call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
@@ -82,6 +82,19 @@ if %SW_SWIFT_BRANCH_SPEC%==5.3 (
   set REF=%PREFIX%release/5.5
 ) else (
   set REF=%PREFIX%main
+)
+
+endlocal && set %1=%REF%
+exit /b
+
+rem ###########################################################################
+:sw_get_llvm_ref <result_var>
+setlocal enabledelayedexpansion
+
+if %SW_SWIFT_BRANCH_SPEC%==main (
+  set REF=stable/20210726
+) else (
+  call :sw_get_ref REF
 )
 
 endlocal && set %1=%REF%
