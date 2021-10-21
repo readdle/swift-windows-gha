@@ -94,7 +94,7 @@ setlocal enabledelayedexpansion
 if %SW_SWIFT_BRANCH_SPEC%==main (
   set REF=stable/20210726
 ) else (
-  call :sw_get_ref REF
+  call :sw_get_ref REF swift/
 )
 
 endlocal && set %1=%REF%
