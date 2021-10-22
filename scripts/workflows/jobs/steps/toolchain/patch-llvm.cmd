@@ -1,7 +1,7 @@
 setlocal enabledelayedexpansion
 
-set SW_LOG_PATCH_INFO=%SW_LOG_INFO% --scope patch-swift
-set SW_LOG_PATCH_ERROR=%SW_LOG_ERROR% --scope patch-swift
+set SW_LOG_PATCH_INFO=%SW_LOG_INFO% --scope patch-lvm
+set SW_LOG_PATCH_ERROR=%SW_LOG_ERROR% --scope patch-llvm
 
 %SW_LOG_PATCH_INFO% --message="No patches for LLVM"
 
