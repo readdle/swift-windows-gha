@@ -1,25 +1,26 @@
 # Swift Toolchain and SDK Build Tool
-![Swift main Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-main-badge.json&logo=github)
-![Swift 5.4 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.4-badge.json&logo=github)
-![Swift 5.3 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.3-badge.json&logo=github)
-![Build Script main Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-main-badge.json&logo=github)
-![Build Script 5.4 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.4-badge.json&logo=github)
-![Build Script 5.3 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.3-badge.json&logo=github)<br>
-![ICU Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/icu-badge.json&logo=github)
-![CURL Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/curl-badge.json&logo=github)
-![libxml2 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/libxml2-badge.json&logo=github)
-![zlib Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/zlib-badge.json&logo=github)
-
 ![Swift on Windows](doc/img/swift-windows-cover.png)
 _Based on [//swift/build](https://github.com/compnerd/swift-build) project_
 
 ### Project Goals
-Swift is a large project consisting of many parts. When it comes to changing or investigate something located in, for example, Swift Foundation library, it is crucial to have quick and robust way to rebuild only that part.
+Swift is a large project consisting of many parts. When it comes to changing or investigating the project, it is crucial to have a comfort way to tweak the build process.
 
 The goals of this project are to:
 - Provide a tool to build and experiment with Swift (Toolchain and SDK) on Windows in convenient way on local developer machine
 - Provide binary snapshots of dev and release versions of vanilla Swift, as well as customized version by Readdle
 - Provide convenient code/script blocks to integrate Swift build process in arbitrary CI/CD flow
+
+### Build Status
+| main | 5.5 | 5.4 | 5.3 |
+| ---: | ---:| ---:| ---:|
+| ![Swift main](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-main-badge.json&logo=github) | ![Swift 5.5](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.4-badge.json&logo=github) | ![Swift 5.4](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.4-badge.json&logo=github) | ![Swift 5.3](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/swift-5.3-badge.json&logo=github) |
+| ![Build Script main](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-main-badge.json&logo=github) | ![Build Script 5.4](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.4-badge.json&logo=github) | ![Build Script 5.4](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.4-badge.json&logo=github) | ![Build Script 5.3](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/build-script-5.3-badge.json&logo=github) |
+
+###### Dependencies
+![ICU Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/icu-badge.json&logo=github)
+![CURL Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/curl-badge.json&logo=github)
+![libxml2 Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/libxml2-badge.json&logo=github)
+![zlib Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lxbndr/e75dcdc92f031e71745ff1dbb56decd4/raw/zlib-badge.json&logo=github)
 
 ### Requirements
 - **_Windows 10 RedStone 4 (10.0.17763.0)_** or newer
