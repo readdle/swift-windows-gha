@@ -92,7 +92,7 @@ jobs:
             echo ::set-output name=python-version::2.7.x
             echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
-            echo ::set-output name=python-version::3.7.x
+            echo ::set-output name=python-version::3.9.x
             echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
 
@@ -300,7 +300,7 @@ jobs:
             echo ::set-output name=python-version::2.7.x
             echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
           ) else (
-            echo ::set-output name=python-version::3.7.x
+            echo ::set-output name=python-version::3.9.x
             echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
           )
 
