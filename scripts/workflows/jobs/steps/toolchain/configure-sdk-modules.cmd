@@ -1,5 +1,3 @@
-@echo on
-
 del "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
 del "%VCToolsInstallDir%\include\module.modulemap"
 del "%VCToolsInstallDir%\include\visualc.apinotes"
