@@ -91,6 +91,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
+      - name: Fail 
+        run: |
+          exit /b 1
+
       - name: Select Python Version
         id: select-python-version
         run: |
