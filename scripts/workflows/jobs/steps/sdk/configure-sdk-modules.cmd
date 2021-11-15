@@ -1,3 +1,8 @@
+del "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
+del "%VCToolsInstallDir%\include\module.modulemap"
+del "%VCToolsInstallDir%\include\visualc.apinotes"
+del "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+
 copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"^
  && copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"^
  && copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"^
