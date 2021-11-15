@@ -82,6 +82,10 @@ jobs:
         shell: cmd
 
     steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on != 'self-hosted'
+        uses: AutoModality/action-clean@v1.1.0
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -270,6 +274,10 @@ jobs:
         shell: cmd
 
     steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on != 'self-hosted'
+        uses: AutoModality/action-clean@v1.1.0
+
       - name: Checkout
         uses: actions/checkout@v2
 
