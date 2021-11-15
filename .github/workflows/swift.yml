@@ -85,8 +85,8 @@ jobs:
       - name: Clean Workspace
         if: github.event.inputs.runs_on == 'self-hosted'
         run: |
-          rd /q /s ${{ github.workspace }}
-          md ${{ github.workspace }}
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
 
       - name: Checkout 
         uses: actions/checkout@v2
@@ -279,8 +279,8 @@ jobs:
       - name: Clean Workspace
         if: github.event.inputs.runs_on == 'self-hosted'
         run: |
-          rd /q /s ${{ github.workspace }}
-          md ${{ github.workspace }}
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
 
       - name: Checkout
         uses: actions/checkout@v2
