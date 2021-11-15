@@ -1,3 +1,5 @@
+@echo on
+
 copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"^
  && copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"^
  && copy /y %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"^
