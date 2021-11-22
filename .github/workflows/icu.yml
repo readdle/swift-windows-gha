@@ -63,22 +63,14 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Prepare Build Drive
-        run: |
-          call scripts\tools\get-free-drive.cmd
-          subst %SW_FREE_DRIVE% ${{ github.workspace }}
-          echo SW_WORK_DIR=%SW_FREE_DRIVE%>>%GITHUB_ENV%
-
       - name: Configure Build
         run: |
-          subst
-
           scripts\configure.cmd^
            --interactive=NO^
-           --sources-dir=%SW_WORK_DIR%\s^
-           --build-dir=%SW_WORK_DIR%\b^
-           --install-dir=%SW_WORK_DIR%\i^
-           --artifacts-dir=%SW_WORK_DIR%\a
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a
 
       - name: Configure Environment
         run: |
@@ -107,10 +99,6 @@ jobs:
         with:
           name: icu
           path: ${{ env.SW_INSTALL_DIR }}
-
-      - name: Remove Build Drive
-        if: always()
-        run: subst /d %SW_WORK_DIR%
 
   check-out:
     name: Check Out
