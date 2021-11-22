@@ -82,6 +82,12 @@ jobs:
             stdlib-patch-enabled: YES
 
     steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
+
       - name: Checkout 
         uses: actions/checkout@v2
 
@@ -117,31 +123,6 @@ jobs:
         run: |
           choco install cmake --version=3.19.8
 
-      - name: Install VS 16.9
-        if: matrix.branch == '5.3' && github.event.inputs.runs_on != 'self-hosted'
-        run: |
-          "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe" modify --quiet --norestart --nocache ^
-           --installPath="%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise" ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.x86.x64 ^
-           --add Microsoft.VisualStudio.Component.VC.14.28.16.9.ATL
-          
-          if errorlevel 1 exit /b
-          
-          :check_setup
-          tasklist | find /I "setup.exe" > nul
-          if not errorlevel 1 (
-            echo Waiting for setup to complete...
-            ping -n 10 127.0.0.1 > nul
-            goto check_setup
-          )
-          exit /b 0
-
-      - name: Prepare Build Drive
-        run: |
-          call scripts\tools\get-free-drive.cmd
-          subst %SW_FREE_DRIVE% ${{ github.workspace }}
-          echo SW_WORK_DIR=%SW_FREE_DRIVE%>>%GITHUB_ENV%
-
       - name: Configure
         run: |
           subst
@@ -149,10 +130,10 @@ jobs:
           scripts\configure.cmd^
            --interactive=NO^
            --branch ${{ matrix.branch }}^
-           --sources-dir %SW_WORK_DIR%\s^
-           --build-dir %SW_WORK_DIR%\b^
+           --sources-dir %GITHUB_WORKSPACE%\s^
+           --build-dir %GITHUB_WORKSPACE%\b^
            --python-dir=%SW_PYTHON_DIR%^
-           --install-dir %SW_WORK_DIR%\i^
+           --install-dir %GITHUB_WORKSPACE%\i^
            --skip-toolchain-swift-test=YES^
            --skip-sdk-dispatch-test=YES^
            --skip-sdk-foundation-test=YES^
@@ -165,10 +146,6 @@ jobs:
         run: |
           if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
           scripts\build.cmd
-
-      - name: Remove Build Drive
-        if: always()
-        run: subst /d %SW_WORK_DIR%
 
   check-out:
     name: Check Out

@@ -6,7 +6,7 @@ if errorlevel 1 goto :eof
 
 cmake^
  -G Ninja^
- -S %SW_ICU_DRIVE%\icu4c^
+ -S %SW_ICU_SOURCES_DIR%\icu4c^
  -B %SW_ICU_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=MinSizeRel^
