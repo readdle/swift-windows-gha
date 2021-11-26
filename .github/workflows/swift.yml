@@ -3,16 +3,27 @@ on:
   workflow_dispatch:
     inputs:
       tag:
+        type: string
         description: 'Tag to fetch'     
         required: false
       branch_spec:
-        description: 'Branch specification (main, 5.5, 5.4, 5.3)'
+        description: 'Branch specification'
         required: true
+        type: choice
         default: 'main'
+        options:
+        - 'main'
+        - '5.5'
+        - '5.4'
+        - '5.3'
       runs_on:
         description: 'Runner label (windows-latest, self-hosted)'
         required: true
+        type: choice
         default: 'windows-latest'
+        options:
+        - 'windows-latest'
+        - 'self-hosted'
       check_run_id:
         description: Check Run ID
         required: false
