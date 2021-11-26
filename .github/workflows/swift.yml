@@ -17,7 +17,7 @@ on:
         - '5.4'
         - '5.3'
       runs_on:
-        description: 'Runner label (windows-latest, self-hosted)'
+        description: 'Runner label'
         required: true
         type: choice
         default: 'windows-latest'
