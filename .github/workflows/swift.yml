@@ -91,7 +91,8 @@ jobs:
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
-      dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
+      dispatch_ref_apple: ${{ steps.checkout_info.outputs.dispatch_ref_apple }}
+      dispatch_ref_readdle: ${{ steps.checkout_info.outputs.dispatch_ref_readdle }}
 
     defaults:
       run:
@@ -211,7 +212,7 @@ jobs:
           
           echo ::set-output name=llvm_ref::%SW_LLVM_SHA%
           echo ::set-output name=swift_ref::%SW_SWIFT_SHA%
-          echo ::set-output name=dispatch_ref::%SW_DISPATCH_SHA%
+          echo ::set-output name=dispatch_ref_${{ matrix.spec }}::%SW_DISPATCH_SHA%
 
       - name: Patch LLVM
         run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
@@ -252,6 +253,9 @@ jobs:
 
       - name: Install Toolchain
         run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
+
+      - name: Restructure Internal Modules
+        run: scripts\workflows\jobs\steps\toolchain\restructure-modules.cmd
 
       - name: Configure Compiler Runtime
         run: scripts\workflows\jobs\steps\toolchain\configure-compiler-runtime.cmd
@@ -307,7 +311,7 @@ jobs:
         run: |
           set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
           set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
-          set SW_DISPATCH_REF=${{ needs.toolchain.outputs.dispatch_ref }}
+          set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
           
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
@@ -498,6 +502,9 @@ jobs:
 
       - name: Install Module Maps
         run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
+
+      - name: Restructure Modules
+        run: scripts\workflows\jobs\steps\sdk\restructure-modules.cmd
 
       - name: Generate plists
         run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
