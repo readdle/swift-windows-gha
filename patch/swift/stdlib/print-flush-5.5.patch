@@ -49,7 +49,7 @@ index b54ede8c..224d9ee9 100644
 --- a/stdlib/public/stubs/LibcShims.cpp
 +++ b/stdlib/public/stubs/LibcShims.cpp
 @@ -47,6 +47,11 @@ __swift_size_t swift::_swift_stdlib_fwrite_stdout(const void *ptr,
-     return fwrite(ptr, size, nitems, stdout);
+   return fwrite(ptr, size, nitems, stdout);
  }
  
 +SWIFT_RUNTIME_STDLIB_INTERNAL
