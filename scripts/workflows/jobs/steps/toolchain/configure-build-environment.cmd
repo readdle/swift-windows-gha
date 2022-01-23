@@ -92,7 +92,7 @@ rem ###########################################################################
 setlocal enabledelayedexpansion
 
 if %SW_SWIFT_BRANCH_SPEC%==main (
-  set REF=stable/20210726
+  set REF=stable/20211026
 ) else (
   call :sw_get_ref REF swift/
 )
