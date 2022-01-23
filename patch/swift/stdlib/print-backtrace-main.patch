@@ -51,12 +51,12 @@ index 23695337..4d216239 100644
 +}
 \ No newline at end of file
 diff --git a/stdlib/public/runtime/Errors.cpp b/stdlib/public/runtime/Errors.cpp
-index d57557cf..ed31aaca 100644
+index 812b61a1896..89bb7e964c8 100644
 --- a/stdlib/public/runtime/Errors.cpp
 +++ b/stdlib/public/runtime/Errors.cpp
-@@ -476,3 +476,88 @@ void swift::swift_abortDynamicReplacementDisabling() {
-                     "Fatal error: trying to disable a dynamic replacement "
-                     "that is already disabled");
+@@ -465,3 +465,88 @@ void swift::swift_abortDisabledUnicodeSupport() {
+                     "Unicode normalization data is disabled on this platform");
+ 
  }
 +
 +// --- Readdle: Print Backtrace ---
@@ -143,7 +143,6 @@ index d57557cf..ed31aaca 100644
 +  }
 +#endif
 +}
-\ No newline at end of file
 diff --git a/stdlib/public/stubs/Assert.cpp b/stdlib/public/stubs/Assert.cpp
 index 547d9d7f..4552be0c 100644
 --- a/stdlib/public/stubs/Assert.cpp
