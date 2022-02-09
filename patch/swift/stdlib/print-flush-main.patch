@@ -1,23 +1,24 @@
 diff --git a/stdlib/public/SwiftShims/LibcShims.h b/stdlib/public/SwiftShims/LibcShims.h
-index 3c0de023..1e7e9911 100644
+index b78e80222f6..c1d3688c1b0 100644
 --- a/stdlib/public/SwiftShims/LibcShims.h
 +++ b/stdlib/public/SwiftShims/LibcShims.h
-@@ -58,6 +58,8 @@ int _swift_stdlib_putchar_unlocked(int c);
- SWIFT_RUNTIME_STDLIB_INTERNAL
+@@ -38,6 +38,9 @@ SWIFT_RUNTIME_STDLIB_INTERNAL
  __swift_size_t _swift_stdlib_fwrite_stdout(const void *ptr, __swift_size_t size,
                                             __swift_size_t nitems);
+ 
 +SWIFT_RUNTIME_STDLIB_INTERNAL
 +int _swift_stdlib_fflush_stdout();
- 
++
  // General utilities <stdlib.h>
  // Memory management functions
+ static inline void _swift_stdlib_free(void *_Nullable ptr) {
 diff --git a/stdlib/public/core/Print.swift b/stdlib/public/core/Print.swift
-index c3670473..d2959f3e 100644
+index 015f538bfe0..264c7e1c265 100644
 --- a/stdlib/public/core/Print.swift
 +++ b/stdlib/public/core/Print.swift
-@@ -10,6 +10,10 @@
- //
- //===----------------------------------------------------------------------===//
+@@ -12,6 +12,10 @@
+ 
+ #if !SWIFT_STDLIB_STATIC_PRINT
  
 +#if os(Windows)
 +import SwiftShims
@@ -26,7 +27,7 @@ index c3670473..d2959f3e 100644
  /// Writes the textual representations of the given items into the standard
  /// output.
  ///
-@@ -229,6 +233,9 @@ internal func _print<Target: TextOutputStream>(
+@@ -231,6 +235,9 @@ internal func _print<Target: TextOutputStream>(
      prefix = separator
    }
    output.write(terminator)
@@ -36,7 +37,7 @@ index c3670473..d2959f3e 100644
  }
  
  internal func _debugPrint<Target: TextOutputStream>(
-@@ -246,4 +253,7 @@ internal func _debugPrint<Target: TextOutputStream>(
+@@ -248,6 +255,9 @@ internal func _debugPrint<Target: TextOutputStream>(
      prefix = separator
    }
    output.write(terminator)
@@ -44,19 +45,18 @@ index c3670473..d2959f3e 100644
 +  _swift_stdlib_fflush_stdout()
 +  #endif
  }
+ 
+ #endif
 diff --git a/stdlib/public/stubs/LibcShims.cpp b/stdlib/public/stubs/LibcShims.cpp
-index b54ede8c..224d9ee9 100644
+index 897f8d0d906..789697a1cd5 100644
 --- a/stdlib/public/stubs/LibcShims.cpp
 +++ b/stdlib/public/stubs/LibcShims.cpp
-@@ -47,6 +47,11 @@ __swift_size_t swift::_swift_stdlib_fwrite_stdout(const void *ptr,
+@@ -40,3 +40,8 @@ __swift_size_t _swift_stdlib_fwrite_stdout(const void *ptr,
+                                            __swift_size_t nitems) {
    return fwrite(ptr, size, nitems, stdout);
  }
- 
++
 +SWIFT_RUNTIME_STDLIB_INTERNAL
 +int _swift_stdlib_fflush_stdout() {
 +    return fflush(stdout);
 +}
-+
- SWIFT_RUNTIME_STDLIB_SPI
- __swift_ssize_t
- _swift_stdlib_read(int fd, void *buf, __swift_size_t nbyte) {
