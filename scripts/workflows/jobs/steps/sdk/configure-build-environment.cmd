@@ -4,9 +4,9 @@ set "SW_LOG_SDK_WARNING=%SW_LOG_WARNING% --scope sdk"
 %SW_LOG_SDK_INFO% --message="Configuring build environment"
 
 set SW_FOUNDATION_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-foundation
-set SW_FOUNDATION_ORIGIN_URL=git://github.com/%SW_FOUNDATION_REPO%.git
+set SW_FOUNDATION_ORIGIN_URL=https://github.com/%SW_FOUNDATION_REPO%.git
 set SW_DISPATCH_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-libdispatch
-set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
+set SW_DISPATCH_ORIGIN_URL=https://github.com/%SW_DISPATCH_REPO%.git
 
 if %SW_SWIFT_SDK_SPEC%==readdle set SW_SDK_SPEC_PREFIX=readdle/
 
