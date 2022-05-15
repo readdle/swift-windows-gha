@@ -5,7 +5,7 @@ set "SW_LOG_TOOLCHAIN_WARNING=%SW_LOG_WARNING% --scope toolchain"
 %SW_LOG_TOOLCHAIN_INFO% --message="Configuring build environment"
 
 set SW_DISPATCH_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-libdispatch
-set SW_DISPATCH_ORIGIN_URL=git://github.com/%SW_DISPATCH_REPO%.git
+set SW_DISPATCH_ORIGIN_URL=https://github.com/%SW_DISPATCH_REPO%.git
 
 if %SW_SWIFT_SDK_SPEC%==readdle set SW_SDK_SPEC_PREFIX=readdle/
 
@@ -22,7 +22,7 @@ if defined SW_GIT_TAG (
 ) else (
   call :sw_get_llvm_ref SW_LLVM_REF
   call :sw_get_ref SW_SWIFT_REF
-  call :sw_get_ref SW_CMARK_REF
+  call :sw_get_cmark_ref SW_CMARK_REF
   call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
 )
 
@@ -95,6 +95,19 @@ if %SW_SWIFT_BRANCH_SPEC%==main (
   set REF=stable/20211026
 ) else (
   call :sw_get_ref REF swift/
+)
+
+endlocal && set %1=%REF%
+exit /b
+
+rem ###########################################################################
+:sw_get_cmark_ref <result_var>
+setlocal enabledelayedexpansion
+
+if %SW_SWIFT_BRANCH_SPEC%==main (
+  set REF=gfm
+) else (
+  call :sw_get_ref REF
 )
 
 endlocal && set %1=%REF%
