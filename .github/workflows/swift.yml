@@ -311,7 +311,8 @@ jobs:
         run: |
           set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
           set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
-          set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
+          rem set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
+          set SW_DISPATCH_REF=readdle/main
           
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
