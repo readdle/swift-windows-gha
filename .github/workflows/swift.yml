@@ -78,15 +78,10 @@ jobs:
       fail-fast: false
       matrix:
         branch: ['${{ github.event.inputs.branch_spec }}']
-        spec: [apple, readdle]
+        spec: ['readdle']
         runs_on: ['${{ github.event.inputs.runs_on }}']
-        include:
-          - spec: apple
-            enable-no-objc-patch: NO
-            skip-swift-test: NO
-          - spec: readdle
-            enable-no-objc-patch: YES
-            skip-swift-test: YES
+        enable-no-objc-patch: ['YES']
+        skip-swift-test: ['YES']
 
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
@@ -285,14 +280,10 @@ jobs:
       fail-fast: false
       matrix:
         branch: ['${{ github.event.inputs.branch_spec }}']
-        spec: [apple, readdle]
+        spec: ['readdle']
+        stdlib-patch-enabled: ['YES']
         runs_on: ['${{ github.event.inputs.runs_on }}']
-        include:
-          - spec: apple
-            stdlib-patch-enabled: NO 
-          - spec: readdle
-            stdlib-patch-enabled: YES
-
+    
     defaults:
       run:
         shell: cmd
