@@ -10,6 +10,7 @@ cmake^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
  -D SWIFT_STDLIB_DIR=%SW_STDLIB_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-swift-flags.cmake^
+ -D CMAKE_ASM_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL="/MD"^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D ZLIB_LIBRARY=%SW_ZLIB_DIR%\usr\lib\zlibstatic.lib^
