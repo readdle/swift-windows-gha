@@ -304,7 +304,7 @@ jobs:
           set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
           rem set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
           set SW_DISPATCH_REF=readdle/main
-          
+          set SW_FOUNDATION_REF=readdle/main-compat
           echo llvm-project rev is %SW_LLVM_REF%
           echo swift rev is %SW_SWIFT_REF%
           echo swift-corelibs-libdispatch rev is %SW_DISPATCH_REF%
