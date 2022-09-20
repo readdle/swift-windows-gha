@@ -25,7 +25,7 @@ if defined SW_GIT_TAG (
   if not defined SW_LLVM_REF call :sw_get_llvm_ref SW_LLVM_REF
   if not defined SW_SWIFT_REF call :sw_get_ref SW_SWIFT_REF
   if not defined SW_DISPATCH_REF call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
-  call :sw_get_ref SW_FOUNDATION_REF %SW_SDK_SPEC_PREFIX%
+  if not defined SW_FOUNDATION_REF call :sw_get_ref SW_FOUNDATION_REF %SW_SDK_SPEC_PREFIX%
   call :sw_get_ref SW_XCTEST_REF
 )
 
