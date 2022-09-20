@@ -312,6 +312,7 @@ jobs:
           echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
+          echo SW_FOUNDATION_REF=%SW_FOUNDATION_REF%>>%GITHUB_ENV%
 
       - name: Select Python Version
         id: select-python-version
