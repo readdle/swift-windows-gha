@@ -60,8 +60,9 @@ jobs:
         shell: cmd
 
     steps:
+      
       - name: Checkout 
-        uses: actions/checkout@v2.5
+        uses: actions/checkout@v2.5.0
 
       - name: Configure Build
         run: |
