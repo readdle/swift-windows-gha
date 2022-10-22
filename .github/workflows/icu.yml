@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
 
       - name: Configure Build
         run: |
@@ -159,7 +159,7 @@ jobs:
           fi
 
       - name: Update Badge - Success
-        uses: schneegans/dynamic-badges-action@v1.0.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         if: github.ref == 'refs/heads/master' && needs.icu.result == 'success'
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
@@ -170,7 +170,7 @@ jobs:
           color: success
 
       - name: Update Badge - Failure
-        uses: schneegans/dynamic-badges-action@v1.0.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         if: github.ref == 'refs/heads/master' && contains(needs.*.result, 'failure')
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
