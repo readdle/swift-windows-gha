@@ -106,7 +106,7 @@ jobs:
           del /f /q /s ${{ github.workspace }}
 
       - name: Checkout 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
 
       - name: Select Python Version
         id: select-python-version
@@ -167,7 +167,7 @@ jobs:
         run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
 
       - name: Checkout LLVM
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
@@ -175,7 +175,7 @@ jobs:
           path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
       - name: Checkout cmark
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/swift-cmark'
           ref: ${{ env.SW_CMARK_REF }}
@@ -183,7 +183,7 @@ jobs:
           path: '${{ env.SW_CMARK_SOURCES_DIR }}'
 
       - name: Checkout libdispatch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
@@ -191,7 +191,7 @@ jobs:
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
 
       - name: Checkout swift
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
@@ -305,7 +305,7 @@ jobs:
           del /f /q /s ${{ github.workspace }}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
 
       - name: Read Checkout Info
         run: |
@@ -379,7 +379,7 @@ jobs:
         run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
 
       - name: Checkout LLVM
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
@@ -387,7 +387,7 @@ jobs:
           path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
       - name: Checkout swift
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
@@ -395,7 +395,7 @@ jobs:
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
 
       - name: Checkout libdispatch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: ${{ env.SW_DISPATCH_REPO }}
           ref: ${{ env.SW_DISPATCH_REF }}
@@ -403,7 +403,7 @@ jobs:
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
 
       - name: Checkout foundation
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: ${{ env.SW_FOUNDATION_REPO }}
           ref: ${{ env.SW_FOUNDATION_REF }}
@@ -411,7 +411,7 @@ jobs:
           path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
 
       - name: Checkout xctest
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: 'apple/swift-corelibs-xctest'
           ref: ${{ env.SW_XCTEST_REF }}
@@ -603,7 +603,7 @@ jobs:
           fi
 
       - name: Update Badge - Success
-        uses: schneegans/dynamic-badges-action@v1.1.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         if: github.ref == 'refs/heads/master' && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
@@ -614,7 +614,7 @@ jobs:
           color: success
 
       - name: Update Badge - Failure
-        uses: schneegans/dynamic-badges-action@v1.1.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         if: github.ref == 'refs/heads/master' && contains(needs.*.result, 'failure')
         with:
           auth: ${{ secrets.GISTS_TOKEN }}
