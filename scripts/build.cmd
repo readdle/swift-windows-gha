@@ -17,8 +17,9 @@ call "%SW_WORKSPACE%\scripts\workflows\load-configuration.cmd"
 :: This option hints set-env script how to work with environment variables.
 set SW_BUILD_ENVIRONMENT=script
 
-call "%SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd"^
+call "%SW_WORKSPACE%\scripts\workflows\jobs\tools.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\toolchain.cmd"^
+ && call "%SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\zlib.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\curl.cmd"^
