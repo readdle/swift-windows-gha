@@ -16,21 +16,24 @@ if not exist "%SW_PYTHON_DIR%" if not "%SW_SKIP_TOOLCHAIN%" == "YES" (
   %SW_LOG_BUILD_WARNING% --prefix="                         " --message="Path not exists"
 )
 %SW_LOG_BUILD_INFO%
-%SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION% (%SW_CURL_RELEASE%)"
 %SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="SQLite version:          " --message="%SW_SQLITE_VERSION% (%SW_SQLITE_RELEASE%)"
+%SW_LOG_BUILD_INFO% --prefix="Git tag:                 " --message="%SW_GIT_TAG%"
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO%
-if "%SW_SKIP_ICU%"=="YES"                  ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="ICU" )
+if "%SW_SKIP_TOOLS%"=="YES"                ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="Tools" )
 if "%SW_SKIP_TOOLCHAIN%"=="YES"            ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="Toolchain" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="Toolchain - Configure Test Environment" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="Toolchain - Test Swift" )
 if "%SW_SKIP_ZLIB%"=="YES"                 ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="zlib" )
 if "%SW_SKIP_XML2%"=="YES"                 ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="libxml2" )
 if "%SW_SKIP_CURL%"=="YES"                 ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="curl" )
+if "%SW_SKIP_ICU%"=="YES"                  ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="ICU" )
 if "%SW_SKIP_SDK%"=="YES"                  ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="SDK" )
 if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="SDK - Checkout Foundation" )
 if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="SDK - Checkout XCTest" )
