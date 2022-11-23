@@ -34,7 +34,7 @@ set "SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift"
 set "SW_SWIFT_SYNTAX_SOURCES_DIR=%SW_SOURCES_DIR%\swift-syntax"
 set "SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch"
 
-set "SW_LLVM_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\llvm-tools"
+set "SW_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\tools"
 
 %SW_LOG_JOB_INFO% --prefix="Dispatch origin:         " --message="%SW_DISPATCH_ORIGIN_URL%"
 %SW_LOG_JOB_INFO% --prefix="Dispatch ref:            " --message="%SW_DISPATCH_REF%"
@@ -51,7 +51,7 @@ set "SW_LLVM_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\llvm-tools"
 %SW_LOG_JOB_INFO% --prefix="Dispatch sources dir:    " --message="%SW_DISPATCH_SOURCES_DIR%"
 %SW_LOG_JOB_INFO% --prefix="swift-syntax sources dir:" --message="%SW_SWIFT_SYNTAX_SOURCES_DIR%"
 %SW_LOG_JOB_INFO%
-%SW_LOG_JOB_INFO% --prefix="LLVM tools build dir:    " --message="%SW_LLVM_TOOLS_BUILD_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Tools build dir:         " --message="%SW_TOOLS_BUILD_DIRs%"
 
 exit /b 0
 

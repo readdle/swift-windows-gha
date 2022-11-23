@@ -13,12 +13,13 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-cmark.cmd^
  && call %SW_STEPS_DIR%\checkout-libdispatch.cmd^
  && call %SW_STEPS_DIR%\checkout-swift.cmd^
- && call %SW_STEPS_DIR%\checkout-swift-syntax.cmd
-@REM  && call %SW_STEPS_DIR%\configure-llvm-build-tools.cmd^
-@REM  && call %SW_STEPS_DIR%\build-llvm-build-tools.cmd^
-@REM  && call %SW_STEPS_DIR%\build-clang-build-tools.cmd^
-@REM  && call %SW_STEPS_DIR%\build-lldb-build-tools.cmd^
-@REM  && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
+ && call %SW_STEPS_DIR%\checkout-swift-syntax.cmd^
+ && call %SW_STEPS_DIR%\configure-tools.cmd^
+ && call %SW_STEPS_DIR%\build-llvm-tblgen.cmd^
+ && call %SW_STEPS_DIR%\build-clang-tblgen.cmd^
+ && call %SW_STEPS_DIR%\build-lldb-tblgen.cmd^
+ && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
+ && call %SW_STEPS_DIR%\build-swift-def-to-strings-converter.cmd
 @REM  && call %SW_STEPS_DIR%\configure-sdk-modules.cmd^
 @REM  && call %SW_STEPS_DIR%\configure-toolchain.cmd^
 @REM  && call %SW_STEPS_DIR%\build-toolchain.cmd^
