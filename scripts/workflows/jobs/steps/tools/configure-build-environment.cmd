@@ -1,7 +1,7 @@
 set "SW_LOG_JOB_INFO=%SW_LOG_INFO% --scope tools"
 set "SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope tools"
 
-%SW_LOG_JOB_INFO% --message="Configuring build environment"
+%SW_LOG_JOB_INFO% --message="Configuring build environment..."
 
 set SW_DISPATCH_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-libdispatch
 set SW_DISPATCH_ORIGIN_URL=https://github.com/%SW_DISPATCH_REPO%.git

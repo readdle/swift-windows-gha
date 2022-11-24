@@ -1,3 +1,4 @@
+%SW_LOG_JOB_INFO% --message="Configuring llvm-project..."
 cmake^
  -B %SW_TOOLS_BUILD_DIR%^
  -D CMAKE_BUILD_TYPE=Release^

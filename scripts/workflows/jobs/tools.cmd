@@ -20,15 +20,5 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-lldb-tblgen.cmd^
  && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
  && call %SW_STEPS_DIR%\build-swift-def-to-strings-converter.cmd
-@REM  && call %SW_STEPS_DIR%\configure-sdk-modules.cmd^
-@REM  && call %SW_STEPS_DIR%\configure-toolchain.cmd^
-@REM  && call %SW_STEPS_DIR%\build-toolchain.cmd^
-@REM  && call %SW_STEPS_DIR%\install-toolchain.cmd^
-@REM  && call %SW_STEPS_DIR%\restructure-modules.cmd^
-@REM  && call %SW_STEPS_DIR%\configure-compiler-runtime.cmd^
-@REM  && call %SW_STEPS_DIR%\install-compiler-runtime.cmd^
-@REM  && call %SW_STEPS_DIR%\configure-test-environment.cmd^
-@REM  && call %SW_STEPS_DIR%\check-swift.cmd^
-@REM  && call %SW_STEPS_DIR%\clean-toolchain.cmd
 
 endlocal
