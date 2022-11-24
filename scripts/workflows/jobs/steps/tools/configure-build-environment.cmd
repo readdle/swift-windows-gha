@@ -51,7 +51,7 @@ set "SW_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\tools"
 %SW_LOG_JOB_INFO% --prefix="Dispatch sources dir:    " --message="%SW_DISPATCH_SOURCES_DIR%"
 %SW_LOG_JOB_INFO% --prefix="swift-syntax sources dir:" --message="%SW_SWIFT_SYNTAX_SOURCES_DIR%"
 %SW_LOG_JOB_INFO%
-%SW_LOG_JOB_INFO% --prefix="Tools build dir:         " --message="%SW_TOOLS_BUILD_DIRs%"
+%SW_LOG_JOB_INFO% --prefix="Tools build dir:         " --message="%SW_TOOLS_BUILD_DIR%"
 
 exit /b 0
 
