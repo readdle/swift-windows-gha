@@ -30,11 +30,12 @@ on:
 
 jobs:
   tools:
-    name: Build Tools
+    name: Host Tools
     runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
       matrix:
+        arch: [amd64]
         branch: ['${{ github.event.inputs.branch_spec }}']
         runs_on: ['${{ github.event.inputs.runs_on }}']
         
@@ -56,6 +57,9 @@ jobs:
         run: |
           for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
           del /f /q /s ${{ github.workspace }}
+
+      - name: Configure Git
+        run: scripts\tools\configure-git.cmd
 
       - name: Checkout 
         uses: actions/checkout@v3.1.0
@@ -172,48 +176,69 @@ jobs:
           copy %SW_TOOLS_BUILD_DIR%\bin\swift-def-to-strings-converter.exe %SW_INSTALL_DIR%\build-tools\bin
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: build-tools
           path: ${{ env.SW_INSTALL_DIR }}/build-tools
 
-  # toolchain:
-  #   name: Toolchain
-  #   runs-on: ${{ matrix.runs_on }}
-  #   needs: [tools]
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       branch: ['${{ github.event.inputs.branch_spec }}']
-  #       spec: [apple, readdle]
-  #       runs_on: ['${{ github.event.inputs.runs_on }}']
-  #       include:
-  #         - spec: apple
-  #           enable-no-objc-patch: NO
-  #           skip-swift-test: NO
-  #         - spec: readdle
-  #           enable-no-objc-patch: YES
-  #           skip-swift-test: YES
+  toolchain:
+    name: Toolchain
+    runs-on: ${{ matrix.runs_on }}
+    needs: [tools]
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ['${{ github.event.inputs.branch_spec }}']
+        spec: [apple]
+        runs_on: ['${{ github.event.inputs.runs_on }}']
+        arch: [amd64]
+        include:
+          - spec: apple
+            enable-no-objc-patch: NO
+            skip-swift-test: NO
+          - spec: readdle
+            enable-no-objc-patch: YES
+            skip-swift-test: YES
+            
+    outputs:
+      llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
+      swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
+      dispatch_ref_apple: ${{ steps.checkout_info.outputs.dispatch_ref_apple }}
+      dispatch_ref_readdle: ${{ steps.checkout_info.outputs.dispatch_ref_readdle }}
 
-  #   outputs:
-  #     llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
-  #     swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
-  #     dispatch_ref_apple: ${{ steps.checkout_info.outputs.dispatch_ref_apple }}
-  #     dispatch_ref_readdle: ${{ steps.checkout_info.outputs.dispatch_ref_readdle }}
+    defaults:
+      run:
+        shell: cmd
 
-  #   defaults:
-  #     run:
-  #       shell: cmd
+    steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
 
-  #   steps:
-  #     - name: Clean Workspace
-  #       if: github.event.inputs.runs_on == 'self-hosted'
-  #       run: |
-  #         for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
-  #         del /f /q /s ${{ github.workspace }}
+      - name: Read Checkout Info
+        run: |
+          set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
+          set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
+          set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
+          set SW_CMARK_REF=${{ needs.toolchain.outputs.cmark_ref }}
+          set SW_SWIFT_SYNTAX_REF=${{ needs.toolchain.outputs.swift_syntax_ref }}
 
-  #     - name: Checkout 
-  #       uses: actions/checkout@v3.1.0
+          echo llvm-project rev: %SW_LLVM_REF%
+          echo swift rev: %SW_SWIFT_REF%
+          echo swift-corelibs-libdispatch rev: %SW_DISPATCH_REF%
+          echo cmark rev: %SW_CMARK_REF%
+          echo swift-syntax rev: %SW_SWIFT_SYNTAX_REF%
+
+          echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
+          echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
+          echo SW_CMARK_REF=%SW_CMARK_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%>>%GITHUB_ENV%
+
+      - name: Checkout 
+        uses: actions/checkout@v3.1.0
 
   #     - name: Select Python Version
   #       id: select-python-version
