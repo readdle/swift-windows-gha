@@ -134,11 +134,11 @@ jobs:
           set /p SW_CMARK_SHA=< %GITHUB_WORKSPACE%\checkout\cmark.txt
           set /p SW_SWIFT_SYNTAX_SHA=< %GITHUB_WORKSPACE%\checkout\swift-syntax.txt
 
-          echo ::set-output name=llvm_ref::%SW_LLVM_SHA%
-          echo ::set-output name=swift_ref::%SW_SWIFT_SHA%
-          echo ::set-output name=dispatch_ref_${{ matrix.spec }}::%SW_DISPATCH_SHA%
-          echo ::set-output name=cmark_ref::%SW_CMARK_SHA%
-          echo ::set-output name=swift_syntax_ref::%SW_SWIFT_SYNTAX_SHA%
+          echo llvm_ref=%SW_LLVM_SHA%>>%GITHUB_OUTPUT%
+          echo swift_ref=%SW_SWIFT_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_ref_${{ matrix.spec }}=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
+          echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
+          echo swift_syntax_ref=%SW_SWIFT_SYNTAX_SHA%>>%GITHUB_OUTPUT%
 
       - name: Configure Build Tools
         run: scripts\workflows\jobs\steps\tools\configure-tools.cmd
