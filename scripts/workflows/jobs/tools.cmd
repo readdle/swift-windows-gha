@@ -1,8 +1,5 @@
 setlocal enabledelayedexpansion
 
-set SW_LOG_JOB_INFO=%SW_LOG_INFO% --scope toolchain
-set SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope toolchain
-
 %SW_PRE_JOB% --name="Tools" --flag=SW_SKIP_TOOLS
 if errorlevel 1 exit /b 0
 
