@@ -165,15 +165,8 @@ jobs:
       - name: Build swift-def-to-strings-converter
         run: scripts\workflows\jobs\steps\tools\build-swift-def-to-strings-converter.cmd
 
-      - name: Prepare Artifact
-        run: |
-          mkdir %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\llvm-config.exe %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\llvm-tblgen.exe %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\clang-tblgen.exe %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\lldb-tblgen.exe %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\swift-serialize-diagnostics.exe %SW_INSTALL_DIR%\build-tools\bin
-          copy %SW_TOOLS_BUILD_DIR%\bin\swift-def-to-strings-converter.exe %SW_INSTALL_DIR%\build-tools\bin
+      - name: Install Build Tools
+        run: scripts\workflows\jobs\steps\tools\install-tools.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3.1.1
