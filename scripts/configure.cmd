@@ -18,7 +18,6 @@ set SW_INSTALL_DIR=%CD%\w\i
 set SW_OBJC_PATCH_ENABLED=NO
 set SW_STDLIB_PATCH_ENABLED=NO
 set SW_SKIP_ICU=NO
-set SW_SKIP_TOOLS=NO
 set SW_SKIP_TOOLCHAIN=NO
 set SW_SKIP_TOOLCHAIN_SWIFT_TEST=NO
 set SW_SKIP_ZLIB=NO
@@ -122,7 +121,6 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
 %SW_LOG_INFO%
-if "%SW_SKIP_TOOLS%"=="YES"                ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="Tools" )
 if "%SW_SKIP_TOOLCHAIN%"=="YES"            ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="Toolchain" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="Toolchain - Configure Test Environment" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="Toolchain - Test Swift" )
@@ -194,7 +192,6 @@ echo set SW_OBJC_PATCH_ENABLED=%SW_OBJC_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_SKIP_ICU=%SW_SKIP_ICU%>>%SW_CONFIG_FILE%
-echo set SW_SKIP_TOOLS=%SW_SKIP_TOOLS%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_TOOLCHAIN=%SW_SKIP_TOOLCHAIN%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_TOOLCHAIN_SWIFT_TEST=%SW_SKIP_TOOLCHAIN_SWIFT_TEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_ZLIB=%SW_SKIP_ZLIB%>>%SW_CONFIG_FILE%
@@ -236,7 +233,6 @@ if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ICU"                          goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_TOOLS"                        goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN"                    goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST"         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ZLIB"                         goto sw_parse_arguments_accept
@@ -268,7 +264,6 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--skip-icu" (                  set NEXT_ARG=SW_SKIP_ICU
-) else if "%CURRENT_ARG%"=="--skip-tools" (                set NEXT_ARG=SW_SKIP_TOOLS
 ) else if "%CURRENT_ARG%"=="--skip-toolchain" (            set NEXT_ARG=SW_SKIP_TOOLCHAIN
 ) else if "%CURRENT_ARG%"=="--skip-toolchain-swift-test" ( set NEXT_ARG=SW_SKIP_TOOLCHAIN_SWIFT_TEST
 ) else if "%CURRENT_ARG%"=="--skip-zlib" (                 set NEXT_ARG=SW_SKIP_ZLIB
@@ -319,7 +314,6 @@ for %%G in (SW_INTERACTIVE^
  SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
- SW_SKIP_TOOLS^
  SW_SKIP_TOOLCHAIN^
  SW_SKIP_TOOLCHAIN_SWIFT_TEST^
  SW_SKIP_ZLIB^
@@ -375,8 +369,6 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_ICU" (
   goto sw_validate_parameter_bool
-) else if "%PARAMETER%"=="SW_SKIP_TOOLS" (
-  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST" (
@@ -429,7 +421,6 @@ rem ###########################################################################
 for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
- SW_SKIP_TOOLS^
  SW_SKIP_TOOLCHAIN^
  SW_SKIP_TOOLCHAIN_SWIFT_TEST^
  SW_SKIP_ZLIB^
@@ -457,7 +448,6 @@ rem ###########################################################################
 for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
- SW_SKIP_TOOLS^
  SW_SKIP_TOOLCHAIN^
  SW_SKIP_TOOLCHAIN_SWIFT_TEST^
  SW_SKIP_ZLIB^
@@ -684,7 +674,6 @@ if errorlevel 1 (
 
 if "%SW_DEFAULT_JOBS_CONFIGURATION%"=="Y" exit /b
 
-call :sw_ask_tools
 call :sw_ask_toolchain
 call :sw_ask_zlib
 call :sw_ask_xml2
@@ -709,23 +698,6 @@ call :sw_validate_bool_input SW_SKIP_ICU
 if errorlevel 1 (
   set SW_SKIP_ICU=%SW_ORIGINAL_VALUE%
   goto sw_ask_icu_input
-)
-
-exit /b
-
-
-
-rem ###########################################################################
-:sw_ask_tools
-set SW_ORIGINAL_VALUE=%SW_SKIP_TOOLS%
-
-:sw_ask_tools_input
-set /p SW_SKIP_TOOLS="Skip Tools (%SW_SKIP_TOOLS%)?: "
-call :sw_normalize_bool_input SW_SKIP_TOOLS
-call :sw_validate_bool_input SW_SKIP_TOOLS
-if errorlevel 1 (
-  set SW_SKIP_TOOLS=%SW_ORIGINAL_VALUE%
-  goto sw_ask_tools_input
 )
 
 exit /b

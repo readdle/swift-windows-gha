@@ -26,7 +26,6 @@ if not exist "%SW_PYTHON_DIR%" if not "%SW_SKIP_TOOLCHAIN%" == "YES" (
 %SW_LOG_BUILD_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
 %SW_LOG_BUILD_INFO%
-if "%SW_SKIP_TOOLS%"=="YES"                ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="Tools" )
 if "%SW_SKIP_TOOLCHAIN%"=="YES"            ( %SW_LOG_BUILD_INFO% --prefix="Job disabled:            " --message="Toolchain" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="Toolchain - Configure Test Environment" )
 if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_BUILD_INFO% --prefix="Step disabled:           " --message="Toolchain - Test Swift" )
