@@ -40,7 +40,6 @@ set "SW_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\tools"
 %SW_LOG_JOB_INFO% --prefix="apple/swift-syntax: " --message="%SW_SWIFT_SYNTAX_REF%"
 %SW_LOG_JOB_INFO% --prefix="apple/llvm-project: " --message="%SW_LLVM_REF%"
 %SW_LOG_JOB_INFO% --prefix="apple/swift:        " --message="%SW_SWIFT_REF%"
-
 %SW_LOG_JOB_INFO%
 %SW_LOG_JOB_INFO% --prefix="apple/llvm-project sources: " --message="%SW_LLVM_PROJECT_SOURCES_DIR%"
 %SW_LOG_JOB_INFO% --prefix="apple/swift-cmark sources:  " --message="%SW_CMARK_SOURCES_DIR%"
