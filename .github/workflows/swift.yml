@@ -1,4 +1,6 @@
 name: swift
+run-name: swift-${{ inputs.branch_spec }}-${{ inputs.build_spec }}
+
 on:
   workflow_dispatch:
     inputs:
@@ -13,9 +15,15 @@ on:
         default: 'main'
         options:
         - 'main'
-        - '5.5'
-        - '5.4'
-        - '5.3'
+        - '5.7'
+      build_spec: 
+        description: 'Build specification'
+        required: true
+        type: choice
+        default: 'apple'
+        options:
+        - 'apple'
+        - 'readdle'
       runs_on:
         description: 'Runner label'
         required: true
@@ -24,20 +32,16 @@ on:
         options:
         - 'windows-latest'
         - 'self-hosted'
-      check_run_id:
-        description: Check Run ID
-        required: false
 
 jobs:
   tools:
     name: Host Tools
-    runs-on: ${{ matrix.runs_on }}
+    runs-on: ${{ inputs.runs_on }}
     strategy:
       fail-fast: false
       matrix:
         arch: [amd64]
-        branch: ['${{ github.event.inputs.branch_spec }}']
-        runs_on: ['${{ github.event.inputs.runs_on }}']
+        runs_on: ['${{ inputs.runs_on }}']
         
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
@@ -53,13 +57,15 @@ jobs:
 
     steps:
       - name: Clean Workspace
-        if: github.event.inputs.runs_on == 'self-hosted'
+        if: inputs.runs_on == 'self-hosted'
         run: |
           for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
           del /f /q /s ${{ github.workspace }}
 
       - name: Configure Git
-        run: scripts\tools\configure-git.cmd
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
 
       - name: Checkout 
         uses: actions/checkout@v3.1.0
@@ -72,8 +78,8 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=${{ matrix.branch }}^
-           --git-tag=${{ github.event.inputs.tag }}
+           --branch=${{ inputs.branch_spec }}^
+           --git-tag=${{ inputs.tag }}
 
       - name: Configure Build Environment
         run: |
