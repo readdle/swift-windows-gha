@@ -19,7 +19,6 @@ set SW_OBJC_PATCH_ENABLED=NO
 set SW_STDLIB_PATCH_ENABLED=NO
 set SW_SKIP_ICU=NO
 set SW_SKIP_TOOLCHAIN=NO
-set SW_SKIP_TOOLCHAIN_SWIFT_TEST=NO
 set SW_SKIP_ZLIB=NO
 set SW_SKIP_XML2=NO
 set SW_SKIP_CURL=NO
@@ -122,8 +121,6 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
 %SW_LOG_INFO%
 if "%SW_SKIP_TOOLCHAIN%"=="YES"            ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="Toolchain" )
-if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="Toolchain - Configure Test Environment" )
-if "%SW_SKIP_TOOLCHAIN_SWIFT_TEST%"=="YES" ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="Toolchain - Test Swift" )
 if "%SW_SKIP_ZLIB%"=="YES"                 ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="zlib" )
 if "%SW_SKIP_XML2%"=="YES"                 ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="libxml2" )
 if "%SW_SKIP_CURL%"=="YES"                 ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="curl" )
@@ -193,7 +190,6 @@ echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_SKIP_ICU=%SW_SKIP_ICU%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_TOOLCHAIN=%SW_SKIP_TOOLCHAIN%>>%SW_CONFIG_FILE%
-echo set SW_SKIP_TOOLCHAIN_SWIFT_TEST=%SW_SKIP_TOOLCHAIN_SWIFT_TEST%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_ZLIB=%SW_SKIP_ZLIB%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_XML2=%SW_SKIP_XML2%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_CURL=%SW_SKIP_CURL%>>%SW_CONFIG_FILE%
@@ -234,7 +230,6 @@ if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ICU"                          goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN"                    goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST"         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ZLIB"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_XML2"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_CURL"                         goto sw_parse_arguments_accept
@@ -265,7 +260,6 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--skip-icu" (                  set NEXT_ARG=SW_SKIP_ICU
 ) else if "%CURRENT_ARG%"=="--skip-toolchain" (            set NEXT_ARG=SW_SKIP_TOOLCHAIN
-) else if "%CURRENT_ARG%"=="--skip-toolchain-swift-test" ( set NEXT_ARG=SW_SKIP_TOOLCHAIN_SWIFT_TEST
 ) else if "%CURRENT_ARG%"=="--skip-zlib" (                 set NEXT_ARG=SW_SKIP_ZLIB
 ) else if "%CURRENT_ARG%"=="--skip-xml2" (                 set NEXT_ARG=SW_SKIP_XML2
 ) else if "%CURRENT_ARG%"=="--skip-curl" (                 set NEXT_ARG=SW_SKIP_CURL
@@ -315,7 +309,6 @@ for %%G in (SW_INTERACTIVE^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
- SW_SKIP_TOOLCHAIN_SWIFT_TEST^
  SW_SKIP_ZLIB^
  SW_SKIP_XML2^
  SW_SKIP_CURL^
@@ -371,8 +364,6 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN" (
   goto sw_validate_parameter_bool
-) else if "%PARAMETER%"=="SW_SKIP_TOOLCHAIN_SWIFT_TEST" (
-  goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_ZLIB" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_XML2" (
@@ -422,8 +413,7 @@ for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
- SW_SKIP_TOOLCHAIN_SWIFT_TEST^
- SW_SKIP_ZLIB^
+  SW_SKIP_ZLIB^
  SW_SKIP_XML2^
  SW_SKIP_CURL^
  SW_SKIP_SDK^
@@ -449,7 +439,6 @@ for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_STDLIB_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
- SW_SKIP_TOOLCHAIN_SWIFT_TEST^
  SW_SKIP_ZLIB^
  SW_SKIP_XML2^
  SW_SKIP_CURL^
@@ -717,23 +706,6 @@ if errorlevel 1 (
   goto sw_ask_toolchain_input
 )
 
-if "%SW_SKIP_TOOLCHAIN%"=="Y" exit /b
-
-set SW_ORIGINAL_VALUE=%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%
-
-:sw_ask_toolchain_fine_tune_input
-set /p SW_DEFAULT_TOOLCHAIN_CONFIGURATION="Use default Toolchain steps configuration (%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%)?: "
-call :sw_normalize_bool_input SW_DEFAULT_TOOLCHAIN_CONFIGURATION
-call :sw_validate_bool_input SW_DEFAULT_TOOLCHAIN_CONFIGURATION
-if errorlevel 1 (
-  set SW_DEFAULT_TOOLCHAIN_CONFIGURATION=%SW_ORIGINAL_VALUE%
-  goto sw_ask_toolchain_fine_tune_input
-)
-
-if "%SW_DEFAULT_TOOLCHAIN_CONFIGURATION%"=="Y" exit /b
-
-call :sw_ask_swift_test
-
 exit /b
 
 
@@ -875,23 +847,6 @@ if errorlevel 1 (
 if "%SW_DEFAULT_DEVTOOLS_CONFIGURATION%"=="Y" exit /b
 
 %SW_LOG_WARNING% --message="Not yet implemented"
-
-exit /b
-
-
-
-rem ###########################################################################
-:sw_ask_swift_test
-set SW_ORIGINAL_VALUE=%SW_SKIP_TOOLCHAIN_SWIFT_TEST%
-
-:sw_ask_swift_test_input
-set /p SW_SKIP_TOOLCHAIN_SWIFT_TEST="Skip Swift test (%SW_SKIP_TOOLCHAIN_SWIFT_TEST%)?: "
-call :sw_normalize_bool_input SW_SKIP_TOOLCHAIN_SWIFT_TEST
-call :sw_validate_bool_input SW_SKIP_TOOLCHAIN_SWIFT_TEST
-if errorlevel 1 (
-  set SW_SKIP_TOOLCHAIN_SWIFT_TEST=%SW_ORIGINAL_VALUE%
-  goto sw_ask_swift_test_input
-)
 
 exit /b
 
