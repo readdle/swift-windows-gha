@@ -20,4 +20,10 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-swift-def-to-strings-converter.cmd^
  && call %SW_STEPS_DIR%\install-tools.cmd
 
-endlocal
+endlocal^
+ && set SW_DISPATCH_REPO=%SW_DISPATCH_REPO%^
+ && set SW_LLVM_REF=%SW_LLVM_REF%^
+ && set SW_SWIFT_REF=%SW_SWIFT_REF%^
+ && set SW_CMARK_REF=%SW_CMARK_REF%^
+ && set SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%^
+ && set SW_DISPATCH_REF=%SW_DISPATCH_REF%
