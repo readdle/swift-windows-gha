@@ -46,8 +46,8 @@ jobs:
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
-      dispatch_ref_apple: ${{ steps.checkout_info.outputs.dispatch_ref_apple }}
-      dispatch_ref_readdle: ${{ steps.checkout_info.outputs.dispatch_ref_readdle }}
+      dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
+      dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
       cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
       swift_syntax_ref: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
 
@@ -146,7 +146,8 @@ jobs:
 
           echo llvm_ref=%SW_LLVM_SHA%>>%GITHUB_OUTPUT%
           echo swift_ref=%SW_SWIFT_SHA%>>%GITHUB_OUTPUT%
-          echo dispatch_ref_${{ matrix.spec }}=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_ref=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_repo=%SW_DISPATCH_REPO%>>%GITHUB_OUTPUT%
           echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
           echo swift_syntax_ref=%SW_SWIFT_SYNTAX_SHA%>>%GITHUB_OUTPUT%
 
@@ -182,22 +183,18 @@ jobs:
 
   toolchain:
     name: Toolchain
-    runs-on: ${{ matrix.runs_on }}
+    runs-on: ${{ inputs.runs_on }}
     needs: [tools]
     strategy:
       fail-fast: false
       matrix:
-        branch: ['${{ github.event.inputs.branch_spec }}']
-        spec: [apple]
-        runs_on: ['${{ github.event.inputs.runs_on }}']
         arch: [amd64]
+        build_spec: ['${{ inputs.build_spec }}']
         include:
-          - spec: apple
-            enable-no-objc-patch: NO
-            skip-swift-test: NO
-          - spec: readdle
-            enable-no-objc-patch: YES
-            skip-swift-test: YES
+          - build_spec: apple
+            enable_no_objc_patch: NO
+          - build_spec: readdle
+            enable_no_objc_patch: YES
             
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
@@ -220,13 +217,14 @@ jobs:
         run: |
           set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
           set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
-          set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
+          set SW_DISPATCH_REF=${{ needs.toolchain.outputs.dispatch_ref }}
           set SW_CMARK_REF=${{ needs.toolchain.outputs.cmark_ref }}
           set SW_SWIFT_SYNTAX_REF=${{ needs.toolchain.outputs.swift_syntax_ref }}
+          set SW_DISPATCH_REPO=${{ needs.toolchain.outputs.dispatch_repo }}
 
           echo llvm-project rev: %SW_LLVM_REF%
           echo swift rev: %SW_SWIFT_REF%
-          echo swift-corelibs-libdispatch rev: %SW_DISPATCH_REF%
+          echo swift-corelibs-libdispatch rev: %SW_DISPATCH_REF% (%SW_DISPATCH_REPO%)
           echo cmark rev: %SW_CMARK_REF%
           echo swift-syntax rev: %SW_SWIFT_SYNTAX_REF%
 
@@ -235,42 +233,46 @@ jobs:
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
           echo SW_CMARK_REF=%SW_CMARK_REF%>>%GITHUB_ENV%
           echo SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%>>%GITHUB_ENV%
+          echo SW_DISPATCH_REPO=%SW_DISPATCH_REPO%>>%GITHUB_ENV%
+
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
 
       - name: Checkout 
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
 
-  #     - name: Select Python Version
-  #       id: select-python-version
-  #       run: |
-  #         if "${{ matrix.branch }}"=="5.3" (
-  #           echo ::set-output name=python-version::2.7.x
-  #           echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
-  #         ) else (
-  #           echo ::set-output name=python-version::3.9.x
-  #           echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
-  #         )
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-  #     - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-  #       if: github.event.inputs.runs_on != 'self-hosted'
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: ${{ steps.select-python-version.outputs.python-version }}
+      - name: Export Python Path
+        run: |
+          echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
 
-  #     - name: Export Python Path
-  #       if: github.event.inputs.runs_on != 'self-hosted'
-  #       run: |
-  #         echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --python-dir=%SW_PYTHON_DIR%^
+           --branch=${{ inputs.branch_spec }}^
+           --enable-no-objc-patch=${{ matrix.enable_no_objc_patch }}^
+           --sdk=${{ inputs.build_spec }}^
+           --git-tag=${{ inputs.tag }}
 
-  #     - name: Get CMake 3.21.3
-  #       if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != '5.3' && matrix.branch != '5.4'
-  #       run: |
-  #         choco install cmake --version=3.21.3
+      - name: Configure Build Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
 
-  #     - name: Get CMake 3.19.8
-  #       if: github.event.inputs.runs_on != 'self-hosted' && (matrix.branch == '5.3' || matrix.branch == '5.4')
-  #       run: |
-  #         choco install cmake --version=3.19.8
-          
   #     - name: Configure Build
   #       run: |
   #         scripts\configure.cmd^
