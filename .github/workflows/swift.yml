@@ -87,8 +87,8 @@ jobs:
           call scripts\workflows\jobs\steps\tools\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
 
-      - name: Checkout LLVM
-        uses: actions/checkout@v3.1.0
+      - name: Checkout llvm-project
+        uses: actions/checkout@v3
         with:
           repository: 'apple/llvm-project'
           ref: ${{ env.SW_LLVM_REF }}
@@ -96,22 +96,22 @@ jobs:
           path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
       - name: Checkout swift
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
         with:
           repository: 'apple/swift'
           ref: ${{ env.SW_SWIFT_REF }}
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
 
-      - name: Checkout cmark
-        uses: actions/checkout@v3.1.0
+      - name: Checkout swift-cmark
+        uses: actions/checkout@v3
         with:
           repository: 'apple/swift-cmark'
           ref: ${{ env.SW_CMARK_REF }}
           fetch-depth: 1
           path: '${{ env.SW_CMARK_SOURCES_DIR }}'
 
-      - name: Checkout libdispatch
+      - name: Checkout swift-corelibs-libdispatch
         uses: actions/checkout@v3.1.0
         with:
           repository: ${{ env.SW_DISPATCH_REPO }}
@@ -120,7 +120,7 @@ jobs:
           path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
 
       - name: Checkout swift-syntax
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
         with:
           repository: 'apple/swift-syntax'
           ref: ${{ env.SW_SWIFT_SYNTAX_REF }}
@@ -177,7 +177,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: build-tools
+          name: build-tools-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}/build-tools
 
   toolchain:
@@ -192,8 +192,10 @@ jobs:
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
-      dispatch_ref_apple: ${{ steps.checkout_info.outputs.dispatch_ref_apple }}
-      dispatch_ref_readdle: ${{ steps.checkout_info.outputs.dispatch_ref_readdle }}
+      dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
+      cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
+      swift_experimental_string_processing: ${{ steps.checkout_info.outputs.swift_experimental_string_processing_ref }}
+      dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
 
     defaults:
       run:
@@ -208,24 +210,21 @@ jobs:
 
       - name: Read Checkout Info
         run: |
-          set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
-          set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
-          set SW_DISPATCH_REF=${{ needs.toolchain.outputs.dispatch_ref }}
-          set SW_CMARK_REF=${{ needs.toolchain.outputs.cmark_ref }}
-          set SW_SWIFT_SYNTAX_REF=${{ needs.toolchain.outputs.swift_syntax_ref }}
-          set SW_DISPATCH_REPO=${{ needs.toolchain.outputs.dispatch_repo }}
+          set SW_LLVM_REF=${{ needs.tools.outputs.llvm_ref }}
+          set SW_SWIFT_REF=${{ needs.tools.outputs.swift_ref }}
+          set SW_DISPATCH_REF=${{ needs.tools.outputs.dispatch_ref }}
+          set SW_CMARK_REF=${{ needs.tools.outputs.cmark_ref }}
+          set SW_DISPATCH_REPO=${{ needs.tools.outputs.dispatch_repo }}
 
           echo llvm-project rev: %SW_LLVM_REF%
           echo swift rev: %SW_SWIFT_REF%
           echo swift-corelibs-libdispatch rev: %SW_DISPATCH_REF% (%SW_DISPATCH_REPO%)
-          echo cmark rev: %SW_CMARK_REF%
-          echo swift-syntax rev: %SW_SWIFT_SYNTAX_REF%
-
+          echo swift-cmark rev: %SW_CMARK_REF%
+          
           echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
           echo SW_CMARK_REF=%SW_CMARK_REF%>>%GITHUB_ENV%
-          echo SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REPO=%SW_DISPATCH_REPO%>>%GITHUB_ENV%
 
       - name: Configure Git
@@ -272,79 +271,74 @@ jobs:
           call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
           call scripts\tools\export-environment.cmd
 
-  #     - name: Configure Build
-  #       run: |
-  #         scripts\configure.cmd^
-  #          --interactive=NO^
-  #          --sources-dir=%GITHUB_WORKSPACE%\s^
-  #          --build-dir=%GITHUB_WORKSPACE%\b^
-  #          --install-dir=%GITHUB_WORKSPACE%\i^
-  #          --artifacts-dir=%GITHUB_WORKSPACE%\a^
-  #          --python-dir=%SW_PYTHON_DIR%^
-  #          --branch=${{ matrix.branch }}^
-  #          --enable-no-objc-patch=${{ matrix.enable-no-objc-patch }}^
-  #          --skip-toolchain-swift-test=${{ matrix.skip-swift-test }}^
-  #          --sdk=${{ matrix.spec }}^
-  #          --git-tag=${{ github.event.inputs.tag }}
+      - name: Download Host Tools
+        uses: actions/download-artifact@v3
+        with:
+          name: build-tools-${{ matrix.arch }}
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
+        
+      - name: Checkout llvm-project
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/llvm-project'
+          ref: ${{ env.SW_LLVM_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
 
-  #     - name: Configure Build Environment
-  #       run: |
-  #         if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
-  #         call scripts\workflows\configure-build-environment.cmd
-  #         call scripts\workflows\load-configuration.cmd
-  #         call scripts\workflows\jobs\steps\toolchain\configure-build-environment.cmd
-  #         call scripts\tools\export-environment.cmd
+      - name: Checkout swift-cmark
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-cmark'
+          ref: ${{ env.SW_CMARK_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_CMARK_SOURCES_DIR }}'
 
-  #     - name: Configure Git
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-git.cmd
+      - name: Checkout swift-corelibs-libdispatch
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.SW_DISPATCH_REPO }}
+          ref: ${{ env.SW_DISPATCH_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
 
-  #     - name: Checkout LLVM
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/llvm-project'
-  #         ref: ${{ env.SW_LLVM_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
+      - name: Checkout swift-experimental-string-processing
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-experimental-string-processing'
+          ref: ${{ env.SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR }}'
 
-  #     - name: Checkout cmark
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/swift-cmark'
-  #         ref: ${{ env.SW_CMARK_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_CMARK_SOURCES_DIR }}'
+      - name: Checkout swift
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift'
+          ref: ${{ env.SW_SWIFT_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
 
-  #     - name: Checkout libdispatch
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: ${{ env.SW_DISPATCH_REPO }}
-  #         ref: ${{ env.SW_DISPATCH_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+      - name: Collect Checkout Info
+        id: checkout_info
+        run: |
+          mkdir %GITHUB_WORKSPACE%\checkout
+          git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
+          git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          git -C %SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
-  #     - name: Checkout swift
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/swift'
-  #         ref: ${{ env.SW_SWIFT_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+          set /p SW_LLVM_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          set /p SW_SWIFT_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
+          set /p SW_DISPATCH_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          set /p SW_CMARK_SHA=< %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          set /p SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA=< %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
-  #     - name: Collect Checkout Info
-  #       id: checkout_info
-  #       run: |
-  #         mkdir %GITHUB_WORKSPACE%\checkout
-  #         git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
-  #         git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
-  #         git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
-          
-  #         set /p SW_LLVM_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
-  #         set /p SW_SWIFT_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
-  #         set /p SW_DISPATCH_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
-          
-  #         echo ::set-output name=llvm_ref::%SW_LLVM_SHA%
-  #         echo ::set-output name=swift_ref::%SW_SWIFT_SHA%
-  #         echo ::set-output name=dispatch_ref_${{ matrix.spec }}::%SW_DISPATCH_SHA%
+          echo llvm_ref=%SW_LLVM_SHA%>>%GITHUB_OUTPUT%
+          echo swift_ref=%SW_SWIFT_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_ref=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_repo=%SW_DISPATCH_REPO%>>%GITHUB_OUTPUT%
+          echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
+          echo swift_experimental_string_processing_ref=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA%>>%GITHUB_OUTPUT%
 
   #     - name: Patch LLVM
   #       run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
