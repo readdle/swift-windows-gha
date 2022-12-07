@@ -41,7 +41,6 @@ jobs:
       fail-fast: false
       matrix:
         arch: [amd64]
-        runs_on: ['${{ inputs.runs_on }}']
         
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
@@ -189,13 +188,7 @@ jobs:
       fail-fast: false
       matrix:
         arch: [amd64]
-        build_spec: ['${{ inputs.build_spec }}']
-        include:
-          - build_spec: apple
-            enable_no_objc_patch: NO
-          - build_spec: readdle
-            enable_no_objc_patch: YES
-            
+    
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
@@ -254,6 +247,12 @@ jobs:
 
       - name: Configure Build
         run: |
+          if "${{ inputs.build_spec }}"=="readdle" (
+            set SWC_ENABLE_NO_OBJ_PATCH=YES
+          ) else (
+            set SWC_ENABLE_NO_OBJ_PATCH=NO
+          )
+
           scripts\configure.cmd^
            --interactive=NO^
            --sources-dir=%GITHUB_WORKSPACE%\s^
@@ -262,7 +261,7 @@ jobs:
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
            --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ inputs.branch_spec }}^
-           --enable-no-objc-patch=${{ matrix.enable_no_objc_patch }}^
+           --enable-no-objc-patch=%SWC_ENABLE_NO_OBJ_PATCH%^
            --sdk=${{ inputs.build_spec }}^
            --git-tag=${{ inputs.tag }}
 
