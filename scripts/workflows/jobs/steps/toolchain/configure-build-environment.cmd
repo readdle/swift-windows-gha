@@ -4,6 +4,10 @@ set "SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope toolchain"
 
 %SW_LOG_JOB_INFO% --message="Configuring build environment"
 
+if not defined SW_PYTHON_DIR (
+  call :sw_find_python SW_PYTHON_DIR
+)
+
 call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF swift/
 call :sw_get_ref SW_SWIFT_SYNTAX_REF
 
@@ -66,3 +70,44 @@ if %SW_SWIFT_BRANCH_SPEC%==5.7 (
 
 endlocal && set %1=%REF%
 exit /b
+
+
+
+rem ###########################################################################
+:sw_find_python <result_var>
+setlocal enabledelayedexpansion
+
+%SW_LOG_JOB_INFO% --message="Looking for Python"
+
+call :sw_where python.exe SW_PYTHON_EXECUTABLE
+for /F "tokens=* USEBACKQ" %%i in (`cygpath -m "%SW_PYTHON_EXECUTABLE%"`) do (
+  set SW_PYTHON_EXECUTABLE=%%i
+)
+if "%SW_PYTHON_EXECUTABLE%"=="" (
+  %SW_LOG_JOB_WARNING% --message="Python not found"
+)
+%SW_LOG_JOB_INFO% --message="Found Python executable: %SW_PYTHON_EXECUTABLE%"
+
+call :sw_getpath "%SW_PYTHON_EXECUTABLE%" SW_PYTHON_ROOT
+for /F "tokens=* USEBACKQ" %%i in (`cygpath -m "%SW_PYTHON_ROOT%\"`) do (
+  set SW_PYTHON_ROOT=%%i
+)
+
+endlocal && set %1=%SW_PYTHON_ROOT%
+exit /b
+
+
+
+rem ###########################################################################
+:sw_where <executable> <result_var>
+set %2=%~$PATH:1
+exit /b
+
+
+
+rem ###########################################################################
+:sw_getpath <file> <result_var>
+SET %2=%~dp1
+EXIT /b
+
+

@@ -240,10 +240,6 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Export Python Path
-        run: |
-          echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
-
       - name: Configure Build
         run: |
           if "${{ inputs.build_spec }}"=="readdle" (
@@ -258,7 +254,6 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --python-dir=%SW_PYTHON_DIR%^
            --branch=${{ inputs.branch_spec }}^
            --enable-no-objc-patch=%SWC_ENABLE_NO_OBJ_PATCH%^
            --sdk=${{ inputs.build_spec }}^
