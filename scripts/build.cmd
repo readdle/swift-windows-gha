@@ -19,6 +19,7 @@ set SW_BUILD_ENVIRONMENT=script
 
 call "%SW_WORKSPACE%\scripts\workflows\jobs\tools.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\toolchain.cmd"^
+ && call "%SW_WORKSPACE%\scripts\workflows\jobs\icu-tools.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\icu.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\zlib.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd"^

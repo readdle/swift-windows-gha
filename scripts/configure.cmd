@@ -34,7 +34,8 @@ set SW_SKIP_SQLITE=YES
 set SW_SKIP_DEVTOOLS=YES
 set SW_GIT_TAG=
 
-set SW_ICU_VERSION=69
+set SW_ICU_VERSION=69.1
+set SW_ICU_RELEASE=69
 set SW_CURL_RELEASE=7_77_0
 set SW_CURL_VERSION=7.77.0
 set SW_XML2_VERSION=2.9.12
@@ -103,7 +104,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION% (%SW_CURL_RELEASE%)"
-%SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
+%SW_LOG_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION% (%SW_ICU_RELEASE%)"
 %SW_LOG_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
 %SW_LOG_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
 %SW_LOG_INFO% --prefix="SQLite version:          " --message="%SW_SQLITE_VERSION% (%SW_SQLITE_RELEASE%)"
@@ -172,6 +173,7 @@ echo.>>%SW_CONFIG_FILE%
 echo set SW_CURL_VERSION=%SW_CURL_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_CURL_RELEASE=%SW_CURL_RELEASE%>>%SW_CONFIG_FILE%
 echo set SW_ICU_VERSION=%SW_ICU_VERSION%>>%SW_CONFIG_FILE%
+echo set SW_ICU_RELEASE=%SW_ICU_RELEASE%>>%SW_CONFIG_FILE%
 echo set SW_XML2_VERSION=%SW_XML2_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_ZLIB_VERSION=%SW_ZLIB_VERSION%>>%SW_CONFIG_FILE%
 echo set SW_SQLITE_VERSION=%SW_SQLITE_VERSION%>>%SW_CONFIG_FILE%

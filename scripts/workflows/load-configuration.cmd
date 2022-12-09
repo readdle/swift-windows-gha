@@ -13,7 +13,7 @@ call %SW_CONFIG_FILE%
 %SW_LOG_BUILD_INFO% --prefix="Artifacts directory:     " --message="%SW_ARTIFACTS_DIR%"
 %SW_LOG_BUILD_INFO%
 %SW_LOG_BUILD_INFO% --prefix="CURL version:            " --message="%SW_CURL_VERSION% (%SW_CURL_RELEASE%)"
-%SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION%"
+%SW_LOG_BUILD_INFO% --prefix="ICU version:             " --message="%SW_ICU_VERSION% (%SW_ICU_RELEASE%)"
 %SW_LOG_BUILD_INFO% --prefix="XML2 version:            " --message="%SW_XML2_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="ZLIB version:            " --message="%SW_ZLIB_VERSION%"
 %SW_LOG_BUILD_INFO% --prefix="SQLite version:          " --message="%SW_SQLITE_VERSION% (%SW_SQLITE_RELEASE%)"
