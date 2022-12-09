@@ -9,7 +9,10 @@ if not defined SW_PYTHON_DIR (
 )
 
 call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF swift/
-call :sw_get_ref SW_SWIFT_SYNTAX_REF
+if not defined SW_SWIFT_SYNTAX_REF (
+  %SW_LOG_JOB_INFO% --message-"swift-syntax ref not set, using default"
+  call :sw_get_ref SW_SWIFT_SYNTAX_REF
+)
 
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_CMARK_SOURCES_DIR=%SW_SOURCES_DIR%\cmark"

@@ -194,6 +194,7 @@ jobs:
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
       dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
       cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
+      swift_syntax: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
       swift_experimental_string_processing: ${{ steps.checkout_info.outputs.swift_experimental_string_processing_ref }}
       dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
 
@@ -214,15 +215,18 @@ jobs:
           set SW_SWIFT_REF=${{ needs.tools.outputs.swift_ref }}
           set SW_DISPATCH_REF=${{ needs.tools.outputs.dispatch_ref }}
           set SW_CMARK_REF=${{ needs.tools.outputs.cmark_ref }}
+          set SW_SWIFT_SYNTAX_REF=${{ needs.tools.outputs.swift_syntax_ref }}
           set SW_DISPATCH_REPO=${{ needs.tools.outputs.dispatch_repo }}
 
-          echo llvm-project rev: %SW_LLVM_REF%
-          echo swift rev: %SW_SWIFT_REF%
-          echo swift-corelibs-libdispatch rev: %SW_DISPATCH_REF% (%SW_DISPATCH_REPO%)
-          echo swift-cmark rev: %SW_CMARK_REF%
+          echo llvm-project: %SW_LLVM_REF%
+          echo swift: %SW_SWIFT_REF%
+          echo swift-syntax: %SW_SWIFT_SYNTAX_REF%
+          echo %SW_DISPATCH_REPO%: %SW_DISPATCH_REF%
+          echo swift-cmark: %SW_CMARK_REF%
           
           echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
           echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
           echo SW_CMARK_REF=%SW_CMARK_REF%>>%GITHUB_ENV%
           echo SW_DISPATCH_REPO=%SW_DISPATCH_REPO%>>%GITHUB_ENV%
@@ -304,6 +308,14 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR }}'
 
+      - name: Checkout swift-syntax
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-syntax'
+          ref: ${{ env.SW_SWIFT_SYNTAX_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_SYNTAX_SOURCES_DIR }}'
+
       - name: Checkout swift
         uses: actions/checkout@v3
         with:
@@ -320,12 +332,14 @@ jobs:
           git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
           git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
           git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          git -C %SW_SWIFT_SYNTAX_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-syntax.txt
           git -C %SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
           set /p SW_LLVM_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
           set /p SW_SWIFT_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
           set /p SW_DISPATCH_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
           set /p SW_CMARK_SHA=< %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          set /p SW_SWIFT_SYNTAX_SHA=< %GITHUB_WORKSPACE%\checkout\swift-syntax.txt
           set /p SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA=< %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
           echo llvm_ref=%SW_LLVM_SHA%>>%GITHUB_OUTPUT%
@@ -333,6 +347,7 @@ jobs:
           echo dispatch_ref=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
           echo dispatch_repo=%SW_DISPATCH_REPO%>>%GITHUB_OUTPUT%
           echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
+          echo swift_syntax_ref=%SW_SWIFT_SYNTAX_SHA%>>%GITHUB_OUTPUT%
           echo swift_experimental_string_processing_ref=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA%>>%GITHUB_OUTPUT%
 
       - name: Patch LLVM
