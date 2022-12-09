@@ -175,7 +175,7 @@ jobs:
         run: scripts\workflows\jobs\steps\tools\install-tools.cmd
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3
         with:
           name: build-tools-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
@@ -365,27 +365,11 @@ jobs:
       - name: Install Toolchain
         run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
 
-  #     - name: Restructure Internal Modules
-  #       run: scripts\workflows\jobs\steps\toolchain\restructure-modules.cmd
-
-  #     - name: Configure Compiler Runtime
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-compiler-runtime.cmd
-
-  #     - name: Install Compiler Runtime
-  #       run: scripts\workflows\jobs\steps\toolchain\install-compiler-runtime.cmd
-
-  #     - name: Upload Artifact
-  #       uses: actions/upload-artifact@v1
-  #       with:
-  #         name: toolchain-${{ matrix.spec }}
-  #         path: ${{ env.SW_INSTALL_DIR }}
-
-  #     - name: Configure Test Environment
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-test-environment.cmd
-
-  #     - name: Check Swift
-  #       continue-on-error: true
-  #       run: scripts\workflows\jobs\steps\toolchain\check-swift.cmd
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: toolchain-${{ matrix.arch }}
+          path: ${{ env.SW_INSTALL_DIR }}
 
   # sdk:
   #   name: SDK
