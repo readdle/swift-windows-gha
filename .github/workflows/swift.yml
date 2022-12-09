@@ -178,7 +178,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
           name: build-tools-${{ matrix.arch }}
-          path: ${{ env.SW_INSTALL_DIR }}/build-tools
+          path: ${{ env.SW_INSTALL_DIR }}
 
   toolchain:
     name: Toolchain
