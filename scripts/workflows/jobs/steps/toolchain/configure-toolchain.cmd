@@ -1,6 +1,7 @@
 setlocal enabledelayedexpansion
 
-if "%SW_LIMITED_RESOURCES%"=="YES" (
+if defined GITHUB_ACTIONS (
+  %SW_LOG_JOB_INFO% --message="Limited resources environment detected"
   set SW_ADDITIONAL_OPTIONS=-D LLVM_PARALLEL_LINK_JOBS=2 -D SWIFT_PARALLEL_LINK_JOBS=2
 )
 

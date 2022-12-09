@@ -335,45 +335,20 @@ jobs:
           echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
           echo swift_experimental_string_processing_ref=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA%>>%GITHUB_OUTPUT%
 
-  #     - name: Patch LLVM
-  #       run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+      - name: Patch LLVM
+        run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
-  #     - name: Patch Swift
-  #       run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
+      - name: Patch Swift
+        run: scripts\workflows\jobs\steps\toolchain\patch-swift.cmd
 
-  #     - name: Download ICU
-  #       uses: dawidd6/action-download-artifact@v2
-  #       with:
-  #         workflow: icu.yml
-  #         name: icu
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Configure Toolchain
+        run: scripts\workflows\jobs\steps\toolchain\configure-toolchain.cmd
 
-  #     - name: Configure LLVM Build Tools
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-llvm-build-tools.cmd
+      - name: Build Toolchain
+        run: scripts\workflows\jobs\steps\toolchain\build-toolchain.cmd
 
-  #     - name: Build LLVM Build Tools
-  #       run: scripts\workflows\jobs\steps\toolchain\build-llvm-build-tools.cmd
-
-  #     - name: Build Clang Build Tools
-  #       run: scripts\workflows\jobs\steps\toolchain\build-clang-build-tools.cmd
-
-  #     - name: Build LLDB Build Tools
-  #       run: scripts\workflows\jobs\steps\toolchain\build-lldb-build-tools.cmd
-
-  #     - name: Build Diagnostics Serialization Tools
-  #       run: scripts\workflows\jobs\steps\toolchain\build-swift-serialize-diagnostics.cmd
-
-  #     - name: Configure SDK Modules
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
-
-  #     - name: Configure Toolchain
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-toolchain.cmd
-
-  #     - name: Build Toolchain
-  #       run: scripts\workflows\jobs\steps\toolchain\build-toolchain.cmd
-
-  #     - name: Install Toolchain
-  #       run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
+      - name: Install Toolchain
+        run: scripts\workflows\jobs\steps\toolchain\install-toolchain.cmd
 
   #     - name: Restructure Internal Modules
   #       run: scripts\workflows\jobs\steps\toolchain\restructure-modules.cmd
