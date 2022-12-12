@@ -447,13 +447,13 @@ jobs:
           echo icu_ref=%SW_ICU_SHA%>>%GITHUB_OUTPUT%
 
       - name: Configure ICU Tools
-        run: scripts\workflows\jobs\steps\icu\configure-icu-tools.cmd
+        run: scripts\workflows\jobs\steps\icu-tools\configure-icu-tools.cmd
 
       - name: Build ICU Tools
-        run: scripts\workflows\jobs\steps\icu\build-icu-tools.cmd
+        run: scripts\workflows\jobs\steps\icu-tools\build-icu-tools.cmd
 
       - name: Install ICU Tools
-        run: scripts\workflows\jobs\steps\icu\install-icu-tools.cmd
+        run: scripts\workflows\jobs\steps\icu-tools\install-icu-tools.cmd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
