@@ -4,9 +4,11 @@ set "SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope icu"
 %SW_LOG_JOB_INFO% --message="Configuring build environment"
 
 if not defined SW_ICU_REF (
+  %SW_LOG_JOB_WARNING% --message="icu ref is not set, using default"
   set SW_ICU_REF=maint/maint-%SW_ICU_RELEASE%
 )
 if not defined SW_SWIFT_INSTALLER_SCRIPTS_REF (
+  %SW_LOG_JOB_WARNING% --message="swift-installer-scripts ref is not set, using default"
   call :sw_get_ref SW_SWIFT_INSTALLER_SCRIPTS_REF
 )
 

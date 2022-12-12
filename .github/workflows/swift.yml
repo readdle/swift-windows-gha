@@ -67,7 +67,7 @@ jobs:
           git config --global --add core.symlinks true
 
       - name: Checkout 
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
 
       - name: Configure Build
         run: |
@@ -273,7 +273,7 @@ jobs:
       - name: Download Host Tools
         uses: actions/download-artifact@v3
         with:
-          name: build-tools-${{ matrix.arch }}
+          name: build-tools-amd64
           path: '${{ env.SW_ARTIFACTS_DIR }}'
         
       - name: Checkout llvm-project
@@ -369,6 +369,185 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: toolchain-${{ matrix.arch }}
+          path: ${{ env.SW_INSTALL_DIR }}
+
+  icu_tools:
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64]
+
+    outputs:
+      icu_ref: ${{ steps.checkout_info.outputs.icu_ref }}
+      swift_installer_scripts_ref: ${{ steps.checkout_info.outputs.swift_installer_scripts_ref }}
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Clean Workspace
+        if: inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
+
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+
+      - name: Checkout 
+        uses: actions/checkout@v3
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --branch=${{ inputs.branch_spec }}
+           
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\icu-tools\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout swift-installer-scripts
+        uses: actions/checkout@v3
+        with:
+          repository: apple/swift-installer-scripts
+          ref: ${{ env.SW_SWIFT_INSTALLER_SCRIPTS_REF }}
+          path: ${{ env.SW_SWIFT_INSTALLER_SCRIPTS_SOURCES_DIR }}
+
+      - name: Checkout ICU
+        uses: actions/checkout@v3
+        with:
+          repository: unicode-org/icu
+          ref: ${{ env.SW_ICU_REF }}
+          path: ${{ env.SW_ICU_SOURCES_DIR }}
+
+      - name: Collect Checkout Info
+        id: checkout_info
+        run: |
+          mkdir %GITHUB_WORKSPACE%\checkout
+          git -C %SW_SWIFT_INSTALLER_SCRIPTS_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-installer-scripts.txt
+          git -C %SW_ICU_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\icu.txt
+          
+          set /p SW_SWIFT_INSTALLER_SCRIPTS_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          set /p SW_ICU_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
+          
+          echo swift_installer_scripts_ref=%SW_SWIFT_INSTALLER_SCRIPTS_SHA%>>%GITHUB_OUTPUT%
+          echo icu_ref=%SW_ICU_SHA%>>%GITHUB_OUTPUT%
+
+      - name: Configure ICU Tools
+        run: scripts\workflows\jobs\steps\icu\configure-icu-tools.cmd
+
+      - name: Build ICU Tools
+        run: scripts\workflows\jobs\steps\icu\build-icu-tools.cmd
+
+      - name: Install ICU Tools
+        run: scripts\workflows\jobs\steps\icu\install-icu-tools.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: icu-tools-${{ env.SW_ICU_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_INSTALL_DIR }}
+
+  icu:
+    runs-on: ${{ inputs.runs_on }}
+    needs: [icu_tools]
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64, x86]
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Clean Workspace
+        if: inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
+
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+
+      - name: Read Checkout Info
+        run: |
+          set SW_SWIFT_INSTALLER_SCRIPTS_REF=${{ needs.icu_tools.outputs.swift_installer_scripts_ref }}
+          set SW_ICU_REF=${{ needs.icu_tools.outputs.icu_ref }}
+          
+          echo llvm-project: %SW_SWIFT_INSTALLER_SCRIPTS_REF%
+          echo icu: %SW_ICU_REF%
+          
+          echo SW_SWIFT_INSTALLER_SCRIPTS_REF=%SW_SWIFT_INSTALLER_SCRIPTS_REF%>>%GITHUB_ENV%
+          echo SW_ICU_REF=%SW_ICU_REF%>>%GITHUB_ENV%
+          
+      - name: Checkout 
+        uses: actions/checkout@v3
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --branch=${{ inputs.branch_spec }}
+           
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\icu\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Download ICU Tools
+        uses: actions/download-artifact@v3
+        with:
+          name: icu-tools-${{ env.SW_ICU_VERSION }}-amd64
+          path: '${{ env.SW_ARTIFACTS_DIR }}'
+
+      - name: Checkout swift-installer-scripts
+        uses: actions/checkout@v3
+        with:
+          repository: apple/swift-installer-scripts
+          ref: ${{ env.SW_SWIFT_INSTALLER_SCRIPTS_REF }}
+          path: ${{ env.SW_SWIFT_INSTALLER_SCRIPTS_SOURCES_DIR }}
+
+      - name: Checkout ICU
+        uses: actions/checkout@v3
+        with:
+          repository: unicode-org/icu
+          ref: ${{ env.SW_ICU_REF }}
+          path: ${{ env.SW_ICU_SOURCES_DIR }}
+
+      - name: Configure ICU
+        run: scripts\workflows\jobs\steps\icu\configure-icu.cmd
+
+      - name: Build ICU
+        run: scripts\workflows\jobs\steps\icu\build-icu.cmd
+
+      - name: Install ICU
+        run: scripts\workflows\jobs\steps\icu\install-icu.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: icu-${{ env.SW_ICU_VERSION }}-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
   # sdk:
