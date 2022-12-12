@@ -372,6 +372,7 @@ jobs:
           path: ${{ env.SW_INSTALL_DIR }}
 
   icu_tools:
+    name: ICU Tools
     runs-on: ${{ inputs.runs_on }}
     strategy:
       fail-fast: false
@@ -461,6 +462,7 @@ jobs:
           path: ${{ env.SW_INSTALL_DIR }}
 
   icu:
+    name: ICU
     runs-on: ${{ inputs.runs_on }}
     needs: [icu_tools]
     strategy:
