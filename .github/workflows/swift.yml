@@ -474,6 +474,9 @@ jobs:
       run:
         shell: cmd
 
+    env:
+      SW_ARCH: ${{ matrix.arch }}
+
     steps:
       - name: Clean Workspace
         if: inputs.runs_on == 'self-hosted'

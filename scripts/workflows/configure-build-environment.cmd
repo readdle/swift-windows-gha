@@ -34,7 +34,10 @@ if defined SW_VC_VERSION (
 ) else (
   %SW_LOG_BUILD_INFO% --prefix="VC Version:" --message="default"
 )
-call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=x64 -host_arch=x64 %VC_VERSION_ARG%
+if not defined SW_ARCH (
+  set SW_ARCH=x64
+)
+call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=%SW_ARCH% -host_arch=x64 %VC_VERSION_ARG%
 
 exit /b 0
 
