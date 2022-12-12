@@ -33,6 +33,10 @@ on:
         - 'windows-latest'
         - 'self-hosted'
 
+defaults:
+  run:
+    shell: cmd
+
 jobs:
   tools:
     name: Host Tools
@@ -49,10 +53,6 @@ jobs:
       dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
       cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
       swift_syntax_ref: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
-
-    defaults:
-      run:
-        shell: cmd
 
     steps:
       - name: Clean Workspace
@@ -383,10 +383,6 @@ jobs:
       icu_ref: ${{ steps.checkout_info.outputs.icu_ref }}
       swift_installer_scripts_ref: ${{ steps.checkout_info.outputs.swift_installer_scripts_ref }}
 
-    defaults:
-      run:
-        shell: cmd
-
     steps:
       - name: Clean Workspace
         if: inputs.runs_on == 'self-hosted'
@@ -469,10 +465,6 @@ jobs:
       fail-fast: false
       matrix:
         arch: [amd64, arm64, x86]
-
-    defaults:
-      run:
-        shell: cmd
 
     env:
       SW_ARCH: ${{ matrix.arch }}
