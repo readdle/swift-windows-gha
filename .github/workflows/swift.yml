@@ -436,8 +436,8 @@ jobs:
           git -C %SW_SWIFT_INSTALLER_SCRIPTS_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-installer-scripts.txt
           git -C %SW_ICU_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\icu.txt
           
-          set /p SW_SWIFT_INSTALLER_SCRIPTS_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
-          set /p SW_ICU_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
+          set /p SW_SWIFT_INSTALLER_SCRIPTS_SHA=< %GITHUB_WORKSPACE%\checkout\swift-installer-scripts.txt
+          set /p SW_ICU_SHA=< %GITHUB_WORKSPACE%\checkout\icu.txt
           
           echo swift_installer_scripts_ref=%SW_SWIFT_INSTALLER_SCRIPTS_SHA%>>%GITHUB_OUTPUT%
           echo icu_ref=%SW_ICU_SHA%>>%GITHUB_OUTPUT%
