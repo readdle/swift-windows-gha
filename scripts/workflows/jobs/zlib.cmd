@@ -1,7 +1,7 @@
 setlocal enabledelayedexpansion
 
-set SW_LOG_ZLIB_INFO=%SW_LOG_INFO% --scope zlib
-set SW_LOG_ZLIB_WARNING=%SW_LOG_WARNING% --scope zlib
+set SW_LOG_JOB_INFO=%SW_LOG_INFO% --scope zlib
+set SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope zlib
 
 %SW_PRE_JOB% --name="zlib" --flag=SW_SKIP_ZLIB
 if errorlevel 1 exit /b 0

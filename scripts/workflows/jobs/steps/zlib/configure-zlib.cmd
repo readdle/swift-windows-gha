@@ -1,3 +1,5 @@
+%SW_LOG_JOB_INFO% --message="Configuring zlib"
+
 cmake^
  -G Ninja^
  -S %SW_ZLIB_SOURCES_DIR%^
