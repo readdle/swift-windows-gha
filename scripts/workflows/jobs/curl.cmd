@@ -1,8 +1,5 @@
 setlocal
 
-set SW_LOG_CURL_INFO=%SW_LOG_INFO% --scope curl
-set SW_LOG_CURL_WARNING=%SW_LOG_WARNING% --scope curl
-
 %SW_PRE_JOB% --name="curl" --flag=SW_SKIP_CURL
 if errorlevel 1 exit /b 0
 

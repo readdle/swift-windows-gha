@@ -1,3 +1,4 @@
+%SW_LOG_JOB_INFO% --message="Configuring curl..."
 cmake^
  -G Ninja^
  -S %SW_CURL_SOURCES_DIR%^
