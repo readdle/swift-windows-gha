@@ -613,6 +613,77 @@ jobs:
           name: zlib-${{ env.SW_ZLIB_VERSION }}-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
+  curl:
+    runs-on: ${{ inputs.runs_on }}
+    needs: [zlib]
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64, x86]
+
+    env:
+      SW_ARCH: ${{ matrix.arch }}
+
+    steps:
+
+      - name: Clean Workspace
+        if: inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
+
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+
+      - name: Checkout 
+        uses: actions/checkout@v3
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a
+
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\curl\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout curl
+        uses: actions/checkout@v3
+        with:
+          repository: apple/swift-installer-scripts
+          ref: ${{ env.SW_CURL_REF }}
+          path: ${{ env.SW_CURL_SOURCES_DIR }}
+
+      - name: Download zlib
+        uses: actions/download-artifact@v3
+        with:
+          name: zlib-${{ env.SW_ZLIB_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
+
+      - name: Configure curl
+        run: scripts\workflows\jobs\steps\curl\configure-curl.cmd
+
+      - name: Build curl
+        run: scripts\workflows\jobs\steps\curl\build-curl.cmd
+
+      - name: Install curl
+        run: scripts\workflows\jobs\steps\curl\install-curl.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: curl-${{ env.SW_CURL_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_INSTALL_DIR }}
+
   # sdk:
   #   name: SDK
   #   runs-on: ${{ matrix.runs_on }}
