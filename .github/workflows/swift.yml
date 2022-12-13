@@ -171,6 +171,9 @@ jobs:
       - name: Build swift-def-to-strings-converter
         run: scripts\workflows\jobs\steps\tools\build-swift-def-to-strings-converter.cmd
 
+      - name: Build 
+        run: scripts\workflows\jobs\steps\tools\build-swift-compatibility-symbols.cmd
+
       - name: Install Build Tools
         run: scripts\workflows\jobs\steps\tools\install-tools.cmd
 

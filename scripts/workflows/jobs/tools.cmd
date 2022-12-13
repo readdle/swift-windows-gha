@@ -18,6 +18,7 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-lldb-tblgen.cmd^
  && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
  && call %SW_STEPS_DIR%\build-swift-def-to-strings-converter.cmd^
+ && call %SW_STEPS_DIR%\build-swift-compatibility-symbols.cmd^
  && call %SW_STEPS_DIR%\install-tools.cmd
 
 endlocal^
