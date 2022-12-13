@@ -594,7 +594,7 @@ jobs:
       - name: Checkout zlib
         uses: actions/checkout@v3
         with:
-          repository: apple/swift-installer-scripts
+          repository: madler/zlib
           ref: ${{ env.SW_ZLIB_REF }}
           path: ${{ env.SW_ZLIB_SOURCES_DIR }}
 
