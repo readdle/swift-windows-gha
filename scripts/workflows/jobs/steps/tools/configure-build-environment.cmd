@@ -51,6 +51,8 @@ set "SW_TOOLS_BUILD_DIR=%SW_BUILD_DIR%\tools"
 
 exit /b 0
 
+
+
 rem ###########################################################################
 :sw_get_ref <result_var> <prefix>
 setlocal enabledelayedexpansion
@@ -65,6 +67,8 @@ if %SW_SWIFT_BRANCH_SPEC%==5.7 (
 
 endlocal && set %1=%REF%
 exit /b
+
+
 
 rem ###########################################################################
 :sw_get_llvm_ref <result_var>
