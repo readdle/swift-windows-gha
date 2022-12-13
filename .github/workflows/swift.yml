@@ -592,7 +592,11 @@ jobs:
           call scripts\tools\export-environment.cmd
 
       - name: Checkout zlib
-        run: scripts\workflows\jobs\steps\zlib\checkout-zlib.cmd
+        uses: actions/checkout@v3
+        with:
+          repository: apple/swift-installer-scripts
+          ref: ${{ env.SW_ZLIB_REF }}
+          path: ${{ env.SW_ZLIB_SOURCES_DIR }}
 
       - name: Configure zlib
         run: scripts\workflows\jobs\steps\zlib\configure-zlib.cmd
