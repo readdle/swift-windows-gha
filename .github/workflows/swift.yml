@@ -659,7 +659,7 @@ jobs:
       - name: Checkout curl
         uses: actions/checkout@v3
         with:
-          repository: apple/swift-installer-scripts
+          repository: curl/curl
           ref: ${{ env.SW_CURL_REF }}
           path: ${{ env.SW_CURL_SOURCES_DIR }}
 
