@@ -735,36 +735,24 @@ jobs:
           name: libxml2-${{ env.SW_XML2_VERSION }}-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
-  # sdk:
-  #   name: SDK
-  #   runs-on: ${{ matrix.runs_on }}
-  #   needs: [toolchain]
-  #   if: cancelled() == false && needs.toolchain.result == 'success'
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       branch: ['${{ github.event.inputs.branch_spec }}']
-  #       spec: [apple, readdle]
-  #       runs_on: ['${{ github.event.inputs.runs_on }}']
-  #       include:
-  #         - spec: apple
-  #           stdlib-patch-enabled: NO 
-  #         - spec: readdle
-  #           stdlib-patch-enabled: YES
+  sdk:
+    name: SDK
+    runs-on: ${{ matrix.runs_on }}
+    needs: [icu, libxml2, curl, zlib, toolchain]
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64]
 
-  #   defaults:
-  #     run:
-  #       shell: cmd
+    steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
 
-  #   steps:
-  #     - name: Clean Workspace
-  #       if: github.event.inputs.runs_on == 'self-hosted'
-  #       run: |
-  #         for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
-  #         del /f /q /s ${{ github.workspace }}
-
-  #     - name: Checkout
-  #       uses: actions/checkout@v3.1.0
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
 
   #     - name: Read Checkout Info
   #       run: |
