@@ -625,7 +625,6 @@ jobs:
       SW_ARCH: ${{ matrix.arch }}
 
     steps:
-
       - name: Clean Workspace
         if: inputs.runs_on == 'self-hosted'
         run: |
@@ -682,6 +681,58 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: curl-${{ env.SW_CURL_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_INSTALL_DIR }}
+
+  libxml2:
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64, x86]
+
+    env:
+      SW_ARCH: ${{ matrix.arch }}
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v3.1.0
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a
+
+      - name: Configure Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\libxml2\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout libxml2
+        uses: actions/checkout@v3
+        with:
+          repository: gnome/libxml2
+          ref: ${{ env.SW_XML2_REF }}
+          path: ${{ env.SW_XML2_SOURCES_DIR }}
+
+      - name: Configure libxml2
+        run: scripts\workflows\jobs\steps\libxml2\configure-libxml2.cmd
+
+      - name: Build libxml2
+        run: scripts\workflows\jobs\steps\libxml2\build-libxml2.cmd
+
+      - name: Install libxml2
+        run: scripts\workflows\jobs\steps\libxml2\install-libxml2.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: libxml2-${{ env.SW_XML2_VERSION }}-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
 
   # sdk:
