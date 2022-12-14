@@ -1,7 +1,6 @@
-set "SW_LOG_SDK_INFO=%SW_LOG_INFO% --scope sdk"
-set "SW_LOG_SDK_WARNING=%SW_LOG_WARNING% --scope sdk"
+set "SW_LOG_JOB_INFO=%SW_LOG_INFO% --scope sdk"
 
-%SW_LOG_SDK_INFO% --message="Configuring build environment"
+%SW_LOG_JOB_INFO% --message="Configuring build environment..."
 
 set SW_FOUNDATION_REPO=%SW_SWIFT_SDK_SPEC%/swift-corelibs-foundation
 set SW_FOUNDATION_ORIGIN_URL=https://github.com/%SW_FOUNDATION_REPO%.git
@@ -58,38 +57,38 @@ set CTEST_OUTPUT_ON_FAILURE=1
 
 set "PATH=%SW_TOOLCHAIN_DIR%\usr\bin;%PATH%"
 
-%SW_LOG_SDK_INFO% --prefix="Dispatch origin:         " --message="%SW_DISPATCH_ORIGIN_URL%"
-%SW_LOG_SDK_INFO% --prefix="Foundation origin:       " --message="%SW_FOUNDATION_ORIGIN_URL%"
-%SW_LOG_SDK_INFO% --prefix="LLVM ref:                " --message="%SW_LLVM_REF%"
-%SW_LOG_SDK_INFO% --prefix="Dispatch ref:            " --message="%SW_DISPATCH_REF%"
-%SW_LOG_SDK_INFO% --prefix="Swift ref:               " --message="%SW_SWIFT_REF%"
-%SW_LOG_SDK_INFO% --prefix="Foundation ref:          " --message="%SW_FOUNDATION_REF%"
-%SW_LOG_SDK_INFO% --prefix="XCTest ref:              " --message="%SW_XCTEST_REF%"
-%SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="LLVM Project sources dir:" --message="%SW_LLVM_PROJECT_SOURCES_DIR%"
-%SW_LOG_SDK_INFO% --prefix="LLVM sources dir:        " --message="%SW_LLVM_SOURCES_DIR%"
-%SW_LOG_SDK_INFO% --prefix="Swift sources dir:       " --message="%SW_SWIFT_SOURCES_DIR%"
-%SW_LOG_SDK_INFO% --prefix="Dispatch sources dir:    " --message="%SW_DISPATCH_SOURCES_DIR%"
-%SW_LOG_SDK_INFO% --prefix="Foundation sources dir:  " --message="%SW_FOUNDATION_SOURCES_DIR%"
-%SW_LOG_SDK_INFO% --prefix="XCTest sources dir:      " --message="%SW_XCTEST_SOURCES_DIR%"
-%SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="LLVM build dir:          " --message="%SW_LLVM_BUILD_DIR%"
-%SW_LOG_SDK_INFO% --prefix="StdLib build dir:        " --message="%SW_STDLIB_BUILD_DIR%"
-%SW_LOG_SDK_INFO% --prefix="Dispatch build dir:      " --message="%SW_DISPATCH_BUILD_DIR%"
-%SW_LOG_SDK_INFO% --prefix="Foundation build dir:    " --message="%SW_FOUNDATION_BUILD_DIR%"
-%SW_LOG_SDK_INFO% --prefix="XCTest build dir:        " --message="%SW_XCTEST_BUILD_DIR%"
-%SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="SDK install dir:         " --message="%SW_SDK_INSTALL_DIR%"
-%SW_LOG_SDK_INFO% --prefix="XCTest install dir:      " --message="%SW_XCTEST_INSTALL_DIR%"
-%SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="Toolchain dir:           " --message="%SW_TOOLCHAIN_DIR%"
-%SW_LOG_SDK_INFO% --prefix="CURL dir:                " --message="%SW_CURL_DIR%"
-%SW_LOG_SDK_INFO% --prefix="ICU dir:                 " --message="%SW_ICU_DIR%"
-%SW_LOG_SDK_INFO% --prefix="XML2 dir:                " --message="%SW_XML2_DIR%"
-%SW_LOG_SDK_INFO% --prefix="ZLIB dir:                " --message="%SW_ZLIB_DIR%"
-%SW_LOG_SDK_INFO%
-%SW_LOG_SDK_INFO% --prefix="PATH:                    " --message="%PATH%"
-%SW_LOG_SDK_INFO%
+%SW_LOG_JOB_INFO% --prefix="Dispatch origin:         " --message="%SW_DISPATCH_ORIGIN_URL%"
+%SW_LOG_JOB_INFO% --prefix="Foundation origin:       " --message="%SW_FOUNDATION_ORIGIN_URL%"
+%SW_LOG_JOB_INFO% --prefix="LLVM ref:                " --message="%SW_LLVM_REF%"
+%SW_LOG_JOB_INFO% --prefix="Dispatch ref:            " --message="%SW_DISPATCH_REF%"
+%SW_LOG_JOB_INFO% --prefix="Swift ref:               " --message="%SW_SWIFT_REF%"
+%SW_LOG_JOB_INFO% --prefix="Foundation ref:          " --message="%SW_FOUNDATION_REF%"
+%SW_LOG_JOB_INFO% --prefix="XCTest ref:              " --message="%SW_XCTEST_REF%"
+%SW_LOG_JOB_INFO%
+%SW_LOG_JOB_INFO% --prefix="LLVM Project sources dir:" --message="%SW_LLVM_PROJECT_SOURCES_DIR%"
+%SW_LOG_JOB_INFO% --prefix="LLVM sources dir:        " --message="%SW_LLVM_SOURCES_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Swift sources dir:       " --message="%SW_SWIFT_SOURCES_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Dispatch sources dir:    " --message="%SW_DISPATCH_SOURCES_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Foundation sources dir:  " --message="%SW_FOUNDATION_SOURCES_DIR%"
+%SW_LOG_JOB_INFO% --prefix="XCTest sources dir:      " --message="%SW_XCTEST_SOURCES_DIR%"
+%SW_LOG_JOB_INFO%
+%SW_LOG_JOB_INFO% --prefix="LLVM build dir:          " --message="%SW_LLVM_BUILD_DIR%"
+%SW_LOG_JOB_INFO% --prefix="StdLib build dir:        " --message="%SW_STDLIB_BUILD_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Dispatch build dir:      " --message="%SW_DISPATCH_BUILD_DIR%"
+%SW_LOG_JOB_INFO% --prefix="Foundation build dir:    " --message="%SW_FOUNDATION_BUILD_DIR%"
+%SW_LOG_JOB_INFO% --prefix="XCTest build dir:        " --message="%SW_XCTEST_BUILD_DIR%"
+%SW_LOG_JOB_INFO%
+%SW_LOG_JOB_INFO% --prefix="SDK install dir:         " --message="%SW_SDK_INSTALL_DIR%"
+%SW_LOG_JOB_INFO% --prefix="XCTest install dir:      " --message="%SW_XCTEST_INSTALL_DIR%"
+%SW_LOG_JOB_INFO%
+%SW_LOG_JOB_INFO% --prefix="Toolchain dir:           " --message="%SW_TOOLCHAIN_DIR%"
+%SW_LOG_JOB_INFO% --prefix="CURL dir:                " --message="%SW_CURL_DIR%"
+%SW_LOG_JOB_INFO% --prefix="ICU dir:                 " --message="%SW_ICU_DIR%"
+%SW_LOG_JOB_INFO% --prefix="XML2 dir:                " --message="%SW_XML2_DIR%"
+%SW_LOG_JOB_INFO% --prefix="ZLIB dir:                " --message="%SW_ZLIB_DIR%"
+%SW_LOG_JOB_INFO%
+%SW_LOG_JOB_INFO% --prefix="PATH:                    " --message="%PATH%"
+%SW_LOG_JOB_INFO%
 
 exit /b 0
 

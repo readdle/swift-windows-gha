@@ -42,6 +42,10 @@ if defined SW_ARCH (
 )
 
 call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=%SW_ARCH% -host_arch=x64 %VC_VERSION_ARG%
+if errorlevel 1 goto :eof
+
+%SW_LOG_BUILD_INFO% --message="Configuring global git settings..."
+call "%SW_WORKSPACE%\scripts\tools\configure-git.cmd"
 
 exit /b 0
 
