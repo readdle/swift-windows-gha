@@ -1,7 +1,7 @@
 set "SW_LOG_JOB_INFO=%SW_LOG_INFO% --scope zlib"
 set "SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope zlib"
 
-%SW_LOG_JOB_INFO% --message="Configuring build environment"
+%SW_LOG_JOB_INFO% --message="Configuring build environment..."
 
 if %SW_ZLIB_VERSION%==development (
   set SW_ZLIB_REF=master

@@ -1,4 +1,4 @@
-%SW_LOG_JOB_INFO% --message="Configuring zlib"
+%SW_LOG_JOB_INFO% --message="Configuring zlib..."
 
 cmake^
  -B %SW_ZLIB_BUILD_DIR%^
