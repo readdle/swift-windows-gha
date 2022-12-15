@@ -4,11 +4,18 @@ setlocal enabledelayedexpansion
 if errorlevel 1 exit /b 0
 
 cmake^
- -G Ninja^
- -S %SW_LLVM_SOURCES_DIR%^
  -B %SW_LLVM_BUILD_DIR%^
- -C %SW_WORKSPACE%\cmake\caches\windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
- -D LLVM_HOST_TRIPLE=x86_64-unknown-windows-msvc
-
+ -D CMAKE_C_COMPILER=cl^
+ -D CMAKE_C_FLAGS="/GS- /Oy /Gw /Gy"^
+ -D CMAKE_CXX_COMPILER=cl^
+ -D CMAKE_CXX_FLAGS="/GS- /Oy /Gw /Gy"^
+ -D CMAKE_MT=mt^
+ -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
+ -D CMAKE_SYSTEM_NAME=Windows^
+ -D CMAKE_SYSTEM_PROCESSOR=%SW_ARCH%^
+ -G Ninja^
+ -S %SW_LLVM_PROJECT_SOURCES_DIR%\llvm^
+ -D LLVM_ENABLE_ASSERTIONS=NO
+ 
 endlocal

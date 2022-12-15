@@ -29,7 +29,6 @@ if defined SW_GIT_TAG (
 )
 
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
-set "SW_LLVM_SOURCES_DIR=%SW_LLVM_PROJECT_SOURCES_DIR%\llvm"
 set "SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift"
 set "SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch"
 set "SW_FOUNDATION_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-foundation"
