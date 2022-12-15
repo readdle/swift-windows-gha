@@ -1,6 +1,6 @@
 setlocal enabledelayedexpansion
 
-%SW_PRE_STEP% --scope="sdk" --name="Configure llvm" --flag=SW_SKIP_SDK_STDLIB
+%SW_PRE_STEP% --scope="sdk" --name="Configure llvm" --flag=SW_SKIP_SDK_RUNTIME
 if errorlevel 1 exit /b 0
 
 cmake^

@@ -16,7 +16,7 @@ set SW_SOURCES_DIR=%CD%\w\s
 set SW_BUILD_DIR=%CD%\w\b
 set SW_INSTALL_DIR=%CD%\w\i
 set SW_OBJC_PATCH_ENABLED=NO
-set SW_STDLIB_PATCH_ENABLED=NO
+set SW_RUNTIME_PATCH_ENABLED=NO
 set SW_SKIP_ICU=NO
 set SW_SKIP_TOOLCHAIN=NO
 set SW_SKIP_ZLIB=NO
@@ -24,7 +24,7 @@ set SW_SKIP_XML2=NO
 set SW_SKIP_CURL=NO
 set SW_SKIP_SDK=NO
 set SW_SKIP_SDK_CHECKOUT=NO
-set SW_SKIP_SDK_STDLIB=NO
+set SW_SKIP_SDK_RUNTIME=NO
 set SW_SKIP_SDK_DISPATCH=NO
 set SW_SKIP_SDK_FOUNDATION=NO
 set SW_SKIP_SDK_XCTEST=NO
@@ -85,7 +85,7 @@ call :sw_ask_sdk_spec
 call :sw_ask_git_tag
 call :sw_ask_directories
 call :sw_ask_swift_patch
-call :sw_ask_stdlib_patch
+call :sw_ask_runtime_patch
 call :sw_ask_fine_tune
 call :sw_ask_config_file
 
@@ -111,7 +111,7 @@ call :sw_normalize_parameters_for_saving
 %SW_LOG_INFO% --prefix="Git tag:                 " --message="%SW_GIT_TAG%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Swift @objc patch:       " --message="%SW_OBJC_PATCH_ENABLED%"
-%SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_STDLIB_PATCH_ENABLED%"
+%SW_LOG_INFO% --prefix="Swift print patch:       " --message="%SW_RUNTIME_PATCH_ENABLED%"
 %SW_LOG_INFO%
 %SW_LOG_INFO% --prefix="Configuration file:      " --message="%SW_CONFIG_FILE%"
 %SW_LOG_INFO%
@@ -123,17 +123,17 @@ if "%SW_SKIP_ICU%"=="YES"                  ( %SW_LOG_INFO% --prefix="Job disable
 if "%SW_SKIP_SDK%"=="YES"                  ( %SW_LOG_INFO% --prefix="Job disabled:            " --message="SDK" )
 if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Checkout Foundation" )
 if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Checkout XCTest" )
-if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Patch StdLib" )
-if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure llvm" )
-if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure StdLib" )
-if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build StdLib" )
+if "%SW_SKIP_SDK_CHECKOUT%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Patch Runtime" )
+if "%SW_SKIP_SDK_RUNTIME%"=="YES"          ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure llvm" )
+if "%SW_SKIP_SDK_RUNTIME%"=="YES"          ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure Runtime" )
+if "%SW_SKIP_SDK_RUNTIME%"=="YES"          ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build Runtime" )
 if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure libdispatch" )
 if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build libdispatch" )
 if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure Foundation" )
 if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build Foundation" )
 if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Configure XCTest" )
 if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Build XCTest" )
-if "%SW_SKIP_SDK_STDLIB%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Install StdLib" )
+if "%SW_SKIP_SDK_RUNTIME%"=="YES"          ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Install Runtime" )
 if "%SW_SKIP_SDK_DISPATCH%"=="YES"         ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Install libdispatch" )
 if "%SW_SKIP_SDK_FOUNDATION%"=="YES"       ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Install Foundation" )
 if "%SW_SKIP_SDK_XCTEST%"=="YES"           ( %SW_LOG_INFO% --prefix="Step disabled:           " --message="SDK - Install XCTest" )
@@ -181,7 +181,7 @@ echo set SW_SQLITE_RELEASE=%SW_SQLITE_RELEASE%>>%SW_CONFIG_FILE%
 echo set SW_GIT_TAG=%SW_GIT_TAG%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_OBJC_PATCH_ENABLED=%SW_OBJC_PATCH_ENABLED%>>%SW_CONFIG_FILE%
-echo set SW_STDLIB_PATCH_ENABLED=%SW_STDLIB_PATCH_ENABLED%>>%SW_CONFIG_FILE%
+echo set SW_RUNTIME_PATCH_ENABLED=%SW_RUNTIME_PATCH_ENABLED%>>%SW_CONFIG_FILE%
 echo.>>%SW_CONFIG_FILE%
 echo set SW_SKIP_ICU=%SW_SKIP_ICU%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_TOOLCHAIN=%SW_SKIP_TOOLCHAIN%>>%SW_CONFIG_FILE%
@@ -190,7 +190,7 @@ echo set SW_SKIP_XML2=%SW_SKIP_XML2%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_CURL=%SW_SKIP_CURL%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK=%SW_SKIP_SDK%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_CHECKOUT=%SW_SKIP_SDK_CHECKOUT%>>%SW_CONFIG_FILE%
-echo set SW_SKIP_SDK_STDLIB=%SW_SKIP_SDK_STDLIB%>>%SW_CONFIG_FILE%
+echo set SW_SKIP_SDK_RUNTIME=%SW_SKIP_SDK_RUNTIME%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_DISPATCH=%SW_SKIP_SDK_DISPATCH%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_FOUNDATION=%SW_SKIP_SDK_FOUNDATION%>>%SW_CONFIG_FILE%
 echo set SW_SKIP_SDK_XCTEST=%SW_SKIP_SDK_XCTEST%>>%SW_CONFIG_FILE%
@@ -221,7 +221,7 @@ if "%NEXT_ARG%"=="SW_ARTIFACTS_DIR"                     goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_GIT_TAG"                           goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_CONFIG_FILE"                       goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_OBJC_PATCH_ENABLED"                goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_STDLIB_PATCH_ENABLED"              goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_RUNTIME_PATCH_ENABLED"             goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ICU"                          goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_TOOLCHAIN"                    goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_ZLIB"                         goto sw_parse_arguments_accept
@@ -229,7 +229,7 @@ if "%NEXT_ARG%"=="SW_SKIP_XML2"                         goto sw_parse_arguments_
 if "%NEXT_ARG%"=="SW_SKIP_CURL"                         goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK"                          goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_CHECKOUT"                 goto sw_parse_arguments_accept
-if "%NEXT_ARG%"=="SW_SKIP_SDK_STDLIB"                   goto sw_parse_arguments_accept
+if "%NEXT_ARG%"=="SW_SKIP_SDK_RUNTIME"                  goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_DISPATCH"                 goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_FOUNDATION"               goto sw_parse_arguments_accept
 if "%NEXT_ARG%"=="SW_SKIP_SDK_XCTEST"                   goto sw_parse_arguments_accept
@@ -250,7 +250,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--git-tag" (                   set NEXT_ARG=SW_GIT_TAG
 ) else if "%CURRENT_ARG%"=="--config" (                    set NEXT_ARG=SW_CONFIG_FILE
 ) else if "%CURRENT_ARG%"=="--enable-no-objc-patch" (      set NEXT_ARG=SW_OBJC_PATCH_ENABLED
-) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_STDLIB_PATCH_ENABLED
+) else if "%CURRENT_ARG%"=="--enable-print-patch" (        set NEXT_ARG=SW_RUNTIME_PATCH_ENABLED
 ) else if "%CURRENT_ARG%"=="--skip-icu" (                  set NEXT_ARG=SW_SKIP_ICU
 ) else if "%CURRENT_ARG%"=="--skip-toolchain" (            set NEXT_ARG=SW_SKIP_TOOLCHAIN
 ) else if "%CURRENT_ARG%"=="--skip-zlib" (                 set NEXT_ARG=SW_SKIP_ZLIB
@@ -258,7 +258,7 @@ if "%CURRENT_ARG%"=="--interactive" (                      set NEXT_ARG=SW_INTER
 ) else if "%CURRENT_ARG%"=="--skip-curl" (                 set NEXT_ARG=SW_SKIP_CURL
 ) else if "%CURRENT_ARG%"=="--skip-sdk" (                  set NEXT_ARG=SW_SKIP_SDK
 ) else if "%CURRENT_ARG%"=="--skip-sdk-checkout" (         set NEXT_ARG=SW_SKIP_SDK_CHECKOUT
-) else if "%CURRENT_ARG%"=="--skip-sdk-stdlib" (           set NEXT_ARG=SW_SKIP_SDK_STDLIB
+) else if "%CURRENT_ARG%"=="--skip-sdk-runtime" (          set NEXT_ARG=SW_SKIP_SDK_RUNTIME
 ) else if "%CURRENT_ARG%"=="--skip-sdk-dispatch" (         set NEXT_ARG=SW_SKIP_SDK_DISPATCH
 ) else if "%CURRENT_ARG%"=="--skip-sdk-foundation" (       set NEXT_ARG=SW_SKIP_SDK_FOUNDATION
 ) else if "%CURRENT_ARG%"=="--skip-sdk-xctest" (           set NEXT_ARG=SW_SKIP_SDK_XCTEST
@@ -298,7 +298,7 @@ for %%G in (SW_INTERACTIVE^
  SW_ARTIFACTS_DIR^
  SW_CONFIG_FILE^
  SW_OBJC_PATCH_ENABLED^
- SW_STDLIB_PATCH_ENABLED^
+ SW_RUNTIME_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
  SW_SKIP_ZLIB^
@@ -306,7 +306,7 @@ for %%G in (SW_INTERACTIVE^
  SW_SKIP_CURL^
  SW_SKIP_SDK^
  SW_SKIP_SDK_CHECKOUT^
- SW_SKIP_SDK_STDLIB^
+ SW_SKIP_SDK_RUNTIME^
  SW_SKIP_SDK_DISPATCH^
  SW_SKIP_SDK_FOUNDATION^
  SW_SKIP_SDK_XCTEST^
@@ -348,7 +348,7 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   if "%VALUE%"=="" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_OBJC_PATCH_ENABLED" (
   goto sw_validate_parameter_bool
-) else if "%PARAMETER%"=="SW_STDLIB_PATCH_ENABLED" (
+) else if "%PARAMETER%"=="SW_RUNTIME_PATCH_ENABLED" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_ICU" (
   goto sw_validate_parameter_bool
@@ -364,7 +364,7 @@ if "%PARAMETER%"=="SW_INTERACTIVE" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_CHECKOUT" (
   goto sw_validate_parameter_bool
-) else if "%PARAMETER%"=="SW_SKIP_SDK_STDLIB" (
+) else if "%PARAMETER%"=="SW_SKIP_SDK_RUNTIME" (
   goto sw_validate_parameter_bool
 ) else if "%PARAMETER%"=="SW_SKIP_SDK_DISPATCH" (
   goto sw_validate_parameter_bool
@@ -400,15 +400,15 @@ exit /b 1
 rem ###########################################################################
 :sw_normalize_parameters_for_wizard
 for %%G in (SW_OBJC_PATCH_ENABLED^
- SW_STDLIB_PATCH_ENABLED^
+ SW_RUNTIME_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
-  SW_SKIP_ZLIB^
+ SW_SKIP_ZLIB^
  SW_SKIP_XML2^
  SW_SKIP_CURL^
  SW_SKIP_SDK^
  SW_SKIP_SDK_CHECKOUT^
- SW_SKIP_SDK_STDLIB^
+ SW_SKIP_SDK_RUNTIME^
  SW_SKIP_SDK_DISPATCH^
  SW_SKIP_SDK_FOUNDATION^
  SW_SKIP_SDK_XCTEST^
@@ -426,7 +426,7 @@ rem ###########################################################################
 :sw_normalize_parameters_for_saving
 
 for %%G in (SW_OBJC_PATCH_ENABLED^
- SW_STDLIB_PATCH_ENABLED^
+ SW_RUNTIME_PATCH_ENABLED^
  SW_SKIP_ICU^
  SW_SKIP_TOOLCHAIN^
  SW_SKIP_ZLIB^
@@ -434,7 +434,7 @@ for %%G in (SW_OBJC_PATCH_ENABLED^
  SW_SKIP_CURL^
  SW_SKIP_SDK^
  SW_SKIP_SDK_CHECKOUT^
- SW_SKIP_SDK_STDLIB^
+ SW_SKIP_SDK_RUNTIME^
  SW_SKIP_SDK_DISPATCH^
  SW_SKIP_SDK_FOUNDATION^
  SW_SKIP_SDK_XCTEST^
@@ -621,16 +621,16 @@ exit /b
 
 
 rem ###########################################################################
-:sw_ask_stdlib_patch
-set SW_ORIGINAL_VALUE=%SW_STDLIB_PATCH_ENABLED%
+:sw_ask_runtime_patch
+set SW_ORIGINAL_VALUE=%SW_RUNTIME_PATCH_ENABLED%
 
-:sw_ask_stdlib_patch_input
-set /p SW_STDLIB_PATCH_ENABLED="Apply print flush patch (%SW_STDLIB_PATCH_ENABLED%)?: "
-call :sw_normalize_bool_input SW_STDLIB_PATCH_ENABLED
-call :sw_validate_bool_input SW_STDLIB_PATCH_ENABLED
+:sw_ask_runtime_patch_input
+set /p SW_RUNTIME_PATCH_ENABLED="Apply print flush patch (%SW_RUNTIME_PATCH_ENABLED%)?: "
+call :sw_normalize_bool_input SW_RUNTIME_PATCH_ENABLED
+call :sw_validate_bool_input SW_RUNTIME_PATCH_ENABLED
 if errorlevel 1 (
-  set SW_STDLIB_PATCH_ENABLED=%SW_ORIGINAL_VALUE%
-  goto sw_ask_stdlib_patch_input
+  set SW_RUNTIME_PATCH_ENABLED=%SW_ORIGINAL_VALUE%
+  goto sw_ask_runtime_patch_input
 )
 
 exit /b
@@ -779,7 +779,7 @@ if errorlevel 1 (
 if "%SW_DEFAULT_SDK_CONFIGURATION%"=="Y" exit /b
 
 call :sw_ask_sdk_checkout
-call :sw_ask_sdk_stdlib
+call :sw_ask_sdk_runtime
 call :sw_ask_sdk_dispatch
 call :sw_ask_sdk_foundation
 call :sw_ask_sdk_xctest
@@ -859,16 +859,16 @@ exit /b
 
 
 rem ###########################################################################
-:sw_ask_sdk_stdlib
-set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_STDLIB%
+:sw_ask_sdk_runtime
+set SW_ORIGINAL_VALUE=%SW_SKIP_SDK_RUNTIME%
 
-:sw_ask_sdk_stdlib_input
-set /p SW_SKIP_SDK_STDLIB="Skip StdLib (%SW_SKIP_SDK_STDLIB%)?: "
-call :sw_normalize_bool_input SW_SKIP_SDK_STDLIB
-call :sw_validate_bool_input SW_SKIP_SDK_STDLIB
+:sw_ask_sdk_runtime_input
+set /p SW_SKIP_SDK_RUNTIME="Skip Runtime (%SW_SKIP_SDK_RUNTIME%)?: "
+call :sw_normalize_bool_input SW_SKIP_SDK_RUNTIME
+call :sw_validate_bool_input SW_SKIP_SDK_RUNTIME
 if errorlevel 1 (
-  set SW_SKIP_SDK_STDLIB=%SW_ORIGINAL_VALUE%
-  goto sw_ask_sdk_stdlib_input
+  set SW_SKIP_SDK_RUNTIME=%SW_ORIGINAL_VALUE%
+  goto sw_ask_sdk_runtime_input
 )
 
 exit /b

@@ -76,10 +76,10 @@ jobs:
         include:
           - spec: apple
             enable-no-objc-patch: NO
-            stdlib-patch-enabled: NO
+            runtime-patch-enabled: NO
           - spec: readdle
             enable-no-objc-patch: YES
-            stdlib-patch-enabled: YES
+            runtime-patch-enabled: YES
 
     steps:
       - name: Clean Workspace
@@ -138,7 +138,7 @@ jobs:
            --skip-sdk-dispatch-test=YES^
            --skip-sdk-foundation-test=YES^
            --enable-no-objc-patch=${{ matrix.enable-no-objc-patch}}^
-           --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
+           --enable-print-patch=${{ matrix.runtime-patch-enabled }}^
            --sdk=${{ matrix.spec }}^
            --git-tag=${{ github.event.inputs.tag }}
 

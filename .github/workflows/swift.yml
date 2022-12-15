@@ -810,7 +810,7 @@ jobs:
   #          --artifacts-dir=%GITHUB_WORKSPACE%\a^
   #          --python-dir=%SW_PYTHON_DIR%^
   #          --branch=${{ matrix.branch }}^
-  #          --enable-print-patch=${{ matrix.stdlib-patch-enabled }}^
+  #          --enable-print-patch=${{ matrix.runtime-patch-enabled }}^
   #          --sdk=${{ matrix.spec }}^
   #          --git-tag=${{ github.event.inputs.tag }}
 
@@ -868,8 +868,8 @@ jobs:
   #     - name: Patch LLVM
   #       run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
 
-  #     - name: Patch StdLib
-  #       run: scripts\workflows\jobs\steps\sdk\patch-stdlib.cmd
+  #     - name: Patch runtime
+  #       run: scripts\workflows\jobs\steps\sdk\patch-runtime.cmd
 
   #     - name: Download ICU
   #       uses: dawidd6/action-download-artifact@v2
@@ -912,10 +912,10 @@ jobs:
   #       run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
   #     - name: Configure Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\configure-swift-stdlib.cmd
+  #       run: scripts\workflows\jobs\steps\sdk\configure-swift-runtime.cmd
 
   #     - name: Build Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\build-swift-stdlib.cmd
+  #       run: scripts\workflows\jobs\steps\sdk\build-swift-runtime.cmd
 
   #     - name: Configure libdispatch
   #       run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
@@ -936,7 +936,7 @@ jobs:
   #       run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
 
   #     - name: Install Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\install-swift-stdlib.cmd
+  #       run: scripts\workflows\jobs\steps\sdk\install-swift-runtime.cmd
 
   #     - name: Install Foundation
   #       run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd

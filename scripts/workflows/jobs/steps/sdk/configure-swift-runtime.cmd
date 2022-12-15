@@ -1,6 +1,6 @@
 setlocal enabledelayedexpansion
 
-%SW_PRE_STEP% --scope="sdk" --name="Configure StdLib" --flag=SW_SKIP_SDK_STDLIB
+%SW_PRE_STEP% --scope="sdk" --name="Configure Runtime" --flag=SW_SKIP_SDK_RUNTIME
 if errorlevel 1 exit /b 0
 
 if [%SW_SWIFT_SDK_SPEC%]==[readdle] (
@@ -14,9 +14,9 @@ if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" if defined GITHUB_ACTIONS (
 cmake^
  -G Ninja^
  -S %SW_SWIFT_SOURCES_DIR%^
- -B %SW_STDLIB_BUILD_DIR%^
+ -B %SW_RUNTIME_BUILD_DIR%^
  -C %SW_WORKSPACE%\cmake\caches\windows-x86_64-clang.cmake^
- -C %SW_WORKSPACE%\cmake\caches\swift-stdlib-windows-x86_64.cmake^
+ -C %SW_WORKSPACE%\cmake\caches\swift-runtime-windows-x86_64.cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D LLVM_DIR=%SW_BUILD_DIR%\llvm\lib\cmake\llvm^
  -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=%SW_TOOLCHAIN_DIR%\usr\bin^
@@ -32,7 +32,7 @@ cmake^
 if errorlevel 1 goto :eof
 
 if "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
-  mklink "%SW_STDLIB_BUILD_DIR%\bin\swiftc" "%SW_TOOLCHAIN_DIR%\usr\bin\swiftc.exe"
+  mklink "%SW_RUNTIME_BUILD_DIR%\bin\swiftc" "%SW_TOOLCHAIN_DIR%\usr\bin\swiftc.exe"
   exit /b 0
 )
 
