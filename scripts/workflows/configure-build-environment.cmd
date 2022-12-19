@@ -37,11 +37,11 @@ if defined SW_VC_VERSION (
 if defined SW_ARCH (
   %SW_LOG_BUILD_INFO% --prefix="Target arch: " --message="%SW_ARCH%"
 ) else (
-  set SW_ARCH=x64
+  set SW_ARCH=amd64
   %SW_LOG_BUILD_INFO% --prefix="Target arch: " --message="default"
 )
 
-call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=%SW_ARCH% -host_arch=x64 %VC_VERSION_ARG%
+call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=%SW_ARCH% -host_arch=amd64 %VC_VERSION_ARG%
 if errorlevel 1 goto :eof
 
 %SW_LOG_BUILD_INFO% --message="Configuring global git settings..."
