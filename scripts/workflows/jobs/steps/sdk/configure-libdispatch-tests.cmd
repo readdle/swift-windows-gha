@@ -3,6 +3,10 @@ setlocal enabledelayedexpansion
 %SW_PRE_STEP% --scope="sdk" --name="Configure libdispatch Tests" --flag=SW_SKIP_SDK_DISPATCH_TEST
 if errorlevel 1 exit /b 0
 
+FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
+  SET SW_TOOLCHAIN_DIR=%%i
+)
+
 cmake^
  -B %SW_DISPATCH_BUILD_DIR%^
  -D BUILD_SHARED_LIBS=YES^
