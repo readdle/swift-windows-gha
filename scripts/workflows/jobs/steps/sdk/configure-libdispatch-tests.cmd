@@ -8,7 +8,7 @@ FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
 )
 
 cmake^
- -B %SW_DISPATCH_BUILD_DIR%^
+ -B %SW_DISPATCH_BUILD_DIR%-test^
  -D BUILD_SHARED_LIBS=YES^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_C_COMPILER=%SW_TOOLCHAIN_DIR%/usr/bin/clang-cl.exe^

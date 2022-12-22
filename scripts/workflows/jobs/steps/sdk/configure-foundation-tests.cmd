@@ -8,7 +8,7 @@ FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
 )
 
 cmake^
- -B %SW_FOUNDATION_BUILD_DIR%^
+ -B %SW_FOUNDATION_BUILD_DIR%-test^
  -D BUILD_SHARED_LIBS=YES^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_C_COMPILER=%SW_TOOLCHAIN_DIR%/usr/bin/clang-cl.exe^
@@ -30,6 +30,7 @@ cmake^
  -S %SW_FOUNDATION_SOURCES_DIR%^
  -D ENABLE_TESTING=YES^
  -D dispatch_DIR=%SW_DISPATCH_BUILD_DIR%/cmake/modules^
+ -D XCTest_DIR=%SW_XCTEST_BUILD_DIR%/cmake/modules^
  -D ICU_ROOT=%SW_ICU_DIR%/usr^
  -D ICU_DATA_LIBRARY_RELEASE=%SW_ICU_DIR%/usr/lib/sicudt%SW_ICU_RELEASE%.lib^
  -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_DIR%/usr/lib/sicuuc%SW_ICU_RELEASE%.lib^
