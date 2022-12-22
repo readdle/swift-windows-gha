@@ -737,12 +737,15 @@ jobs:
 
   sdk:
     name: SDK
-    runs-on: ${{ matrix.runs_on }}
+    runs-on: ${{ inputs.runs_on }}
     needs: [icu, libxml2, curl, zlib, toolchain]
     strategy:
       fail-fast: false
       matrix:
         arch: [amd64]
+
+    env:
+      SW_ARCH: ${{ matrix.arch }}
 
     outputs:
       llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
@@ -864,7 +867,7 @@ jobs:
           fetch-depth: 1
           path: '${{ env.SW_SWIFT_SYNTAX_SOURCES_DIR }}'
 
-     - name: Checkout swift-corelibs-libdispatch
+      - name: Checkout swift-corelibs-libdispatch
         uses: actions/checkout@v3
         with:
           repository: ${{ env.SW_DISPATCH_REPO }}
