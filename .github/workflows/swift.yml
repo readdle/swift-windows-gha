@@ -744,6 +744,18 @@ jobs:
       matrix:
         arch: [amd64]
 
+    outputs:
+      llvm_ref: ${{ steps.checkout_info.outputs.llvm_ref }}
+      swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
+      dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
+      foundation_ref: ${{ steps.checkout_info.outputs.foundation_ref }}
+      xctest_ref: ${{ steps.checkout_info.outputs.xctest_ref }}
+      cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
+      swift_syntax: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
+      swift_experimental_string_processing: ${{ steps.checkout_info.outputs.swift_experimental_string_processing_ref }}
+      dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
+      foundation_repo: ${{ steps.checkout_info.outputs.foundation_repo }}
+
     steps:
       - name: Clean Workspace
         if: github.event.inputs.runs_on == 'self-hosted'
@@ -751,322 +763,276 @@ jobs:
           for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
           del /f /q /s ${{ github.workspace }}
 
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+
       - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Read Checkout Info
+        run: |
+          set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
+          set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
+          set SW_DISPATCH_REF=${{ needs.toolchain.outputs.dispatch_ref }}
+          set SW_DISPATCH_REPO=${{ needs.toolchain.outputs.dispatch_repo }}
+          set SW_CMARK_REF=${{ needs.toolchain.outputs.cmark_ref }}
+          set SW_SWIFT_SYNTAX_REF=${{ needs.toolchain.outputs.swift_syntax_ref }}
+          set SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF=${{ needs.toolchain.outputs.swift_experimental_string_processing_ref }}
+
+          echo llvm-project: %SW_LLVM_REF%
+          echo swift: %SW_SWIFT_REF%
+          echo swift-syntax: %SW_SWIFT_SYNTAX_REF%
+          echo %SW_DISPATCH_REPO%: %SW_DISPATCH_REF%
+          echo swift-cmark: %SW_CMARK_REF%
+          echo swift-experimental-string-processing: %SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF%
+
+          echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
+          echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
+          echo SW_DISPATCH_REPO=%SW_DISPATCH_REPO%>>%GITHUB_ENV%
+          echo SW_CMARK_REF=%SW_CMARK_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_SYNTAX_REF=%SW_SWIFT_SYNTAX_REF%>>%GITHUB_ENV%
+          echo SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF%>>%GITHUB_ENV%
+
+      - name: Configure Build
+        run: |
+          if "${{ inputs.build_spec }}"=="readdle" (
+            set SWC_ENABLE_PRINT_PATCH=YES
+          ) else (
+            set SWC_ENABLE_PRINT_PATCH=NO
+          )
+
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a^
+           --branch=${{ inputs.branch_spec }}^
+           --skip-sdk-dispatch-test=YES^
+           --skip-sdk-foundation-test=YES^
+           --enable-print-patch=%SWC_ENABLE_PRINT_PATCH%^
+           --sdk=${{ inputs.build_spec }}^
+           --git-tag=${{ inputs.tag }}
+
+      - name: Configure Build Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Checkout llvm-project
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/llvm-project'
+          ref: ${{ env.SW_LLVM_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
+
+      - name: Checkout swift
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift'
+          ref: ${{ env.SW_SWIFT_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+
+      - name: Checkout swift-cmark
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-cmark'
+          ref: ${{ env.SW_CMARK_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_CMARK_SOURCES_DIR }}'
+
+      - name: Checkout swift-experimental-string-processing
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-experimental-string-processing'
+          ref: ${{ env.SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR }}'
+
+      - name: Checkout swift-syntax
+        uses: actions/checkout@v3
+        with:
+          repository: 'apple/swift-syntax'
+          ref: ${{ env.SW_SWIFT_SYNTAX_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_SWIFT_SYNTAX_SOURCES_DIR }}'
+
+     - name: Checkout swift-corelibs-libdispatch
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.SW_DISPATCH_REPO }}
+          ref: ${{ env.SW_DISPATCH_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+
+      - name: Checkout swift-corelibs-foundation
         uses: actions/checkout@v3.1.0
+        with:
+          repository: ${{ env.SW_FOUNDATION_REPO }}
+          ref: ${{ env.SW_FOUNDATION_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
 
-  #     - name: Read Checkout Info
-  #       run: |
-  #         set SW_LLVM_REF=${{ needs.toolchain.outputs.llvm_ref }}
-  #         set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
-  #         set SW_DISPATCH_REF=${{ needs.toolchain.outputs[format('dispatch_ref_{0}', matrix.spec)] }}
-          
-  #         echo llvm-project rev is %SW_LLVM_REF%
-  #         echo swift rev is %SW_SWIFT_REF%
-  #         echo swift-corelibs-libdispatch rev is %SW_DISPATCH_REF%
-          
-  #         echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
-  #         echo SW_SWIFT_REF=%SW_SWIFT_REF%>>%GITHUB_ENV%
-  #         echo SW_DISPATCH_REF=%SW_DISPATCH_REF%>>%GITHUB_ENV%
+      - name: Checkout swift-corelibs-xctest
+        uses: actions/checkout@v3.1.0
+        with:
+          repository: 'apple/swift-corelibs-xctest'
+          ref: ${{ env.SW_XCTEST_REF }}
+          fetch-depth: 1
+          path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
 
-  #     - name: Select Python Version
-  #       id: select-python-version
-  #       run: |
-  #         if "${{ matrix.branch }}"=="5.3" (
-  #           echo ::set-output name=python-version::2.7.x
-  #           echo SW_PYTHON_DIR=C:\Python27>>%GITHUB_ENV%
-  #         ) else (
-  #           echo ::set-output name=python-version::3.9.x
-  #           echo SW_PYTHON_DIR="C:\Program Files\Python39">>%GITHUB_ENV%
-  #         )
+      - name: Collect Checkout Info
+        id: checkout_info
+        run: |
+          mkdir %GITHUB_WORKSPACE%\checkout
+          git -C %SW_LLVM_PROJECT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          git -C %SW_SWIFT_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift.txt
+          git -C %SW_DISPATCH_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          git -C %SW_FOUNDATION_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-foundation.txt
+          git -C %SW_XCTEST_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-corelibs-xctest.txt
+          git -C %SW_CMARK_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          git -C %SW_SWIFT_SYNTAX_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-syntax.txt
+          git -C %SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR% rev-parse HEAD > %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
-  #     - name: Setup Python ${{ steps.select-python-version.outputs.python-version }}
-  #       if: github.event.inputs.runs_on != 'self-hosted'
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: ${{ steps.select-python-version.outputs.python-version }}
+          set /p SW_LLVM_SHA=< %GITHUB_WORKSPACE%\checkout\llvm-project.txt
+          set /p SW_SWIFT_SHA=< %GITHUB_WORKSPACE%\checkout\swift.txt
+          set /p SW_DISPATCH_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-libdispatch.txt
+          set /p SW_FOUNDATION_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-foundation.txt
+          set /p SW_XCTEST_SHA=< %GITHUB_WORKSPACE%\checkout\swift-corelibs-xctest.txt
+          set /p SW_CMARK_SHA=< %GITHUB_WORKSPACE%\checkout\swift-cmark.txt
+          set /p SW_SWIFT_SYNTAX_SHA=< %GITHUB_WORKSPACE%\checkout\swift-syntax.txt
+          set /p SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA=< %GITHUB_WORKSPACE%\checkout\swift-experimental-string-processing.txt
 
-  #     - name: Export Python Path
-  #       if: github.event.inputs.runs_on != 'self-hosted'
-  #       run: |
-  #         echo SW_PYTHON_DIR="%pythonLocation%">>%GITHUB_ENV%
+          echo llvm_ref=%SW_LLVM_SHA%>>%GITHUB_OUTPUT%
+          echo swift_ref=%SW_SWIFT_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_ref=%SW_DISPATCH_SHA%>>%GITHUB_OUTPUT%
+          echo dispatch_repo=%SW_DISPATCH_REPO%>>%GITHUB_OUTPUT%
+          echo foundation_ref=%SW_FOUNDATION_SHA%>>%GITHUB_OUTPUT%
+          echo foundation_repo=%SW_FOUNDATION_REPO%>>%GITHUB_OUTPUT%
+          echo xctest_ref=%SW_XCTEST_SHA%>>%GITHUB_OUTPUT%
+          echo cmark_ref=%SW_CMARK_SHA%>>%GITHUB_OUTPUT%
+          echo swift_syntax_ref=%SW_SWIFT_SYNTAX_SHA%>>%GITHUB_OUTPUT%
+          echo swift_experimental_string_processing_ref=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA%>>%GITHUB_OUTPUT%
 
-  #     - name: Get CMake 3.21.3
-  #       if: github.event.inputs.runs_on != 'self-hosted' && matrix.branch != '5.3' && matrix.branch != '5.4'
-  #       run: |
-  #         choco install cmake --version=3.21.3
+      - name: Patch Runtime
+        run: scripts\workflows\jobs\steps\sdk\patch-runtime.cmd
 
-  #     - name: Get CMake 3.19.8
-  #       if: github.event.inputs.runs_on != 'self-hosted' && (matrix.branch == '5.3' || matrix.branch == '5.4')
-  #       run: |
-  #         choco install cmake --version=3.19.8
+      - name: Download ICU
+        uses: actions/download-artifact@v3
+        with:
+          name: icu-${{ env.SW_ICU_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
 
-  #     - name: Configure Build
-  #       run: |
-  #         scripts\configure.cmd^
-  #          --interactive=NO^
-  #          --sources-dir=%GITHUB_WORKSPACE%\s^
-  #          --build-dir=%GITHUB_WORKSPACE%\b^
-  #          --install-dir=%GITHUB_WORKSPACE%\i^
-  #          --artifacts-dir=%GITHUB_WORKSPACE%\a^
-  #          --python-dir=%SW_PYTHON_DIR%^
-  #          --branch=${{ matrix.branch }}^
-  #          --enable-print-patch=${{ matrix.runtime-patch-enabled }}^
-  #          --sdk=${{ matrix.spec }}^
-  #          --git-tag=${{ github.event.inputs.tag }}
+      - name: Download libxml2
+        uses: actions/download-artifact@v3
+        with:
+          name: libxml2-${{ env.SW_XML2_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
 
-  #     - name: Configure Build Environment
-  #       run: |
-  #         if "${{ matrix.branch }}"=="5.3" set SW_VC_VERSION=14.28.29910
-  #         call scripts\workflows\configure-build-environment.cmd
-  #         call scripts\workflows\load-configuration.cmd
-  #         call scripts\workflows\jobs\steps\sdk\configure-build-environment.cmd
-  #         call scripts\tools\export-environment.cmd
+      - name: Download curl
+        uses: actions/download-artifact@v3
+        with:
+          name: curl-${{ env.SW_CURL_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
 
-  #     - name: Configure Git
-  #       run: scripts\workflows\jobs\steps\sdk\configure-git.cmd
+      - name: Download zlib
+        uses: actions/download-artifact@v3
+        with:
+          name: zlib-${{ env.SW_ZLIB_VERSION }}-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
 
-  #     - name: Checkout LLVM
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/llvm-project'
-  #         ref: ${{ env.SW_LLVM_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_LLVM_PROJECT_SOURCES_DIR }}'
+      - name: Download toolchain
+        uses: actions/download-artifact@v3
+        with:
+          name: toolchain-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
 
-  #     - name: Checkout swift
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/swift'
-  #         ref: ${{ env.SW_SWIFT_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_SWIFT_SOURCES_DIR }}'
+      - name: Configure SDK Modules
+        run: scripts\workflows\jobs\steps\sdk\configure-sdk-modules.cmd
 
-  #     - name: Checkout libdispatch
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: ${{ env.SW_DISPATCH_REPO }}
-  #         ref: ${{ env.SW_DISPATCH_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_DISPATCH_SOURCES_DIR }}'
+      - name: Configure LLVM
+        run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
-  #     - name: Checkout foundation
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: ${{ env.SW_FOUNDATION_REPO }}
-  #         ref: ${{ env.SW_FOUNDATION_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_FOUNDATION_SOURCES_DIR }}'
+      - name: Configure Swift Runtime
+        run: scripts\workflows\jobs\steps\sdk\configure-swift-runtime.cmd
 
-  #     - name: Checkout xctest
-  #       uses: actions/checkout@v3.1.0
-  #       with:
-  #         repository: 'apple/swift-corelibs-xctest'
-  #         ref: ${{ env.SW_XCTEST_REF }}
-  #         fetch-depth: 1
-  #         path: '${{ env.SW_XCTEST_SOURCES_DIR }}'
+      - name: Build Swift Runtime
+        run: scripts\workflows\jobs\steps\sdk\build-swift-runtime.cmd
 
-  #     - name: Patch LLVM
-  #       run: scripts\workflows\jobs\steps\toolchain\patch-llvm.cmd
+      - name: Install Swift Standard Library
+        run: scripts\workflows\jobs\steps\sdk\install-swift-runtime.cmd
 
-  #     - name: Patch runtime
-  #       run: scripts\workflows\jobs\steps\sdk\patch-runtime.cmd
+      - name: Configure Dispatch
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
 
-  #     - name: Download ICU
-  #       uses: dawidd6/action-download-artifact@v2
-  #       with:
-  #         workflow: icu.yml
-  #         name: icu
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Build Dispatch
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
-  #     - name: Download zlib
-  #       uses: dawidd6/action-download-artifact@v2
-  #       with:
-  #         workflow: zlib.yml
-  #         name: zlib
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Configure Foundation
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation.cmd
 
-  #     - name: Download curl
-  #       uses: dawidd6/action-download-artifact@v2
-  #       with:
-  #         workflow: curl.yml
-  #         name: curl
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Build Foundation
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
-  #     - name: Download libxml2
-  #       uses: dawidd6/action-download-artifact@v2
-  #       with:
-  #         workflow: libxml2.yml
-  #         name: libxml2
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Configure XCTest
+        run: scripts\workflows\jobs\steps\sdk\configure-xctest.cmd
 
-  #     - name: Download toolchain
-  #       uses: actions/download-artifact@v1
-  #       with:
-  #         name: toolchain-${{ matrix.spec }}
-  #         path: '${{ env.SW_ARTIFACTS_DIR }}'
+      - name: Build XCTest
+        run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
 
-  #     - name: Configure SDK Modules
-  #       run: scripts\workflows\jobs\steps\toolchain\configure-sdk-modules.cmd
+      - name: Configure Dispatch Tests
+        run: scripts\workflows\jobs\steps\sdk\configure-libdispatch-tests.cmd
 
-  #     - name: Configure LLVM
-  #       run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
+      - name: Build Dispatch Tests
+        run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
 
-  #     - name: Configure Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\configure-swift-runtime.cmd
+      - name: Test Dispatch
+        continue-on-error: true
+        run: scripts\workflows\jobs\steps\sdk\test-libdispatch.cmd
 
-  #     - name: Build Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\build-swift-runtime.cmd
+      - name: Configure Foundation Test Environment
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-test-environment.cmd
 
-  #     - name: Configure libdispatch
-  #       run: scripts\workflows\jobs\steps\sdk\configure-libdispatch.cmd
+      - name: Configure Foundation Tests
+        run: scripts\workflows\jobs\steps\sdk\configure-foundation-tests.cmd
 
-  #     - name: Build libdispatch
-  #       run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
+      - name: Build Foundation Tests
+        run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
 
-  #     - name: Configure Foundation
-  #       run: scripts\workflows\jobs\steps\sdk\configure-foundation.cmd
+      - name: Test Foundation (CTest)
+        continue-on-error: true
+        timeout-minutes: 10
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
 
-  #     - name: Build Foundation
-  #       run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
+      - name: Test Foundation (XCTest)
+        timeout-minutes: 10
+        continue-on-error: true
+        run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
 
-  #     - name: Configure XCTest
-  #       run: scripts\workflows\jobs\steps\sdk\configure-xctest.cmd
+      - name: Install Dispatch
+        run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
 
-  #     - name: Build XCTest
-  #       run: scripts\workflows\jobs\steps\sdk\build-xctest.cmd
+      - name: Install Foundation
+        run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd
 
-  #     - name: Install Swift Standard Library
-  #       run: scripts\workflows\jobs\steps\sdk\install-swift-runtime.cmd
+      - name: Install XCTest
+        run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
 
-  #     - name: Install Foundation
-  #       run: scripts\workflows\jobs\steps\sdk\install-foundation.cmd
+      - name: Install Module Maps
+        run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
 
-  #     - name: Install XCTest
-  #       run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
+      - name: Generate plists
+        run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
 
-  #     - name: Install libdispatch
-  #       run: scripts\workflows\jobs\steps\sdk\install-libdispatch.cmd
-
-  #     - name: Install Module Maps
-  #       run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
-
-  #     - name: Restructure Modules
-  #       run: scripts\workflows\jobs\steps\sdk\restructure-modules.cmd
-
-  #     - name: Generate plists
-  #       run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
-
-  #     - name: Upload Artifact
-  #       uses: actions/upload-artifact@v1
-  #       with:
-  #         name: sdk-${{ matrix.spec }}
-  #         path: ${{ env.SW_INSTALL_DIR }}
-
-  #     - name: Configure libdispatch Tests
-  #       run: scripts\workflows\jobs\steps\sdk\configure-libdispatch-tests.cmd
-
-  #     - name: Build libdispatch Tests
-  #       run: scripts\workflows\jobs\steps\sdk\build-libdispatch.cmd
-
-  #     - name: Test libdispatch
-  #       continue-on-error: true
-  #       run: scripts\workflows\jobs\steps\sdk\test-libdispatch.cmd
-
-  #     - name: Configure Foundation Test Environment
-  #       run: scripts\workflows\jobs\steps\sdk\configure-foundation-test-environment.cmd
-
-  #     - name: Configure Foundation Tests
-  #       run: scripts\workflows\jobs\steps\sdk\configure-foundation-tests.cmd
-
-  #     - name: Build Foundation Tests
-  #       run: scripts\workflows\jobs\steps\sdk\build-foundation.cmd
-
-  #     - name: Test Foundation (CTest)
-  #       continue-on-error: true
-  #       timeout-minutes: 10
-  #       run: scripts\workflows\jobs\steps\sdk\test-foundation-ctest.cmd
-
-  #     - name: Test Foundation (XCTest)
-  #       timeout-minutes: 10
-  #       continue-on-error: true
-  #       run: scripts\workflows\jobs\steps\sdk\test-foundation-xctest.cmd
-
-  # check-out:
-  #   name: Check Out
-  #   runs-on: ubuntu-latest
-  #   if: always()
-  #   needs: [check-in, toolchain, sdk]
-
-  #   steps:
-  #     - name: Update CI Check - Success
-  #       if: github.event.inputs.check_run_id && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
-  #       env:
-  #         CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
-  #       run: |
-  #         set -e
-          
-  #         http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-  #           -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
-  #           -d '{"conclusion":"success"}')
-          
-  #         echo $http_code
-  #         if [ "$http_code" != "200" ]; then
-  #           echo "::error::Failed to update check run"
-  #           exit 1
-  #         fi
-
-  #     - name: Update CI Check - Failure
-  #       if: github.event.inputs.check_run_id && contains(needs.*.result, 'failure')
-  #       env:
-  #         CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
-  #       run: |
-  #         set -e
-          
-  #         http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-  #           -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
-  #           -d '{"conclusion":"failure"}')
-          
-  #         echo $http_code
-  #         if [ "$http_code" != "200" ]; then
-  #           echo "::error::Failed to update check run"
-  #           exit 1
-  #         fi
-
-  #     - name: Update CI Check - Cancelled
-  #       if: github.event.inputs.check_run_id && contains(needs.*.result, 'cancelled')
-  #       env:
-  #         CHECK_RUN_ID: ${{ github.event.inputs.check_run_id }}
-  #       run: |
-  #         set -e
-          
-  #         http_code=$(curl -s -o check.json -w "%{http_code}" -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-  #           -X PATCH https://api.github.com/repos/${{ github.repository }}/check-runs/$CHECK_RUN_ID \
-  #           -d '{"conclusion":"cancelled"}')
-          
-  #         echo $http_code
-  #         if [ "$http_code" != "200" ]; then
-  #           echo "::error::Failed to update check run"
-  #           exit 1
-  #         fi
-
-  #     - name: Update Badge - Success
-  #       uses: schneegans/dynamic-badges-action@v1.6.0
-  #       if: github.ref == 'refs/heads/master' && needs.toolchain.result == 'success' && needs.sdk.result == 'success'
-  #       with:
-  #         auth: ${{ secrets.GISTS_TOKEN }}
-  #         gistID: e75dcdc92f031e71745ff1dbb56decd4
-  #         filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
-  #         label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
-  #         message: success
-  #         color: success
-
-  #     - name: Update Badge - Failure
-  #       uses: schneegans/dynamic-badges-action@v1.6.0
-  #       if: github.ref == 'refs/heads/master' && contains(needs.*.result, 'failure')
-  #       with:
-  #         auth: ${{ secrets.GISTS_TOKEN }}
-  #         gistID: e75dcdc92f031e71745ff1dbb56decd4
-  #         filename: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}-badge.json
-  #         label: ${{ github.workflow }}-${{ github.event.inputs.branch_spec }}
-  #         message: failure
-  #         color: critical
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sdk-${{ matrix.spec }}
+          path: ${{ env.SW_INSTALL_DIR }}
