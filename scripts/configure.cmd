@@ -57,12 +57,8 @@ if "%SW_INTERACTIVE%"=="NO" (
 
 if /i "%SW_SWIFT_BRANCH_SPEC%"=="main" (
   set SW_BRANCH_NUM=1
-) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.5" (
+) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.7" (
   set SW_BRANCH_NUM=2
-) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.4" (
-  set SW_BRANCH_NUM=3
-) else if /i "%SW_SWIFT_BRANCH_SPEC%"=="5.3" (
-  set SW_BRANCH_NUM=4
 )
 
 if /i "%SW_SWIFT_SDK_SPEC%"=="apple" (
@@ -534,22 +530,16 @@ rem ###########################################################################
 set SW_ORIGINAL_VALUE=%SW_BRANCH_NUM%
 
 :sw_ask_branch_input
-echo Available branches:
+echo Supported branches:
 echo.  1. main
-echo.  2. 5.5
-echo.  3. 5.4
-echo.  4. 5.3
+echo.  2. 5.7
 
 set /p SW_BRANCH_NUM="Enter branch number to build (%SW_BRANCH_NUM%): "
 
 if "%SW_BRANCH_NUM%"=="1" (
   set SW_SWIFT_BRANCH_SPEC=main
 ) else if "%SW_BRANCH_NUM%"=="2" (
-  set SW_SWIFT_BRANCH_SPEC=5.5
-) else if "%SW_BRANCH_NUM%"=="3" (
-  set SW_SWIFT_BRANCH_SPEC=5.4
-) else if "%SW_BRANCH_NUM%"=="4" (
-  set SW_SWIFT_BRANCH_SPEC=5.3
+  set SW_SWIFT_BRANCH_SPEC=5.7
 ) else (
   set SW_BRANCH_NUM=%SW_ORIGINAL_VALUE%
   goto sw_ask_branch_input
