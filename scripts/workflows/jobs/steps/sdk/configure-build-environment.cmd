@@ -28,7 +28,6 @@ if defined SW_GIT_TAG (
   if not defined SW_DISPATCH_REF call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
   if not defined SW_SWIFT_SYNTAX_REF call :sw_get_ref SW_SWIFT_SYNTAX_REF
   if not defined SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF swift/
-  if not defined SW_SWIFT_SYNTAX_SOURCES_DIR set SW_SWIFT_SYNTAX_SOURCES_DIR=%SW_SOURCES_DIR%\swift-syntax
 
   call :sw_get_ref SW_FOUNDATION_REF %SW_SDK_SPEC_PREFIX%
   call :sw_get_ref SW_XCTEST_REF
@@ -48,6 +47,7 @@ set "SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR=%SW_SOURCES_DIR%\swift-
 set "SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch"
 set "SW_FOUNDATION_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-foundation"
 set "SW_XCTEST_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-xctest"
+set "SW_SWIFT_SYNTAX_SOURCES_DIR=%SW_SOURCES_DIR%\swift-syntax"
 
 set "SW_LLVM_BUILD_DIR=%SW_BUILD_DIR%\llvm-runtime"
 set "SW_RUNTIME_BUILD_DIR=%SW_BUILD_DIR%\swift-runtime"
