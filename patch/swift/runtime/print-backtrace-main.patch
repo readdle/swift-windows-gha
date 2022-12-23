@@ -15,10 +15,10 @@ index e4e77cb8..e0ec2d93 100644
  /// Debugger breakpoint ABI. This structure is passed to the debugger (and needs
  /// to be stable) and describes extra information about a fatal error or a
  /// non-fatal warning, which should be logged as a runtime issue. Please keep
-diff --git a/stdlib/public/SwiftShims/AssertionReporting.h b/stdlib/public/SwiftShims/AssertionReporting.h
+diff --git a/stdlib/public/SwiftShims/swift/shims/AssertionReporting.h b/stdlib/public/SwiftShims/swift/shims/AssertionReporting.h
 index 9c55a628..af1804df 100644
---- a/stdlib/public/SwiftShims/AssertionReporting.h
-+++ b/stdlib/public/SwiftShims/AssertionReporting.h
+--- a/stdlib/public/SwiftShims/swift/shims/AssertionReporting.h
++++ b/stdlib/public/SwiftShims/swift/shims/AssertionReporting.h
 @@ -15,6 +15,7 @@
  
  #include "SwiftStdint.h"
