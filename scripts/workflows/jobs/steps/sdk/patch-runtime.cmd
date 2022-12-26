@@ -1,3 +1,5 @@
+@echo on
+
 setlocal enabledelayedexpansion
 
 %SW_PRE_STEP% --scope="sdk" --name="Patch Runtime" --flag=SW_SKIP_SDK_CHECKOUT
