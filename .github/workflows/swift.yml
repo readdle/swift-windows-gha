@@ -925,7 +925,9 @@ jobs:
           echo swift_experimental_string_processing_ref=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SHA%>>%GITHUB_OUTPUT%
 
       - name: Patch Runtime
-        run: scripts\workflows\jobs\steps\sdk\patch-runtime.cmd
+        run: |
+          dir
+          call scripts\workflows\jobs\steps\sdk\patch-runtime.cmd
 
       - name: Download ICU
         uses: actions/download-artifact@v3
@@ -961,7 +963,7 @@ jobs:
         run: scripts\workflows\jobs\steps\sdk\configure-sdk-modules.cmd
 
       - name: Configure LLVM
-        run:  scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
+        run: scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
       - name: Configure Swift Runtime
         run: scripts\workflows\jobs\steps\sdk\configure-swift-runtime.cmd
