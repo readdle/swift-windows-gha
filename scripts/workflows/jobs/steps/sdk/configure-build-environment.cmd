@@ -33,15 +33,19 @@ if defined SW_GIT_TAG (
   )
   if not defined SW_DISPATCH_REF (
     %SW_LOG_JOB_INFO% --message="swift-corelibs-libdispatch ref not set, using default"
-    call :sw_get_ref call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
+    call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
   )
   if not defined SW_SWIFT_SYNTAX_REF (
     %SW_LOG_JOB_INFO% --message="swift-syntax ref not set, using default"
-    call :sw_get_ref call :sw_get_ref SW_SWIFT_SYNTAX_REF
+    call :sw_get_ref SW_SWIFT_SYNTAX_REF
   )
   if not defined SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF (
     %SW_LOG_JOB_INFO% --message="swift-experimental-string-processing ref not set, using default"
-    call :sw_get_ref call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF
+    call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF
+  )
+  if not defined SW_CMARK_REF (
+    %SW_LOG_JOB_INFO% --message="cmark ref not set, using default"
+    call :sw_get_cmark_ref SW_CMARK_REF
   )
 
   call :sw_get_ref SW_FOUNDATION_REF %SW_SDK_SPEC_PREFIX%
@@ -59,6 +63,7 @@ if "%SW_ARCH%"=="amd64" (
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift"
 set "SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR=%SW_SOURCES_DIR%\swift-experimental-string-processing"
+set "SW_CMARK_SOURCES_DIR=%SW_SOURCES_DIR%\cmark"
 set "SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch"
 set "SW_FOUNDATION_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-foundation"
 set "SW_XCTEST_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-xctest"
@@ -140,6 +145,7 @@ if %SW_SWIFT_BRANCH_SPEC%==5.7 (
 endlocal && set %1=%REF%
 exit /b
 
+
 rem ###########################################################################
 :sw_get_llvm_ref <result_var>
 setlocal enabledelayedexpansion
@@ -148,6 +154,20 @@ if %SW_SWIFT_BRANCH_SPEC%==main (
   set REF=stable/20211026
 ) else (
   call :sw_get_ref REF swift/
+)
+
+endlocal && set %1=%REF%
+exit /b
+
+
+rem ###########################################################################
+:sw_get_cmark_ref <result_var>
+setlocal enabledelayedexpansion
+
+if %SW_SWIFT_BRANCH_SPEC%==main (
+  set REF=gfm
+) else (
+  call :sw_get_ref REF
 )
 
 endlocal && set %1=%REF%
