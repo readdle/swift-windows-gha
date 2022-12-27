@@ -13,7 +13,11 @@ if not defined SW_SWIFT_SYNTAX_REF (
   %SW_LOG_JOB_INFO% --message-"swift-syntax ref not set, using default"
   call :sw_get_ref SW_SWIFT_SYNTAX_REF
 )
-
+if not defined SW_CMARK_REF (
+  %SW_LOG_JOB_INFO% --message="cmark ref not set, using default"
+  call :sw_get_cmark_ref SW_CMARK_REF
+)
+  
 set "SW_LLVM_PROJECT_SOURCES_DIR=%SW_SOURCES_DIR%\llvm-project"
 set "SW_CMARK_SOURCES_DIR=%SW_SOURCES_DIR%\cmark"
 set "SW_SWIFT_SOURCES_DIR=%SW_SOURCES_DIR%\swift"
@@ -114,3 +118,16 @@ SET %2=%~dp1
 EXIT /b
 
 
+
+rem ###########################################################################
+:sw_get_cmark_ref <result_var>
+setlocal enabledelayedexpansion
+
+if %SW_SWIFT_BRANCH_SPEC%==main (
+  set REF=gfm
+) else (
+  call :sw_get_ref REF
+)
+
+endlocal && set %1=%REF%
+exit /b
