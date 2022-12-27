@@ -24,23 +24,23 @@ if defined SW_GIT_TAG (
   )
 ) else (
   if not defined SW_LLVM_REF (
-    %SW_LOG_JOB_INFO% --message-"llvm-project ref not set, using default"
+    %SW_LOG_JOB_INFO% --message="llvm-project ref not set, using default"
     call :sw_get_llvm_ref SW_LLVM_REF
   )
   if not defined SW_SWIFT_REF (
-    %SW_LOG_JOB_INFO% --message-"swift ref not set, using default"
+    %SW_LOG_JOB_INFO% --message="swift ref not set, using default"
     call :sw_get_ref SW_SWIFT_REF
   )
   if not defined SW_DISPATCH_REF (
-    %SW_LOG_JOB_INFO% --message-"swift-corelibs-libdispatch ref not set, using default"
+    %SW_LOG_JOB_INFO% --message="swift-corelibs-libdispatch ref not set, using default"
     call :sw_get_ref call :sw_get_ref SW_DISPATCH_REF %SW_SDK_SPEC_PREFIX%
   )
   if not defined SW_SWIFT_SYNTAX_REF (
-    %SW_LOG_JOB_INFO% --message-"swift-syntax ref not set, using default"
+    %SW_LOG_JOB_INFO% --message="swift-syntax ref not set, using default"
     call :sw_get_ref call :sw_get_ref SW_SWIFT_SYNTAX_REF
   )
   if not defined SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF (
-    %SW_LOG_JOB_INFO% --message-"swift-experimental-string-processing ref not set, using default"
+    %SW_LOG_JOB_INFO% --message="swift-experimental-string-processing ref not set, using default"
     call :sw_get_ref call :sw_get_ref SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF
   )
 
