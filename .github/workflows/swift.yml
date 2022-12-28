@@ -197,8 +197,8 @@ jobs:
       swift_ref: ${{ steps.checkout_info.outputs.swift_ref }}
       dispatch_ref: ${{ steps.checkout_info.outputs.dispatch_ref }}
       cmark_ref: ${{ steps.checkout_info.outputs.cmark_ref }}
-      swift_syntax: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
-      swift_experimental_string_processing: ${{ steps.checkout_info.outputs.swift_experimental_string_processing_ref }}
+      swift_syntax_ref: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
+      swift_experimental_string_processing_ref: ${{ steps.checkout_info.outputs.swift_experimental_string_processing_ref }}
       dispatch_repo: ${{ steps.checkout_info.outputs.dispatch_repo }}
 
     defaults:
