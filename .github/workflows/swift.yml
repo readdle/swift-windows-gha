@@ -55,16 +55,16 @@ jobs:
       swift_syntax_ref: ${{ steps.checkout_info.outputs.swift_syntax_ref }}
 
     steps:
-      - name: Clean Workspace
-        if: inputs.runs_on == 'self-hosted'
-        run: |
-          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
-          del /f /q /s ${{ github.workspace }}
-
       - name: Configure Git
         run: |
           git config --global --add core.autocrlf false
           git config --global --add core.symlinks true
+
+      - name: Clean Workspace
+        if: inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          rmdir ${{ github.workspace }}
 
       - name: Checkout 
         uses: actions/checkout@v3
