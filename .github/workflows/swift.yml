@@ -967,7 +967,7 @@ jobs:
       - name: Download toolchain
         uses: actions/download-artifact@v3
         with:
-          name: toolchain-${{ matrix.arch }}
+          name: toolchain-amd64
           path: ${{ env.SW_ARTIFACTS_DIR }}
 
       - name: Configure SDK Modules
@@ -1050,5 +1050,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sdk-${{ matrix.spec }}
+          name: sdk-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
