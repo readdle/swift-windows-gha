@@ -506,7 +506,8 @@ jobs:
            --build-dir=%GITHUB_WORKSPACE%\b^
            --install-dir=%GITHUB_WORKSPACE%\i^
            --artifacts-dir=%GITHUB_WORKSPACE%\a^
-           --branch=${{ inputs.branch_spec }}
+           --branch=${{ inputs.branch_spec }}^
+           --sdk=${{ inputs.build_spec }}
            
       - name: Configure Environment
         run: |

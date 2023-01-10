@@ -4,9 +4,17 @@ if errorlevel 1 goto :eof
 
 %SW_LOG_JOB_INFO% --message="Configuring ICU"
 
+setlocal enabledelayedexpansion
+
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" (
+  set SW_ICU_SHARED_LIBS=YES
+) else (
+  set SW_ICU_SHARED_LIBS=NO
+)
+
 cmake^
  -B %SW_ICU_BUILD_DIR%^
- -D BUILD_SHARED_LIBS=NO^
+ -D BUILD_SHARED_LIBS=%SW_ICU_SHARED_LIBS%^
  -D BUILD_TOOLS=NO^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_C_COMPILER=cl^
@@ -18,3 +26,5 @@ cmake^
  -D ICU_TOOLS_DIR=%SW_ICU_TOOLS_DIR%^
  -G Ninja^
  -S %SW_ICU_SOURCES_DIR%/icu4c
+
+endlocal
