@@ -331,7 +331,7 @@ set VALUE=!%PARAMETER%!
 if "%PARAMETER%"=="SW_INTERACTIVE" (
   if /i not "%VALUE%"=="YES" if /i not "%VALUE%"=="NO" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_BRANCH_SPEC" (
-  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.5" if /i not "%VALUE%"=="5.4" if /i not "%VALUE%"=="5.3" goto sw_validate_parameter_fail
+  if /i not "%VALUE%"=="main" if /i not "%VALUE%"=="5.7" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SWIFT_SDK_SPEC" (
   if /i not "%VALUE%"=="apple" if /i not "%VALUE%"=="readdle" goto sw_validate_parameter_fail
 ) else if "%PARAMETER%"=="SW_SOURCES_DIR" (
