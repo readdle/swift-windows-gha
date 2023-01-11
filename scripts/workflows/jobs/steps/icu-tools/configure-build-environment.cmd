@@ -4,7 +4,8 @@ set "SW_LOG_JOB_WARNING=%SW_LOG_WARNING% --scope icu-tools"
 %SW_LOG_JOB_INFO% --message="Configuring build environment"
 
 set SW_ICU_REF=maint/maint-%SW_ICU_RELEASE%
-call :sw_get_ref SW_SWIFT_INSTALLER_SCRIPTS_REF
+@REM call :sw_get_ref SW_SWIFT_INSTALLER_SCRIPTS_REF
+set SW_SWIFT_INSTALLER_SCRIPTS_REF=main
 
 set "SW_ICU_SOURCES_DIR=%SW_SOURCES_DIR%\icu"
 set "SW_SWIFT_INSTALLER_SCRIPTS_SOURCES_DIR=%SW_SOURCES_DIR%\swift-installer-scripts"
