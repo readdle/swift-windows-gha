@@ -1053,3 +1053,64 @@ jobs:
         with:
           name: sdk-${{ matrix.arch }}
           path: ${{ env.SW_INSTALL_DIR }}
+
+  bundle-toolchain:
+    name: Bundle Toolchain
+    runs-on: ${{ inputs.runs_on }}
+    needs: [toolchain]
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64]
+
+    steps:
+      - name: Clean Workspace
+        if: github.event.inputs.runs_on == 'self-hosted'
+        run: |
+          for /d %%d in (${{ github.workspace }}\*.*) do rmdir /s /q "%%d"
+          del /f /q /s ${{ github.workspace }}
+
+      - name: Configure Git
+        run: |
+          git config --global --add core.autocrlf false
+          git config --global --add core.symlinks true
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Read Checkout Info
+        run: |
+          set SW_SWIFT_REF=${{ needs.toolchain.outputs.swift_ref }}
+          echo swift: %SW_SWIFT_REF%
+          echo SW_LLVM_REF=%SW_LLVM_REF%>>%GITHUB_ENV%
+
+      - name: Configure Build
+        run: |
+          scripts\configure.cmd^
+           --interactive=NO^
+           --sources-dir=%GITHUB_WORKSPACE%\s^
+           --build-dir=%GITHUB_WORKSPACE%\b^
+           --install-dir=%GITHUB_WORKSPACE%\i^
+           --artifacts-dir=%GITHUB_WORKSPACE%\a
+
+      - name: Configure Build Environment
+        run: |
+          call scripts\workflows\configure-build-environment.cmd
+          call scripts\workflows\load-configuration.cmd
+          call scripts\workflows\jobs\steps\bundle-toolchain\configure-build-environment.cmd
+          call scripts\tools\export-environment.cmd
+
+      - name: Download toolchain
+        uses: actions/download-artifact@v3
+        with:
+          name: toolchain-${{ matrix.arch }}
+          path: ${{ env.SW_ARTIFACTS_DIR }}
+
+      - name: Copy Files
+        run: scripts\workflows\jobs\steps\bundle-toolchain\copy-toolchain-files.cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: toolchain-${{ matrix.arch }}-bundle
+          path: ${{ env.SW_BUNDLE_INSTALL_DIR }}
