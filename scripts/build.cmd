@@ -25,6 +25,8 @@ call "%SW_WORKSPACE%\scripts\workflows\jobs\tools.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\libxml2.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\curl.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\sdk.cmd"^
+ && call "%SW_WORKSPACE%\scripts\workflows\jobs\bundle-toolchain.cmd"^
+ && call "%SW_WORKSPACE%\scripts\workflows\jobs\bundle-sdk.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\sqlite.cmd"^
  && call "%SW_WORKSPACE%\scripts\workflows\jobs\devtools.cmd"
 
