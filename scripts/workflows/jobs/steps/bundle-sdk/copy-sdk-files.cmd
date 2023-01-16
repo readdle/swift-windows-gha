@@ -14,6 +14,7 @@ set SW_DIR_SDKS=%SW_DIR_PLATFORM%\Developer\SDKs
 set SW_DIR_WINDOWSSDK=%SW_DIR_SDKS%\Windows.sdk
 
 set SW_DIR_WINDOWSSDK_USR=%SW_DIR_WINDOWSSDK%\usr
+set SW_DIR_WINDOWSSDK_USR_BIN=%SW_DIR_WINDOWSSDK%\bin
 set SW_DIR_WINDOWSSDK_USR_INCLUDE=%SW_DIR_WINDOWSSDK_USR%\include
 set SW_DIR_WINDOWSSDK_USR_INCLUDE_BLOCK=%SW_DIR_WINDOWSSDK_USR_INCLUDE%\Block
 set SW_DIR_WINDOWSSDK_USR_INCLUDE_DISPATCH=%SW_DIR_WINDOWSSDK_USR_INCLUDE%\dispatch
@@ -106,6 +107,26 @@ set SW_PLATFORM_FILES=^
   vcruntime.modulemap^
   vcruntime.apinotes
 
+set SW_DIR_WINDOWSSDK_USR_BIN_FILENAMES=^
+  BlocksRuntime.dll^
+  dispatch.dll^
+  Foundation.dll^
+  FoundationNetworking.dll^
+  FoundationXML.dll^
+  swift_Concurrency.dll^
+  swift_Differentiation.dll^
+  swiftDistributed.dll^
+  swift_RegexParser.dll^
+  swift_StringProcessing.dll^
+  swiftCore.dll^
+  swiftCxx.dll^
+  swiftDispatch.dll^
+  swiftCRT.dll^
+  swiftRemoteMirror.dll^
+  swiftSwiftOnoneSupport.dll^
+  swiftWinSDK.dll^
+  plutil.exe
+
 call :sw_copy_fileset %SW_PLATFORM_DIR%\Developer\Library\XCTest-development\usr\bin %SW_DIR_XCTEST_USR_BIN64% "XCTest.dll" || (exit /b)
 call :sw_copy_fileset %SW_PLATFORM_DIR%\Developer\Library\XCTest-development\usr\lib\swift\windows %SW_DIR_XCTEST_USR_LIB_SWIFT_WINDOWS_X86_64% "XCTest.lib" || (exit /b)
 call :sw_copy_file %SW_PLATFORM_DIR%\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64\XCTest.swiftdoc %SW_DIR_XCTEST_SWIFTMODULE%\x86_64-unknown-windows-msvc.swiftdoc || (exit /b)
@@ -138,6 +159,7 @@ call :sw_copy_fileset %SW_SWIFT_SOURCES_DIR%\stdlib\public\Platform %SW_DIR_WIND
 call :sw_copy_fileset %SW_PLATFORM_DIR% %SW_DIR_PLATFORM% "Info.plist" || (exit /b)
 call :sw_copy_fileset %SW_SDK_DIR% %SW_DIR_WINDOWSSDK% "SDKSettings.plist" || (exit /b)
 call :sw_copy_dirset %SW_SDK_DIR%\usr\lib\swift %SW_DIR_WINDOWSSDK_USR_LIB_SWIFT% "shims" || (exit /b)
+call :sw_copy_fileset %SW_SDK_DIR%\usr\bin %SW_DIR_WINDOWSSDK_USR_BIN% "%SW_DIR_WINDOWSSDK_USR_BIN_FILENAMES%" || (exit /b)
 
 endlocal
 exit /b
