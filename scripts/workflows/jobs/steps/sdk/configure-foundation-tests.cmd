@@ -7,6 +7,16 @@ FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
   SET SW_TOOLCHAIN_DIR=%%i
 )
 
+if "%SW_SWIFT_SDK_SPEC%"=="readdle" (
+  set SW_ICU_DATA_LIBRARY=%SW_ICU_DIR%/usr/lib/icudt%SW_ICU_RELEASE%.lib
+  set SW_ICU_UC_LIBRARY=%SW_ICU_DIR%/usr/lib/icuuc%SW_ICU_RELEASE%.lib
+  set SW_ICU_I18N_LIBRARY=%SW_ICU_DIR%/usr/lib/icuin%SW_ICU_RELEASE%.lib
+) else (
+  set SW_ICU_DATA_LIBRARY=%SW_ICU_DIR%/usr/lib/sicudt%SW_ICU_RELEASE%.lib
+  set SW_ICU_UC_LIBRARY=%SW_ICU_DIR%/usr/lib/sicuuc%SW_ICU_RELEASE%.lib
+  set SW_ICU_I18N_LIBRARY=%SW_ICU_DIR%/usr/lib/sicuin%SW_ICU_RELEASE%.lib
+)
+
 cmake^
  -B %SW_FOUNDATION_BUILD_DIR%-test^
  -D BUILD_SHARED_LIBS=YES^
@@ -32,9 +42,9 @@ cmake^
  -D dispatch_DIR=%SW_DISPATCH_BUILD_DIR%/cmake/modules^
  -D XCTest_DIR=%SW_XCTEST_BUILD_DIR%/cmake/modules^
  -D ICU_ROOT=%SW_ICU_DIR%/usr^
- -D ICU_DATA_LIBRARY_RELEASE=%SW_ICU_DIR%/usr/lib/sicudt%SW_ICU_RELEASE%.lib^
- -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_DIR%/usr/lib/sicuuc%SW_ICU_RELEASE%.lib^
- -D ICU_I18N_LIBRARY_RELEASE=%SW_ICU_DIR%/usr/lib/sicuin%SW_ICU_RELEASE%.lib^
+ -D ICU_DATA_LIBRARY_RELEASE=%SW_ICU_DATA_LIBRARY%^
+ -D ICU_UC_LIBRARY_RELEASE=%SW_ICU_UC_LIBRARY%^
+ -D ICU_I18N_LIBRARY_RELEASE=%SW_ICU_I18N_LIBRARY%^
  -D LIBXML2_LIBRARY=%SW_XML2_DIR%/usr/lib/libxml2s.lib^
  -D LIBXML2_INCLUDE_DIR=%SW_XML2_DIR%/usr/include/libxml2^
  -D LIBXML2_DEFINITIONS="/DLIBXML_STATIC"^
