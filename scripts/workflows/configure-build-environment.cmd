@@ -29,12 +29,23 @@ set SW_PLUTIL=powershell -ExecutionPolicy Bypass "%SW_WORKSPACE%\scripts\tools\p
 %SW_LOG_BUILD_INFO% --message="Initializing Visual Studio environment"
 
 if defined SW_VC_VERSION (
-  %SW_LOG_BUILD_INFO% --prefix="VC Version:" --message="%SW_VC_VERSION%"
+  %SW_LOG_BUILD_INFO% --prefix="VC Version:  " --message="%SW_VC_VERSION%"
   set VC_VERSION_ARG=-vcvars_ver=%SW_VC_VERSION%
 ) else (
-  %SW_LOG_BUILD_INFO% --prefix="VC Version:" --message="default"
+  %SW_LOG_BUILD_INFO% --prefix="VC Version:  " --message="default"
 )
-call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=x64 -host_arch=x64 %VC_VERSION_ARG%
+if defined SW_ARCH (
+  %SW_LOG_BUILD_INFO% --prefix="Target arch: " --message="%SW_ARCH%"
+) else (
+  set SW_ARCH=amd64
+  %SW_LOG_BUILD_INFO% --prefix="Target arch: " --message="default"
+)
+
+call "%SW_WORKSPACE%\scripts\tools\vs-env.cmd" -arch=%SW_ARCH% -host_arch=amd64 %VC_VERSION_ARG%
+if errorlevel 1 goto :eof
+
+%SW_LOG_BUILD_INFO% --message="Configuring global git settings..."
+call "%SW_WORKSPACE%\scripts\tools\configure-git.cmd"
 
 exit /b 0
 
