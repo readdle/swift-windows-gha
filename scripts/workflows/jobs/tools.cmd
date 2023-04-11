@@ -16,6 +16,8 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-llvm-tblgen.cmd^
  && call %SW_STEPS_DIR%\build-clang-tblgen.cmd^
  && call %SW_STEPS_DIR%\build-lldb-tblgen.cmd^
+ && call %SW_STEPS_DIR%\build-clang-pseudo-gen.cmd^
+ && call %SW_STEPS_DIR%\build-clang-tidy-confusable-chars-gen.cmd^
  && call %SW_STEPS_DIR%\build-swift-serialize-diagnostics.cmd^
  && call %SW_STEPS_DIR%\build-swift-def-to-strings-converter.cmd^
  && call %SW_STEPS_DIR%\build-swift-compatibility-symbols.cmd^
