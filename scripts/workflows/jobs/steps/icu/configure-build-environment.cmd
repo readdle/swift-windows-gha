@@ -9,7 +9,6 @@ if not defined SW_ICU_REF (
 )
 if not defined SW_SWIFT_INSTALLER_SCRIPTS_REF (
   %SW_LOG_JOB_WARNING% --message="swift-installer-scripts ref is not set, using default"
-  @REM call :sw_get_ref SW_SWIFT_INSTALLER_SCRIPTS_REF
   set SW_SWIFT_INSTALLER_SCRIPTS_REF=main
 )
 
