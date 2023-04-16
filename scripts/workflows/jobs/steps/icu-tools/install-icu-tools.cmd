@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 set SW_ICU_TOOLS_INSTALL_DIR=%SW_INSTALL_DIR%\icu-tools-%SW_ICU_VERSION%
 
-mkdir %SW_ICU_TOOLS_INSTALL_DIR%^
+mkdir %SW_ICU_TOOLS_INSTALL_DIR%
 
 copy /Y %SW_ICU_TOOLS_BUILD_DIR%\genbrk.exe %SW_ICU_TOOLS_INSTALL_DIR%^
  && copy /Y %SW_ICU_TOOLS_BUILD_DIR%\gencfu.exe %SW_ICU_TOOLS_INSTALL_DIR%^
