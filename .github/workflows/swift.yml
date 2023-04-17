@@ -165,6 +165,12 @@ jobs:
       - name: Build lldb-tblgen
         run: scripts\workflows\jobs\steps\tools\build-lldb-tblgen.cmd
 
+      - name: Build clang-pseudo-gen
+        run: scripts\workflows\jobs\steps\tools\build-clang-pseudo-gen.cmd
+
+      - name: Build clang-tidy-confusable-chars-gen
+        run: scripts\workflows\jobs\steps\tools\build-clang-tidy-confusable-chars-gen.cmd
+
       - name: Build swift-serialize-diagnostics
         run: scripts\workflows\jobs\steps\tools\build-swift-serialize-diagnostics.cmd
 
