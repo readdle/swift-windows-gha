@@ -1,3 +1,5 @@
+%SW_PRE_STEP% --scope="sdk" --name="Copy clang Modules"
+
 del "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
 del "%VCToolsInstallDir%\include\module.modulemap"
 del "%VCToolsInstallDir%\include\vcruntime.apinotes"
