@@ -13,4 +13,5 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\build-toolchain.cmd^
  && call %SW_STEPS_DIR%\install-toolchain.cmd
 
-endlocal
+endlocal^
+ && set SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF=%SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_REF%
