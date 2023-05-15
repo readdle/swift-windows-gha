@@ -68,6 +68,7 @@ set SW_WINDOWSSDK_USR_INCLUDE_DISPATCH_FILENAMES=^
   time.h
 
 set SW_WINDOWSSDK_USR_INCLUDE_OS_FILENAMES=^
+  generic_base.h^
   generic_unix_base.h^
   generic_win_base.h^
   object.h
