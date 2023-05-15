@@ -22,10 +22,10 @@ cmake^
  -D CMAKE_BUILD_TYPE=Release^
  -D CMAKE_C_COMPILER=%SW_TOOLCHAIN_DIR%/usr/bin/clang-cl.exe^
  -D CMAKE_C_COMPILER_TARGET=%SW_PLATFORM%-unknown-windows-msvc^
- -D CMAKE_C_FLAGS="/GS- /Oy /Gw /Gy"^
+ -D CMAKE_C_FLAGS="/GS- /Gw /Gy /Oi /Oy /Zi /Zc:inline"^
  -D CMAKE_CXX_COMPILER=%SW_TOOLCHAIN_DIR%/usr/bin/clang-cl.exe^
  -D CMAKE_CXX_COMPILER_TARGET=%SW_PLATFORM%-unknown-windows-msvc^
- -D CMAKE_CXX_FLAGS="/GS- /Oy /Gw /Gy"^
+ -D CMAKE_CXX_FLAGS="/GS- /Gw /Gy /Oi /Oy /Zi /Zc:inline /Zc:__cplusplus"^
  -D CMAKE_MT=mt^
  -D CMAKE_INSTALL_PREFIX=%SW_SDK_INSTALL_DIR%^
  -D CMAKE_SYSTEM_NAME=Windows^
@@ -33,6 +33,8 @@ cmake^
  -G Ninja^
  -S %SW_SWIFT_SOURCES_DIR%^
  -D CMAKE_Swift_COMPILER_TARGET=%SW_PLATFORM%-unknown-windows-msvc^
+ -D CMAKE_Swift_FLAGS="-g -debug-info-format=codeview -Xlinker /INCREMENTAL:NO -Xlinker /DEBUG -Xlinker /OPT:REF -Xlinker /OPT:ICF"^
+ -D CMAKE_Swift_FLAGS_RELEASE="-O"^
  -D LLVM_DIR=%SW_LLVM_BUILD_DIR%/lib/cmake/llvm^
  -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=%SW_TOOLCHAIN_DIR%/usr/bin^
  -D SWIFT_PATH_TO_LIBDISPATCH_SOURCE=%SW_DISPATCH_SOURCES_DIR%^

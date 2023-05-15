@@ -2,10 +2,8 @@
 cmake^
  -B %SW_TOOLS_BUILD_DIR%^
  -D CMAKE_BUILD_TYPE=Release^
- -D CMAKE_C_COMPILER=cl^
- -D CMAKE_C_FLAGS="/GS- /Oy /Gw /Gy"^
- -D CMAKE_CXX_COMPILER=cl^
- -D CMAKE_CXX_FLAGS="/GS- /Oy /Gw /Gy"^
+ -D CMAKE_C_FLAGS="/GS- /Gw /Gy /Oi /Oy /Zi /Zc:inline"^
+ -D CMAKE_CXX_FLAGS="/GS- /Gw /Gy /Oi /Oy /Zi /Zc:inline /Zc:__cplusplus"^
  -D CMAKE_MT=mt^
  -G Ninja^
  -S %SW_LLVM_PROJECT_SOURCES_DIR%\llvm^

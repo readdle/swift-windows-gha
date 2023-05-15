@@ -17,7 +17,7 @@ cmake^
  -D CMAKE_SYSTEM_PROCESSOR=%SW_PLATFORM%^
  -D CMAKE_Swift_COMPILER=%SW_TOOLCHAIN_DIR%/usr/bin/swiftc.exe^
  -D CMAKE_Swift_COMPILER_TARGET=%SW_PLATFORM%-unknown-windows-msvc^
- -D CMAKE_Swift_FLAGS="-resource-dir %SW_SDK_INSTALL_DIR%/lib/swift -L%SW_SDK_INSTALL_DIR%/lib/swift/windows -vfsoverlay %SW_RUNTIME_BUILD_DIR%/stdlib/windows-vfs-overlay.yaml"^
+ -D CMAKE_Swift_FLAGS="-g -debug-info-format=codeview -Xlinker /INCREMENTAL:NO -Xlinker /DEBUG -Xlinker /OPT:REF -Xlinker /OPT:ICF -resource-dir %SW_SDK_INSTALL_DIR%/lib/swift -L%SW_SDK_INSTALL_DIR%/lib/swift/windows -vfsoverlay %SW_RUNTIME_BUILD_DIR%/stdlib/windows-vfs-overlay.yaml"^
  -D CMAKE_Swift_FLAGS_RELEASE="-O"^
  -G Ninja^
  -S %SW_XCTEST_SOURCES_DIR%^
