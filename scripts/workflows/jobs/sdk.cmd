@@ -9,7 +9,6 @@ call %SW_STEPS_DIR%\configure-build-environment.cmd^
  && call %SW_STEPS_DIR%\checkout-foundation.cmd^
  && call %SW_STEPS_DIR%\checkout-xctest.cmd^
  && call %SW_STEPS_DIR%\patch-runtime.cmd^
- && call %SW_STEPS_DIR%\configure-sdk-modules.cmd^
  && call %SW_STEPS_DIR%\configure-llvm.cmd^
  && call %SW_STEPS_DIR%\configure-swift-runtime.cmd^
  && call %SW_STEPS_DIR%\build-swift-runtime.cmd^

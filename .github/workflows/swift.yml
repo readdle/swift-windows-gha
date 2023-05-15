@@ -977,9 +977,6 @@ jobs:
           name: toolchain-amd64
           path: ${{ env.SW_ARTIFACTS_DIR }}
 
-      - name: Configure SDK Modules
-        run: scripts\workflows\jobs\steps\sdk\configure-sdk-modules.cmd
-
       - name: Configure LLVM
         run: scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
@@ -1047,9 +1044,6 @@ jobs:
 
       - name: Install XCTest
         run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
-
-      - name: Install Module Maps
-        run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
 
       - name: Generate plists
         run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd
