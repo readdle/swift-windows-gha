@@ -25,12 +25,12 @@ set "SW_DISPATCH_SOURCES_DIR=%SW_SOURCES_DIR%\swift-corelibs-libdispatch"
 set "SW_SWIFT_SYNTAX_SOURCES_DIR=%SW_SOURCES_DIR%\swift-syntax"
 set "SW_SWIFT_EXPERIMENTAL_STRING_PROCESSING_SOURCES_DIR=%SW_SOURCES_DIR%\swift-experimental-string-processing"
 
-set "SW_LLVM_TOOLS_DIR=%SW_ARTIFACTS_DIR%\build-tools\bin"
-set "SW_LLVM_TABLEGEN=%SW_LLVM_TOOLS_DIR%\llvm-tblgen.exe"
-set "SW_CLANG_TABLEGEN=%SW_LLVM_TOOLS_DIR%\clang-tblgen.exe"
-set "SW_LLDB_TABLEGEN=%SW_LLVM_TOOLS_DIR%\lldb-tblgen.exe"
-set "SW_LLVM_CONFIG=%SW_LLVM_TOOLS_DIR%\llvm-config.exe"
-
+set "SW_BUILD_TOOLS_DIR=%SW_ARTIFACTS_DIR%\build-tools\bin"
+set "SW_LLVM_TABLEGEN=%SW_BUILD_TOOLS_DIR%\llvm-tblgen.exe"
+set "SW_CLANG_TABLEGEN=%SW_BUILD_TOOLS_DIR%\clang-tblgen.exe"
+set "SW_LLDB_TABLEGEN=%SW_BUILD_TOOLS_DIR%\lldb-tblgen.exe"
+set "SW_LLVM_CONFIG=%SW_BUILD_TOOLS_DIR%\llvm-config.exe"
+set "SW_CLANG_TIDY_CONFUSABLE_CHARS_GEN=%SW_BUILD_TOOLS_DIR%\clang-tidy-confusable-chars-gen.exe"
 set "SW_TOOLCHAIN_BUILD_DIR=%SW_BUILD_DIR%\toolchain"
 
 set "SW_TOOLCHAIN_INSTALL_DIR=%SW_INSTALL_DIR%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr"

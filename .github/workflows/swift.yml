@@ -165,6 +165,12 @@ jobs:
       - name: Build lldb-tblgen
         run: scripts\workflows\jobs\steps\tools\build-lldb-tblgen.cmd
 
+      - name: Build clang-pseudo-gen
+        run: scripts\workflows\jobs\steps\tools\build-clang-pseudo-gen.cmd
+
+      - name: Build clang-tidy-confusable-chars-gen
+        run: scripts\workflows\jobs\steps\tools\build-clang-tidy-confusable-chars-gen.cmd
+
       - name: Build swift-serialize-diagnostics
         run: scripts\workflows\jobs\steps\tools\build-swift-serialize-diagnostics.cmd
 
@@ -971,9 +977,6 @@ jobs:
           name: toolchain-amd64
           path: ${{ env.SW_ARTIFACTS_DIR }}
 
-      - name: Configure SDK Modules
-        run: scripts\workflows\jobs\steps\sdk\configure-sdk-modules.cmd
-
       - name: Configure LLVM
         run: scripts\workflows\jobs\steps\sdk\configure-llvm.cmd
 
@@ -1041,9 +1044,6 @@ jobs:
 
       - name: Install XCTest
         run: scripts\workflows\jobs\steps\sdk\install-xctest.cmd
-
-      - name: Install Module Maps
-        run: scripts\workflows\jobs\steps\sdk\install-module-maps.cmd
 
       - name: Generate plists
         run: scripts\workflows\jobs\steps\sdk\generate-plists.cmd

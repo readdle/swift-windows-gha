@@ -1,8 +1,8 @@
 diff --git a/include/swift/Basic/LangOptions.h b/include/swift/Basic/LangOptions.h
-index 8b400f2d..325a9eba 100644
+index 61e836eef87..5ef2a9c5537 100644
 --- a/include/swift/Basic/LangOptions.h
 +++ b/include/swift/Basic/LangOptions.h
-@@ -303,6 +303,11 @@ namespace swift {
+@@ -345,6 +345,11 @@ namespace swift {
      /// was not compiled with -enable-testing.
      bool EnableTestableAttrRequiresTestableModule = true;
  
@@ -15,10 +15,10 @@ index 8b400f2d..325a9eba 100644
      /// Flags for developers
      ///
 diff --git a/include/swift/Option/FrontendOptions.td b/include/swift/Option/FrontendOptions.td
-index 8dd0e779..eaf18eb9 100644
+index 55bed9cff36..19c44e19a68 100644
 --- a/include/swift/Option/FrontendOptions.td
 +++ b/include/swift/Option/FrontendOptions.td
-@@ -122,6 +122,11 @@ def verify_generic_signatures : Separate<["-"], "verify-generic-signatures">,
+@@ -157,6 +157,11 @@ def verify_generic_signatures : Separate<["-"], "verify-generic-signatures">,
  def show_diagnostics_after_fatal : Flag<["-"], "show-diagnostics-after-fatal">,
    HelpText<"Keep emitting subsequent diagnostics after a fatal error">;
    
@@ -31,10 +31,10 @@ index 8dd0e779..eaf18eb9 100644
    HelpText<"Automatically import declared cross-import overlays.">;
  def disable_cross_import_overlays : Flag<["-"], "disable-cross-import-overlays">,
 diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
-index c0ee9217..c13d9ffc 100644
+index 718b14354be..ebc74c0d14d 100644
 --- a/lib/Driver/ToolChains.cpp
 +++ b/lib/Driver/ToolChains.cpp
-@@ -233,6 +233,7 @@ void ToolChain::addCommonFrontendArgs(const OutputInfo &OI,
+@@ -247,6 +247,7 @@ void ToolChain::addCommonFrontendArgs(const OutputInfo &OI,
                         options::OPT_disable_actor_data_race_checks);
    inputArgs.AddLastArg(arguments, options::OPT_warn_concurrency);
    inputArgs.AddLastArg(arguments, options::OPT_strict_concurrency);
@@ -43,12 +43,12 @@ index c0ee9217..c13d9ffc 100644
    inputArgs.AddAllArgs(arguments, options::OPT_enable_upcoming_feature);
    inputArgs.AddLastArg(arguments, options::OPT_warn_implicit_overrides);
 diff --git a/lib/Frontend/CompilerInvocation.cpp b/lib/Frontend/CompilerInvocation.cpp
-index e07c122e..31876162 100644
+index e7f82765b14..e4281ca34e6 100644
 --- a/lib/Frontend/CompilerInvocation.cpp
 +++ b/lib/Frontend/CompilerInvocation.cpp
-@@ -593,6 +593,8 @@ static bool ParseLangArgs(LangOptions &Opts, ArgList &Args,
+@@ -729,6 +729,8 @@ static bool ParseLangArgs(LangOptions &Opts, ArgList &Args,
  
-   Opts.EnableThrowWithoutTry |= Args.hasArg(OPT_enable_throw_without_try);
+   Opts.ThrowsAsTraps |= Args.hasArg(OPT_throws_as_traps);
  
 +  Opts.DisableObjCAttr |= Args.hasArg(OPT_experimental_disable_objc_attr);
 +
@@ -56,10 +56,10 @@ index e07c122e..31876162 100644
                                 OPT_disable_objc_attr_requires_foundation_module)) {
      Opts.EnableObjCAttrRequiresFoundation
 diff --git a/lib/Parse/ParseDecl.cpp b/lib/Parse/ParseDecl.cpp
-index 9ca39dcc..090a70ba 100644
+index 7216a082dbe..ad35131e291 100644
 --- a/lib/Parse/ParseDecl.cpp
 +++ b/lib/Parse/ParseDecl.cpp
-@@ -5030,6 +5030,29 @@ Parser::parseDecl(ParseDeclOptions Flags,
+@@ -6100,6 +6100,29 @@ Parser::parseDecl(ParseDeclOptions Flags,
        return DeclResult;
    }
  
