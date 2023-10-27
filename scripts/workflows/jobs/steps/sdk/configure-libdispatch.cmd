@@ -7,6 +7,10 @@ FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
   SET SW_TOOLCHAIN_DIR=%%i
 )
 
+FOR /F "tokens=* USEBACKQ" %%i IN (`cygpath -m "%SW_TOOLCHAIN_DIR%"`) DO (
+  SET SW_TOOLCHAIN_DIR=%%i
+)
+
 cmake^
  -B %SW_DISPATCH_BUILD_DIR%^
  -D BUILD_SHARED_LIBS=YES^
