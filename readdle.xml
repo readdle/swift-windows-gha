@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <include name="default.xml"/>
+
+  <remove-project name="apple/swift-corelibs-libdispatch"/>
+  <remove-project name="apple/swift-corelibs-foundation"/>
+
+  <project remote="github" name="readdle/swift-corelibs-libdispatch" path="swift-corelibs-libdispatch" revision="readdle/main"/>
+  <project remote="github" name="readdle/swift-corelibs-foundation" path="swift-corelibs-foundation" revision="readdle/main"/>
+</manifest>
