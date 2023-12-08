@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest project="swift">
   <remote name="github" fetch="https://github.com" />
-  <default revision="main" sync-c="true" sync-tags="false" />
+  <default revision="release/5.10" sync-c="true" sync-tags="false" />
 
-  <project remote="github" name="apple/llvm-project" path="llvm-project" revision="stable/20230725" />
+  <project remote="github" name="apple/llvm-project" path="llvm-project" revision="swift/release/5.10" />
   <project remote="github" name="apple/indexstore-db" path="indexstore-db" />
   <project remote="github" name="apple/sourcekit-lsp" path="sourcekit-lsp" />
   <project remote="github" name="apple/swift" path="swift" />
@@ -22,13 +22,13 @@
   <project remote="github" name="apple/swift-docc-render-artifact" path="swift-docc-render-artifact" />
   <project remote="github" name="apple/swift-docc-symbolkit" path="swift-docc-symbolkit" />
   <project remote="github" name="apple/swift-driver" path="swift-driver" />
-  <project remote="github" name="apple/swift-experimental-string-processing" path="swift-experimental-string-processing" revision="swift/main" />
+  <project remote="github" name="apple/swift-experimental-string-processing" path="swift-experimental-string-processing" revision="swift/release/5.10" />
   <project remote="github" name="apple/swift-format" path="swift-format" />
   <project remote="github" name="apple/swift-markdown" path="swift-markdown" />
   <project remote="github" name="apple/swift-installer-scripts" path="swift-installer-scripts" />
   <project remote="github" name="apple/swift-lmdb" path="swift-lmdb" />
   <project remote="github" name="apple/swift-llbuild" path="llbuild" />
-  <project remote="github" name="apple/swift-nio" path="swift-nio" />
+  <project remote="github" name="apple/swift-nio" path="swift-nio" revision="main" />
   <project remote="github" name="apple/swift-package-manager" path="swift-package-manager" />
   <project remote="github" name="apple/swift-syntax" path="swift-syntax" />
   <project remote="github" name="apple/swift-system" path="swift-system" revision="refs/tags/1.1.1" />
@@ -38,6 +38,6 @@
   <project remote="github" name="curl/curl" path="curl" revision="refs/tags/curl-8_4_0" />
   <project remote="github" name="gnome/libxml2" path="libxml2" revision="refs/tags/v2.11.5" />
   <project remote="github" name="jpsim/Yams" path="Yams" revision="refs/tags/5.0.6" />
-  <project remote="github" name="madler/zlib" path="zlib" revision="refs/tags/v1.3" />
+  <project remote="github" name="madler/zlib" path="zlib" revision="refs/tags/v1.2.13" />
   <project remote="github" name="unicode-org/icu" path="icu" revision="maint/maint-69" />
 </manifest>
