@@ -38,6 +38,6 @@
   <project remote="github" name="curl/curl" path="curl" revision="refs/tags/curl-8_4_0" />
   <project remote="github" name="gnome/libxml2" path="libxml2" revision="refs/tags/v2.11.5" />
   <project remote="github" name="jpsim/Yams" path="Yams" revision="refs/tags/5.0.6" />
-  <project remote="github" name="madler/zlib" path="zlib" revision="refs/tags/v1.2.13" />
+  <project remote="github" name="madler/zlib" path="zlib" revision="refs/tags/v1.3" />
   <project remote="github" name="unicode-org/icu" path="icu" revision="maint/maint-69" />
 </manifest>
