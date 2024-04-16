@@ -48,7 +48,7 @@ index e7f82765b14..e4281ca34e6 100644
 +++ b/lib/Frontend/CompilerInvocation.cpp
 @@ -729,6 +729,8 @@ static bool ParseLangArgs(LangOptions &Opts, ArgList &Args,
  
-   Opts.ThrowsAsTraps |= Args.hasArg(OPT_throws_as_traps);
+   Opts.EnableThrowWithoutTry |= Args.hasArg(OPT_enable_throw_without_try);
  
 +  Opts.DisableObjCAttr |= Args.hasArg(OPT_experimental_disable_objc_attr);
 +
