@@ -1,0 +1,114 @@
+diff --git a/utils/build.ps1 b/utils/build.ps1
+index 7ed5695138f..9695531377c 100644
+--- a/utils/build.ps1
++++ b/utils/build.ps1
+@@ -544,6 +544,12 @@ function Build-CMakeProject {
+       $env:SCCACHE_DIR = "$BinaryCache\sccache"
+     }
+ 
++    if ($DebugInfo) {
++        Write-Host "Adding debug info flags "
++        Append-FlagsDefine $Defines CMAKE_SHARED_LINKER_FLAGS @("/DEBUG", "/OPT:REF", "/OPT:ICF")
++        Append-FlagsDefine $Defines CMAKE_EXE_LINKER_FLAGS @("/DEBUG", "/OPT:REF", "/OPT:ICF")
++    }
++
+     if ($UseMSVCCompilers.Contains("C")) {
+       TryAdd-KeyValue $Defines CMAKE_C_COMPILER cl
+       if ($EnableCaching) {
+@@ -902,6 +908,7 @@ function Build-LLVM($Arch) {
+   Build-CMakeProject `
+     -Src $SourceCache\llvm-project\llvm `
+     -Bin (Get-ProjectBinaryCache $Arch 0) `
++    -UseMSVCCompilers C,CXX `
+     -Arch $Arch `
+     -Defines @{
+       LLVM_HOST_TRIPLE = $Arch.LLVMTarget;
+@@ -915,6 +922,7 @@ function Build-ZLib($Arch) {
+     -Src $SourceCache\zlib `
+     -Bin "$($Arch.BinaryCache)\zlib-1.3" `
+     -InstallTo $LibraryRoot\zlib-1.3\usr `
++    -UseMSVCCompilers C,CXX `
+     -Arch $Arch `
+     -BuildTargets default `
+     -Defines @{
+@@ -931,6 +939,7 @@ function Build-XML2($Arch) {
+     -Src $SourceCache\libxml2 `
+     -Bin "$($Arch.BinaryCache)\libxml2-2.11.5" `
+     -InstallTo "$LibraryRoot\libxml2-2.11.5\usr" `
++    -UseMSVCCompilers C,CXX `
+     -Arch $Arch `
+     -BuildTargets default `
+     -Defines @{
+@@ -944,6 +953,7 @@ function Build-XML2($Arch) {
+       LIBXML2_WITH_TESTS = "NO";
+       LIBXML2_WITH_THREADS = "YES";
+       LIBXML2_WITH_ZLIB = "NO";
++      LIBXML2_WITH_PROGRAMS = "NO";
+     }
+ }
+ 
+@@ -954,6 +964,7 @@ function Build-CURL($Arch) {
+     -Src $SourceCache\curl `
+     -Bin "$($Arch.BinaryCache)\curl-8.4.0" `
+     -InstallTo "$LibraryRoot\curl-8.4.0\usr" `
++    -UseMSVCCompilers C,CXX `
+     -Arch $Arch `
+     -BuildTargets default `
+     -Defines @{
+@@ -1666,6 +1677,27 @@ function Build-Installer($Arch) {
+   Build-WiXProject bundle\installer.wixproj -Arch $Arch -Properties $Properties
+ }
+ 
++function Export-PDBs($Arch) {
++  Write-Host -ForegroundColor Cyan "[$([DateTime]::Now.ToString("yyyy-MM-dd HH:mm:ss"))] Copying PDB files to $($Arch.BinaryCache)\pdb..."
++  New-Item -Type Directory -Path "$($Arch.BinaryCache)\pdb" -ErrorAction Ignore | Out-Null
++
++  $RuntimeBinaryCache = Get-ProjectBinaryCache $Arch 1
++  $DispatchBinaryCache = Get-ProjectBinaryCache $Arch 2
++  $FoundationBinaryCache = Get-ProjectBinaryCache $Arch 3
++  $XCTestBinaryCache = Get-ProjectBinaryCache $Arch 4
++
++  foreach ($Dll in Get-ChildItem "$RuntimeBinaryCache/bin", $DispatchBinaryCache, "$FoundationBinaryCache/bin", $XCTestBinaryCache, "$($Arch.BinaryCache)/icu-69.1" -Recurse -Filter "*.dll" -Exclude "icutu*.dll", "icudt*.dll") {
++    $Pdb = Get-Item "$($Dll.DirectoryName)/$($Dll.Name.Substring(0, $Dll.Name.Length - $Dll.Extension.Length)).pdb"
++
++    if ($Pdb.Exists) {
++      Write-Host "    $($Pdb.FullName)"
++      Copy-Item $Pdb "$($Arch.BinaryCache)\pdb"
++    } else {
++      Write-Host "[!] Missing PDB file for $($Dll.FullName)"
++    }
++  }
++}
++
+ function Stage-BuildArtifacts($Arch) {
+   Copy-File "$($Arch.BinaryCache)\installer\Release\$($Arch.VSName)\*.cab" "$Stage\"
+   Copy-File "$($Arch.BinaryCache)\installer\Release\$($Arch.VSName)\*.msi" "$Stage\"
+@@ -1698,6 +1730,10 @@ if (-not $SkipBuild) {
+   Invoke-BuildStep Build-Compilers $HostArch
+ }
+ 
++$DebugInfo = $true
++$CDebugFormat = "pdb"
++$SwiftDebugFormat = "pdb"
++
+ foreach ($Arch in $SDKArchs) {
+   if (-not $SkipBuild) {
+     Invoke-BuildStep Build-ZLib $Arch
+@@ -1711,6 +1747,8 @@ foreach ($Arch in $SDKArchs) {
+     Invoke-BuildStep Build-Dispatch $Arch
+     Invoke-BuildStep Build-Foundation $Arch
+     Invoke-BuildStep Build-XCTest $Arch
++
++    Export-PDBs $Arch
+   }
+ }
+ 
+@@ -1726,6 +1764,8 @@ if (-not $ToBatch) {
+   }
+ }
+ 
++$DebugInfo = $false
++
+ if (-not $SkipBuild) {
+   Invoke-BuildStep Build-SQLite $HostArch
+   Invoke-BuildStep Build-System $HostArch
