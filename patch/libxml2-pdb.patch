@@ -1,0 +1,21 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 834b35d3..f89c2336 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -440,6 +440,7 @@ if(MSVC)
+ 			MINSIZEREL_POSTFIX s
+ 			RELEASE_POSTFIX s
+ 			RELWITHDEBINFO_POSTFIX s
++			COMPILE_PDB_NAME xml2s
+ 		)
+ 	endif()
+ endif()
+@@ -454,6 +455,8 @@ install(
+ 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+ )
+ 
++install(FILES "$<TARGET_FILE_DIR:LibXml2>/libxml2s.pdb" DESTINATION ${CMAKE_INSTALL_LIBDIR} OPTIONAL)
++
+ if(MSVC AND BUILD_SHARED_LIBS)
+ 	install(FILES $<TARGET_PDB_FILE:LibXml2> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+ endif()

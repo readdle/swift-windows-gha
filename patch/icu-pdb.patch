@@ -1,0 +1,12 @@
+diff --git a/shared/ICU/CMakeLists.txt b/shared/ICU/CMakeLists.txt
+index e7c10dc..8793072 100644
+--- a/shared/ICU/CMakeLists.txt
++++ b/shared/ICU/CMakeLists.txt
+@@ -751,6 +751,7 @@ install(TARGETS icuuc icuin
+   ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+   LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+   RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
++install(FILES $<TARGET_PDB_FILE:icuuc> $<TARGET_PDB_FILE:icuin> DESTINATION ${CMAKE_INSTALL_FULL_BINDIR} OPTIONAL)
+ install(DIRECTORY source/common/unicode
+   DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+ install(DIRECTORY source/i18n/unicode

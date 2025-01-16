@@ -1,0 +1,20 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7f1b69f..da7bf3f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -151,6 +151,7 @@ add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB
+ add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+ set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+ set_target_properties(zlib PROPERTIES SOVERSION 1)
++set_target_properties(zlibstatic PROPERTIES COMPILE_PDB_NAME "zlibstatic")
+ 
+ if(NOT CYGWIN)
+     # This property causes shared libraries on Linux to have the full version
+@@ -179,6 +180,7 @@ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
+         RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+         LIBRARY DESTINATION "${INSTALL_LIB_DIR}" )
++    install(FILES "$<TARGET_FILE_DIR:zlibstatic>/zlibstatic.pdb" DESTINATION "${INSTALL_LIB_DIR}" OPTIONAL)
+ endif()
+ if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+     install(FILES ${ZLIB_PUBLIC_HDRS} DESTINATION "${INSTALL_INC_DIR}")
