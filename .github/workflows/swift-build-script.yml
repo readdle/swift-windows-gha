@@ -115,41 +115,133 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: curl/curl
-          ref: ${{ inputs.curl_revision }}
+          ref: ${{ needs.context.outputs.curl_revision }}
           path: ${{ github.workspace }}/SourceCache/curl
           show-progress: false
       - uses: actions/checkout@v4
         with:
           repository: swiftlang/indexstore-db
-          ref: ${{ inputs.indexstore_db_revision }}
+          ref: ${{ needs.context.outputs.indexstore_db_revision }}
           path: ${{ github.workspace }}/SourceCache/indexstore-db
           show-progress: false
       - uses: actions/checkout@v4
         with:
           repository: gnome/libxml2
-          ref: ${{ inputs.libxml2_revision }}
+          ref: ${{ needs.context.outputs.libxml2_revision }}
           path: ${{ github.workspace }}/SourceCache/libxml2
           show-progress: false
       - uses: actions/checkout@v4
         with:
           repository: swiftlang/llvm-project
-          ref: ${{ inputs.llvm_project_revision }}
+          ref: ${{ needs.context.outputs.llvm_project_revision }}
           path: ${{ github.workspace }}/SourceCache/llvm-project
           show-progress: false
       - uses: actions/checkout@v4
         with:
           repository: microsoft/mimalloc
-          ref: ${{ inputs.mimalloc_revision }}
+          ref: ${{ needs.context.outputs.mimalloc_revision }}
           path: ${{ github.workspace }}/SourceCache/mimalloc
       - uses: actions/checkout@v4
         with:
           repository: swiftlang/sourcekit-lsp
-          ref: ${{ inputs.sourcekit_lsp_revision }}
+          ref: ${{ needs.context.outputs.sourcekit_lsp_revision }}
           path: ${{ github.workspace }}/SourceCache/sourcekit-lsp
           show-progress: false
       - uses: actions/checkout@v4
         with:
           repository: apple/swift-argument-parser
-          ref: ${{ inputs.swift_argument_parser_revision }}
+          ref: ${{ needs.context.outputs.swift_argument_parser_revision }}
           path: ${{ github.workspace }}/SourceCache/swift-argument-parser
           show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-asn1
+          ref: ${{ needs.context.outputs.swift_asn1_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-asn1
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-certificates
+          ref: ${{ needs.context.outputs.swift_certificates_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-certificates
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-cmark
+          ref: ${{ needs.context.outputs.swift_cmark_revision }}
+          path: ${{ github.workspace }}/SourceCache/cmark-gfm
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-collections
+          ref: ${{ needs.context.outputs.swift_collections_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-collections
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-foundation
+          ref: ${{ needs.context.outputs.swift_corelibs_foundation_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-corelibs-foundation
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-libdispatch
+          ref: ${{ needs.context.outputs.swift_corelibs_libdispatch_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-corelibs-libdispatch
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-xctest
+          ref: ${{ needs.context.outputs.swift_corelibs_xctest_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-corelibs-xctest
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-crypto
+          ref: ${{ needs.context.outputs.swift_crypto_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-crypto
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-driver
+          ref: ${{ needs.context.outputs.swift_driver_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-driver
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-experimental-string-processing
+          ref: ${{ needs.context.outputs.swift_experimental_string_processing_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-experimental-string-processing
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-format
+          ref: ${{ needs.context.outputs.swift_format_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-format
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-format
+          ref: ${{ needs.context.outputs.swift_foundation_icu_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-format
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-foundation-icu
+          ref: ${{ needs.context.outputs.swift_foundation_icu_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-foundation-icu
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-installer-scripts
+          ref: ${{ needs.context.outputs.swift_installer_scripts_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-installer-scripts
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-llbuild
+          ref: ${{ needs.context.outputs.swift_llbuild_revision }}
+          path: ${{ github.workspace }}/SourceCache/llbuild
+          show-progress: false
+      
+      
