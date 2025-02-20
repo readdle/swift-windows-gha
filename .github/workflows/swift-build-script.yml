@@ -2,6 +2,17 @@ name: Snapshot
 
 on:
   workflow_dispatch:
+    inputs:
+      swift_version:
+        description: 'Swift Version'
+        default: '0.0.0'
+        required: false
+        type: string
+
+      swift_tag:
+        description: 'Swift Build Tag'
+        required: false
+        type: string
 
 jobs:
   context:
@@ -243,5 +254,63 @@ jobs:
           ref: ${{ needs.context.outputs.swift_llbuild_revision }}
           path: ${{ github.workspace }}/SourceCache/llbuild
           show-progress: false
-      
-      
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-lmdb
+          ref: ${{ needs.context.outputs.swift_lmdb_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-lmdb
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-markdown
+          ref: ${{ needs.context.outputs.swift_markdown_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-markdown
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-package-manager
+          ref: ${{ needs.context.outputs.swift_package_manager_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-package-manager
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift
+          ref: ${{ needs.context.outputs.swift_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-syntax
+          ref: ${{ needs.context.outputs.swift_syntax_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-syntax
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: apple/swift-system
+          ref: ${{ needs.context.outputs.swift_system_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-system
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-testing
+          ref: ${{ needs.context.outputs.swift_testing_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-testing
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-toolchain-sqlite
+          ref: ${{ needs.context.outputs.swift_toolchain_sqlite_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-toolchain-sqlite
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-tools-support-core
+          ref: ${{ needs.context.outputs.swift_tools_support_core_revision }}
+          path: ${{ github.workspace }}/SourceCache/swift-tools-support-core
+          show-progress: false
+      - uses: actions/checkout@v4
+        with:
+          repository: madler/zlib
+          ref: ${{ needs.context.outputs.zlib_revision }}
+          path: ${{ github.workspace }}/SourceCache/zlib
+          show-progress: false
