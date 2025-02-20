@@ -315,8 +315,8 @@ jobs:
           path: ${{ github.workspace }}/SourceCache/zlib
           show-progress: false
       - run: |
-          ${{ github.workspace }}/SourceCache/swift/utils/build.cmd ^
-           -SourceCache=${{ github.workspace }}/SourceCache ^
-           -BinaryCache=${{ github.workspace }}/b ^
+          ${{ github.workspace }}\SourceCache\swift\utils\build.cmd ^
+           -SourceCache=${{ github.workspace }}\SourceCache ^
+           -BinaryCache=${{ github.workspace }}\b ^
            -ImageRoot=${{ github.workspace }} ^
            -WindowsSDKs=x64
