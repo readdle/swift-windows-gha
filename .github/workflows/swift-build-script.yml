@@ -233,7 +233,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: swiftlang/swift-format
-          ref: ${{ needs.context.outputs.swift_foundation_icu_revision }}
+          ref: ${{ needs.context.outputs.swift_format_revision }}
           path: ${{ github.workspace }}/SourceCache/swift-format
           show-progress: false
       - uses: actions/checkout@v4
