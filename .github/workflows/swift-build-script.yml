@@ -314,9 +314,14 @@ jobs:
       #     ref: ${{ needs.context.outputs.zlib_revision }}
       #     path: ${{ github.workspace }}/SourceCache/zlib
       #     show-progress: false
+      - run: |
+          subst S: ${{ github.workspace }}
+
+      # & ${{ github.workspace }}\SourceCache\swift\utils\build.ps1 -SourceCache ${{ github.workspace }}\SourceCache -BinaryCache ${{ github.workspace }}\b -ImageRoot ${{ github.workspace }} -WindowsSDKs x64
       - shell: pwsh
+        working-directory: S:\
         run: |
-          & ${{ github.workspace }}\SourceCache\swift\utils\build.ps1 -SourceCache ${{ github.workspace }}\SourceCache -BinaryCache ${{ github.workspace }}\b -ImageRoot ${{ github.workspace }} -WindowsSDKs x64
+          & S:\SourceCache\swift\utils\build.ps1 -WindowsSDKs x64
 
       - uses: actions/upload-artifact@v4.6.1
         if: always()
