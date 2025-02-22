@@ -411,4 +411,4 @@ jobs:
       - shell: pwsh
         working-directory: S:\
         run: |
-          & S:\SourceCache\swift\utils\build.ps1 -WindowsSDKs x64
+          & S:\SourceCache\swift\utils\build.ps1 -WindowsSDKs x64 -EnableCaching
