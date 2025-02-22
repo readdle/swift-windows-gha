@@ -56,10 +56,11 @@ jobs:
       - id: context
         name: Generate Build Context
         run: |
-          
+          echo "::group::Installing libxml2-utils"
           sudo DEBIAN_FRONTEND=noninteractive apt-get -qq update -yq
           sudo DEBIAN_FRONTEND=noninteractive apt-get -qq -o Dpkg::Use-Pty=0 install -yq repo libxml2-utils
-
+          echo "::endgroup::"
+          
           branch_version_string=${{ inputs.swift_version || '0.0.0' }}
           if [[ $branch_version_string == *.* ]]; then
             branch_name=$(echo ${branch_version_string} | awk -F. '{ ver=$1"."$2; print (ver == "0.0") ? "main" : "release/"ver }')
@@ -67,9 +68,13 @@ jobs:
             branch_name="release/$branch_version_string"
           fi
 
+          echo "Manifest branch: $branch_name"
+
+          echo "::group::Fetching repos"
           repo init --quiet --groups default --depth 1 -u https://github.com/compnerd/swift-build -b $branch_name
           repo sync --quiet --no-clone-bundle --no-tags --jobs $(nproc --all)
-
+          echo "::endgroup::"
+          
           if [[ "${{ inputs.swift_tag }}" != "" ]] ; then
             tee -a "${GITHUB_OUTPUT}" <<-EOF
           indexstore_db_revision=refs/tags/${{ inputs.swift_tag }}
