@@ -379,7 +379,26 @@ jobs:
           path: ${{ github.workspace }}/SourceCache/zlib
           fetch-depth: 1
           show-progress: false
-          
+
+      - name: Compute workspace hash
+        id: workspace_hash
+        shell: pwsh
+        run: |
+          $stringAsStream = [System.IO.MemoryStream]::new()
+          $writer = [System.IO.StreamWriter]::new($stringAsStream)
+          $writer.write("${{ github.workspace }}")
+          $writer.Flush()
+          $stringAsStream.Position = 0
+          $hash = (Get-FileHash -Algorithm SHA256 -InputStream $stringAsStream).Hash
+          echo "hash=$hash" >> $env:GITHUB_OUTPUT
+
+      - name: Setup sccache
+        uses: hendrikmuhs/ccache-action@2e0e89e8d74340a03f75d58d02aae4c5ee1b15c6
+        with:
+          max-size: 1024M
+          key: ${{ steps.workspace_hash.outputs.hash }}-build-script
+          variant: sccache
+
       - name: Prepare build root
         run: |
           subst S: ${{ github.workspace }}
