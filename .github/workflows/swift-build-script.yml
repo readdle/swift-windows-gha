@@ -14,13 +14,6 @@ on:
         required: false
         type: string
 
-jobs:
-  debug:
-    runs-on: windows-latest
-    steps:
-      - run: |
-          powershell.exe -command "Get-Command Get-FileHash"
-
   context:
     runs-on: ubuntu-latest
     outputs:
@@ -420,9 +413,4 @@ jobs:
           subst S: ${{ github.workspace }}
 
       - run: |
-          powershell.exe ^
-           -ExecutionPolicy RemoteSigned ^
-           -File ${{ github.workspace }}\swift\utils\build.ps1 ^
-           -SourceCache ${{ github.workspace }} ^
-           -WindowsSDKs x64 ^
-           -EnableCaching
+          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\swift\utils\build.ps1 -SourceCache ${{ github.workspace }} -WindowsSDKs x64 -EnableCaching
