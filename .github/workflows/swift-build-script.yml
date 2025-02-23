@@ -124,7 +124,7 @@ on:
 
   build:
     runs-on: windows-latest
-    needs: [context, debug]
+    needs: [context]
 
     steps:
       - name: Checkout curl
