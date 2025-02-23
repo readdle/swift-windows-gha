@@ -407,6 +407,7 @@ jobs:
       - uses: lukka/get-cmake@latest
         with:
           cmakeVersion: "3.29.2"
+          ninjaVersion: "1.12.1"
 
       - name: Prepare build root
         run: |
