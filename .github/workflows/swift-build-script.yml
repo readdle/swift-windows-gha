@@ -15,6 +15,12 @@ on:
         type: string
 
 jobs:
+  debug:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          powershell.exe -command "Get-Command Get-FileHash"
+
   context:
     runs-on: ubuntu-latest
     outputs:
@@ -122,13 +128,6 @@ jobs:
                     print tolower(repo[2]) "_revision=" $4
                   }' | tee -a "${GITHUB_OUTPUT}"
           fi
-
-  debug:
-    runs-on: windows-latest
-
-    steps:
-      - run: |
-          powershell.exe -command "(get-module Microsoft.PowerShell.Utility).exportedCommands.keys | where {$_ -like \"Get-*\"}"
 
   build:
     runs-on: windows-latest
