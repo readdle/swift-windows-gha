@@ -406,7 +406,7 @@ jobs:
 
       - uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: "~3.29.0"
+          cmakeVersion: "3.29.2"
 
       - name: Prepare build root
         run: |
