@@ -419,7 +419,10 @@ jobs:
         run: |
           subst S: ${{ github.workspace }}
 
-      - shell: pwsh
-        working-directory: S:\
-        run: |
-          & S:\SourceCache\swift\utils\build.ps1 -WindowsSDKs x64 -EnableCaching
+      - run: |
+          powershell.exe ^
+           -ExecutionPolicy RemoteSigned ^
+           -File ${{ github.workspace }}\swift\utils\build.ps1 ^
+           -SourceCache ${{ github.workspace }} ^
+           -WindowsSDKs x64 ^
+           -EnableCaching
