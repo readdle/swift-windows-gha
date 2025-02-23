@@ -404,6 +404,10 @@ jobs:
           key: ${{ steps.workspace_hash.outputs.hash }}-build-script
           variant: sccache
 
+      - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.29.0"
+
       - name: Prepare build root
         run: |
           subst S: ${{ github.workspace }}
