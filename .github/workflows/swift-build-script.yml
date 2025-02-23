@@ -123,9 +123,16 @@ jobs:
                   }' | tee -a "${GITHUB_OUTPUT}"
           fi
 
+  debug:
+    runs-on: windows-latest
+
+    steps:
+      - run: |
+          powershell.exe -command "(get-module Microsoft.PowerShell.Utility).exportedCommands.keys | where {$_ -like \"Get-*\"}"
+
   build:
     runs-on: windows-latest
-    needs: [context]
+    needs: [context, debug]
 
     steps:
       - name: Checkout curl
