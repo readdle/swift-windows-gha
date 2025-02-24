@@ -36,6 +36,8 @@ jobs:
       swift_corelibs_xctest_revision: ${{ steps.context.outputs.swift_corelibs_xctest_revision }}
       swift_crypto_revision: ${{ steps.context.outputs.swift_crypto_revision }}
       swift_driver_revision: ${{ steps.context.outputs.swift_driver_revision }}
+      swift_docc_revision: ${{ steps.context.outputs.swift_docc_revision }}
+      swift_docc_symbolkit_revision: ${{ steps.context.outputs.swift_docc_symbolkit_revision }}
       swift_experimental_string_processing_revision: ${{ steps.context.outputs.swift_experimental_string_processing_revision }}
       swift_format_revision: ${{ steps.context.outputs.swift_format_revision }}
       swift_foundation_revision: ${{ steps.context.outputs.swift_foundation_revision }}
@@ -43,6 +45,7 @@ jobs:
       swift_installer_scripts_revision: ${{ steps.context.outputs.swift_installer_scripts_revision }}
       swift_llbuild_revision: ${{ steps.context.outputs.swift_llbuild_revision }}
       swift_lmdb_revision: ${{ steps.context.outputs.swift_lmdb_revision }}
+      swift_nio_revision: ${{ steps.context.outputs.swift_nio_revision }}
       swift_markdown_revision: ${{ steps.context.outputs.swift_markdown_revision }}
       swift_package_manager_revision: ${{ steps.context.outputs.swift_package_manager_revision }}
       swift_revision: ${{ steps.context.outputs.swift_revision }}
@@ -94,6 +97,8 @@ jobs:
           swift_corelibs_xctest_revision=refs/tags/${{ inputs.swift_tag }}
           swift_crypto_revision=refs/tags/3.0.0
           swift_driver_revision=refs/tags/${{ inputs.swift_tag }}
+          swift_docc_revision=refs/tags/${{ inputs.swift_tag }}
+          swift_docc_symbolkit_revision=refs/tags/${{ inputs.swift_tag }}
           swift_experimental_string_processing_revision=refs/tags/${{ inputs.swift_tag }}
           swift_format_revision=refs/heads/main
           swift_foundation_revison=refs/heads/main
@@ -192,6 +197,14 @@ jobs:
           path: ${{ github.workspace }}/swift-asn1
           fetch-depth: 1
           show-progress: false
+      - name: Checkout swift-atomics
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-atomics
+          ref: ${{ needs.context.outputs.swift_atomics_revision }}
+          path: ${{ github.workspace }}/swift-atomics
+          fetch-depth: 1
+          show-progress: false
       - name: Checkout swift-certificates
         uses: actions/checkout@v4
         with:
@@ -251,9 +264,25 @@ jobs:
       - name: Checkout swift-driver
         uses: actions/checkout@v4
         with:
-          repository: apple/swift-driver
+          repository: swiftlang/swift-driver
           ref: ${{ needs.context.outputs.swift_driver_revision }}
           path: ${{ github.workspace }}/swift-driver
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc
+          ref: ${{ needs.context.outputs.swift_docc_revision }}
+          path: ${{ github.workspace }}/swift-docc
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc-symbolkit
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc-symbolkit
+          ref: ${{ needs.context.outputs.swift_docc_symbolkit_revision }}
+          path: ${{ github.workspace }}/swift-docc-symbolkit
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-experimental-string-processing
@@ -310,6 +339,14 @@ jobs:
           repository: swiftlang/swift-lmdb
           ref: ${{ needs.context.outputs.swift_lmdb_revision }}
           path: ${{ github.workspace }}/swift-lmdb
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-nio
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-nio
+          ref: ${{ needs.context.outputs.swift_nio_revision }}
+          path: ${{ github.workspace }}/swift-nio
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-markdown
