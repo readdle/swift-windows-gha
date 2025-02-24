@@ -139,7 +139,7 @@ jobs:
         with:
           repository: curl/curl
           ref: ${{ needs.context.outputs.curl_revision }}
-          path: ${{ github.workspace }}/curl
+          path: ${{ github.workspace }}/s/curl
           fetch-depth: 1
           show-progress: false
       - name: Checkout indexstore-db
@@ -147,7 +147,7 @@ jobs:
         with:
           repository: swiftlang/indexstore-db
           ref: ${{ needs.context.outputs.indexstore_db_revision }}
-          path: ${{ github.workspace }}/indexstore-db
+          path: ${{ github.workspace }}/s/indexstore-db
           fetch-depth: 1
           show-progress: false
       - name: Checkout libxml2
@@ -155,7 +155,7 @@ jobs:
         with:
           repository: gnome/libxml2
           ref: ${{ needs.context.outputs.libxml2_revision }}
-          path: ${{ github.workspace }}/libxml2
+          path: ${{ github.workspace }}/s/libxml2
           fetch-depth: 1
           show-progress: false
       - name: Checkout llvm-project
@@ -163,7 +163,7 @@ jobs:
         with:
           repository: swiftlang/llvm-project
           ref: ${{ needs.context.outputs.llvm_project_revision }}
-          path: ${{ github.workspace }}/llvm-project
+          path: ${{ github.workspace }}/s/llvm-project
           fetch-depth: 1
           show-progress: false
       - name: Checkout mimalloc
@@ -171,7 +171,7 @@ jobs:
         with:
           repository: microsoft/mimalloc
           ref: ${{ needs.context.outputs.mimalloc_revision }}
-          path: ${{ github.workspace }}/mimalloc
+          path: ${{ github.workspace }}/s/mimalloc
           fetch-depth: 1
           show-progress: false
       - name: Checkout sourcekit-lsp
@@ -179,7 +179,7 @@ jobs:
         with:
           repository: swiftlang/sourcekit-lsp
           ref: ${{ needs.context.outputs.sourcekit_lsp_revision }}
-          path: ${{ github.workspace }}/sourcekit-lsp
+          path: ${{ github.workspace }}/s/sourcekit-lsp
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-argument-parser
@@ -187,7 +187,7 @@ jobs:
         with:
           repository: apple/swift-argument-parser
           ref: ${{ needs.context.outputs.swift_argument_parser_revision }}
-          path: ${{ github.workspace }}/swift-argument-parser
+          path: ${{ github.workspace }}/s/swift-argument-parser
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-asn1
@@ -195,7 +195,7 @@ jobs:
         with:
           repository: apple/swift-asn1
           ref: ${{ needs.context.outputs.swift_asn1_revision }}
-          path: ${{ github.workspace }}/swift-asn1
+          path: ${{ github.workspace }}/s/swift-asn1
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-atomics
@@ -203,7 +203,7 @@ jobs:
         with:
           repository: apple/swift-atomics
           ref: ${{ needs.context.outputs.swift_atomics_revision }}
-          path: ${{ github.workspace }}/swift-atomics
+          path: ${{ github.workspace }}/s/swift-atomics
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-certificates
@@ -211,7 +211,7 @@ jobs:
         with:
           repository: apple/swift-certificates
           ref: ${{ needs.context.outputs.swift_certificates_revision }}
-          path: ${{ github.workspace }}/swift-certificates
+          path: ${{ github.workspace }}/s/swift-certificates
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-cmark
@@ -219,7 +219,7 @@ jobs:
         with:
           repository: swiftlang/swift-cmark
           ref: ${{ needs.context.outputs.swift_cmark_revision }}
-          path: ${{ github.workspace }}/cmark
+          path: ${{ github.workspace }}/s/cmark
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-collections
@@ -227,7 +227,7 @@ jobs:
         with:
           repository: apple/swift-collections
           ref: ${{ needs.context.outputs.swift_collections_revision }}
-          path: ${{ github.workspace }}/swift-collections
+          path: ${{ github.workspace }}/s/swift-collections
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-corelibs-foundation
@@ -235,7 +235,7 @@ jobs:
         with:
           repository: apple/swift-corelibs-foundation
           ref: ${{ needs.context.outputs.swift_corelibs_foundation_revision }}
-          path: ${{ github.workspace }}/swift-corelibs-foundation
+          path: ${{ github.workspace }}/s/swift-corelibs-foundation
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-corelibs-libdispatch
@@ -243,7 +243,7 @@ jobs:
         with:
           repository: apple/swift-corelibs-libdispatch
           ref: ${{ needs.context.outputs.swift_corelibs_libdispatch_revision }}
-          path: ${{ github.workspace }}/swift-corelibs-libdispatch
+          path: ${{ github.workspace }}/s/swift-corelibs-libdispatch
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-corelibs-xctest
@@ -251,7 +251,7 @@ jobs:
         with:
           repository: apple/swift-corelibs-xctest
           ref: ${{ needs.context.outputs.swift_corelibs_xctest_revision }}
-          path: ${{ github.workspace }}/swift-corelibs-xctest
+          path: ${{ github.workspace }}/s/swift-corelibs-xctest
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-crypto
@@ -259,7 +259,7 @@ jobs:
         with:
           repository: apple/swift-crypto
           ref: ${{ needs.context.outputs.swift_crypto_revision }}
-          path: ${{ github.workspace }}/swift-crypto
+          path: ${{ github.workspace }}/s/swift-crypto
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-driver
@@ -267,7 +267,7 @@ jobs:
         with:
           repository: swiftlang/swift-driver
           ref: ${{ needs.context.outputs.swift_driver_revision }}
-          path: ${{ github.workspace }}/swift-driver
+          path: ${{ github.workspace }}/s/swift-driver
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-docc
@@ -275,7 +275,7 @@ jobs:
         with:
           repository: swiftlang/swift-docc
           ref: ${{ needs.context.outputs.swift_docc_revision }}
-          path: ${{ github.workspace }}/swift-docc
+          path: ${{ github.workspace }}/s/swift-docc
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-docc-render-artifact
@@ -283,7 +283,7 @@ jobs:
         with:
           repository: swiftlang/swift-docc-render-artifact
           ref: ${{ needs.context.outputs.swift_docc_render_artifact_revision }}
-          path: ${{ github.workspace }}/swift-docc-render-artifact
+          path: ${{ github.workspace }}/s/swift-docc-render-artifact
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-docc-symbolkit
@@ -291,7 +291,7 @@ jobs:
         with:
           repository: swiftlang/swift-docc-symbolkit
           ref: ${{ needs.context.outputs.swift_docc_symbolkit_revision }}
-          path: ${{ github.workspace }}/swift-docc-symbolkit
+          path: ${{ github.workspace }}/s/swift-docc-symbolkit
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-experimental-string-processing
@@ -299,7 +299,7 @@ jobs:
         with:
           repository: swiftlang/swift-experimental-string-processing
           ref: ${{ needs.context.outputs.swift_experimental_string_processing_revision }}
-          path: ${{ github.workspace }}/swift-experimental-string-processing
+          path: ${{ github.workspace }}/s/swift-experimental-string-processing
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-format
@@ -307,7 +307,7 @@ jobs:
         with:
           repository: swiftlang/swift-format
           ref: ${{ needs.context.outputs.swift_format_revision }}
-          path: ${{ github.workspace }}/swift-format
+          path: ${{ github.workspace }}/s/swift-format
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-foundation
@@ -315,7 +315,7 @@ jobs:
         with:
           repository: apple/swift-foundation
           ref: ${{ needs.context.outputs.swift_foundation_revision }}
-          path: ${{ github.workspace }}/swift-foundation
+          path: ${{ github.workspace }}/s/swift-foundation
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-foundation-icu
@@ -323,7 +323,7 @@ jobs:
         with:
           repository: apple/swift-foundation-icu
           ref: ${{ needs.context.outputs.swift_foundation_icu_revision }}
-          path: ${{ github.workspace }}/swift-foundation-icu
+          path: ${{ github.workspace }}/s/swift-foundation-icu
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-installer-scripts
@@ -331,7 +331,7 @@ jobs:
         with:
           repository: swiftlang/swift-installer-scripts
           ref: ${{ needs.context.outputs.swift_installer_scripts_revision }}
-          path: ${{ github.workspace }}/swift-installer-scripts
+          path: ${{ github.workspace }}/s/swift-installer-scripts
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-llbuild
@@ -339,7 +339,7 @@ jobs:
         with:
           repository: swiftlang/swift-llbuild
           ref: ${{ needs.context.outputs.swift_llbuild_revision }}
-          path: ${{ github.workspace }}/llbuild
+          path: ${{ github.workspace }}/s/llbuild
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-lmdb
@@ -347,7 +347,7 @@ jobs:
         with:
           repository: swiftlang/swift-lmdb
           ref: ${{ needs.context.outputs.swift_lmdb_revision }}
-          path: ${{ github.workspace }}/swift-lmdb
+          path: ${{ github.workspace }}/s/swift-lmdb
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-nio
@@ -355,7 +355,7 @@ jobs:
         with:
           repository: apple/swift-nio
           ref: ${{ needs.context.outputs.swift_nio_revision }}
-          path: ${{ github.workspace }}/swift-nio
+          path: ${{ github.workspace }}/s/swift-nio
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-markdown
@@ -363,7 +363,7 @@ jobs:
         with:
           repository: swiftlang/swift-markdown
           ref: ${{ needs.context.outputs.swift_markdown_revision }}
-          path: ${{ github.workspace }}/swift-markdown
+          path: ${{ github.workspace }}/s/swift-markdown
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-package-manager
@@ -371,7 +371,7 @@ jobs:
         with:
           repository: swiftlang/swift-package-manager
           ref: ${{ needs.context.outputs.swift_package_manager_revision }}
-          path: ${{ github.workspace }}/swift-package-manager
+          path: ${{ github.workspace }}/s/swift-package-manager
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift
@@ -379,7 +379,7 @@ jobs:
         with:
           repository: swiftlang/swift
           ref: ${{ needs.context.outputs.swift_revision }}
-          path: ${{ github.workspace }}/swift
+          path: ${{ github.workspace }}/s/swift
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-syntax
@@ -387,7 +387,7 @@ jobs:
         with:
           repository: swiftlang/swift-syntax
           ref: ${{ needs.context.outputs.swift_syntax_revision }}
-          path: ${{ github.workspace }}/swift-syntax
+          path: ${{ github.workspace }}/s/swift-syntax
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-system
@@ -395,7 +395,7 @@ jobs:
         with:
           repository: apple/swift-system
           ref: ${{ needs.context.outputs.swift_system_revision }}
-          path: ${{ github.workspace }}/swift-system
+          path: ${{ github.workspace }}/s/swift-system
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-testing
@@ -403,7 +403,7 @@ jobs:
         with:
           repository: swiftlang/swift-testing
           ref: ${{ needs.context.outputs.swift_testing_revision }}
-          path: ${{ github.workspace }}/swift-testing
+          path: ${{ github.workspace }}/s/swift-testing
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-toolchain-sqlite
@@ -411,7 +411,7 @@ jobs:
         with:
           repository: swiftlang/swift-toolchain-sqlite
           ref: ${{ needs.context.outputs.swift_toolchain_sqlite_revision }}
-          path: ${{ github.workspace }}/swift-toolchain-sqlite
+          path: ${{ github.workspace }}/s/swift-toolchain-sqlite
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-tools-support-core
@@ -419,7 +419,7 @@ jobs:
         with:
           repository: swiftlang/swift-tools-support-core
           ref: ${{ needs.context.outputs.swift_tools_support_core_revision }}
-          path: ${{ github.workspace }}/swift-tools-support-core
+          path: ${{ github.workspace }}/s/swift-tools-support-core
           fetch-depth: 1
           show-progress: false
       - name: Checkout zlib
@@ -427,7 +427,7 @@ jobs:
         with:
           repository: madler/zlib
           ref: ${{ needs.context.outputs.zlib_revision }}
-          path: ${{ github.workspace }}/zlib
+          path: ${{ github.workspace }}/s/zlib
           fetch-depth: 1
           show-progress: false
 
@@ -460,4 +460,4 @@ jobs:
           subst S: ${{ github.workspace }}
 
       - run: |
-          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\swift\utils\build.ps1 -SourceCache ${{ github.workspace }} -WindowsSDKs x64 -EnableCaching
+          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\swift\utils\build.ps1 -SourceCache S:\s -WindowsSDKs x64 -EnableCaching
