@@ -37,6 +37,7 @@ jobs:
       swift_crypto_revision: ${{ steps.context.outputs.swift_crypto_revision }}
       swift_driver_revision: ${{ steps.context.outputs.swift_driver_revision }}
       swift_docc_revision: ${{ steps.context.outputs.swift_docc_revision }}
+      swift_docc_render_artifact_revision: ${{ steps.context.outputs.swift_docc_render_artifact_revision }}
       swift_docc_symbolkit_revision: ${{ steps.context.outputs.swift_docc_symbolkit_revision }}
       swift_experimental_string_processing_revision: ${{ steps.context.outputs.swift_experimental_string_processing_revision }}
       swift_format_revision: ${{ steps.context.outputs.swift_format_revision }}
@@ -275,6 +276,14 @@ jobs:
           repository: swiftlang/swift-docc
           ref: ${{ needs.context.outputs.swift_docc_revision }}
           path: ${{ github.workspace }}/swift-docc
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc-render-artifact
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc-render-artifact
+          ref: ${{ needs.context.outputs.swift_docc_render_artifact_revision }}
+          path: ${{ github.workspace }}/swift-docc-render-artifact
           fetch-depth: 1
           show-progress: false
       - name: Checkout swift-docc-symbolkit
