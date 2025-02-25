@@ -1,7 +1,18 @@
-name: Snapshot
+name: swift-build-script
 
 on:
   workflow_dispatch:
+    inputs:
+      swift_version:
+        description: 'Swift Version'
+        default: '0.0.0'
+        required: false
+        type: string
+
+      swift_tag:
+        description: 'Swift Build Tag'
+        required: false
+        type: string
 
 jobs:
   context:
@@ -25,6 +36,9 @@ jobs:
       swift_corelibs_xctest_revision: ${{ steps.context.outputs.swift_corelibs_xctest_revision }}
       swift_crypto_revision: ${{ steps.context.outputs.swift_crypto_revision }}
       swift_driver_revision: ${{ steps.context.outputs.swift_driver_revision }}
+      swift_docc_revision: ${{ steps.context.outputs.swift_docc_revision }}
+      swift_docc_render_artifact_revision: ${{ steps.context.outputs.swift_docc_render_artifact_revision }}
+      swift_docc_symbolkit_revision: ${{ steps.context.outputs.swift_docc_symbolkit_revision }}
       swift_experimental_string_processing_revision: ${{ steps.context.outputs.swift_experimental_string_processing_revision }}
       swift_format_revision: ${{ steps.context.outputs.swift_format_revision }}
       swift_foundation_revision: ${{ steps.context.outputs.swift_foundation_revision }}
@@ -32,6 +46,7 @@ jobs:
       swift_installer_scripts_revision: ${{ steps.context.outputs.swift_installer_scripts_revision }}
       swift_llbuild_revision: ${{ steps.context.outputs.swift_llbuild_revision }}
       swift_lmdb_revision: ${{ steps.context.outputs.swift_lmdb_revision }}
+      swift_nio_revision: ${{ steps.context.outputs.swift_nio_revision }}
       swift_markdown_revision: ${{ steps.context.outputs.swift_markdown_revision }}
       swift_package_manager_revision: ${{ steps.context.outputs.swift_package_manager_revision }}
       swift_revision: ${{ steps.context.outputs.swift_revision }}
@@ -45,10 +60,11 @@ jobs:
       - id: context
         name: Generate Build Context
         run: |
-          
+          echo "::group::Installing libxml2-utils"
           sudo DEBIAN_FRONTEND=noninteractive apt-get -qq update -yq
           sudo DEBIAN_FRONTEND=noninteractive apt-get -qq -o Dpkg::Use-Pty=0 install -yq repo libxml2-utils
-
+          echo "::endgroup::"
+          
           branch_version_string=${{ inputs.swift_version || '0.0.0' }}
           if [[ $branch_version_string == *.* ]]; then
             branch_name=$(echo ${branch_version_string} | awk -F. '{ ver=$1"."$2; print (ver == "0.0") ? "main" : "release/"ver }')
@@ -56,9 +72,13 @@ jobs:
             branch_name="release/$branch_version_string"
           fi
 
+          echo "Manifest branch: $branch_name"
+
+          echo "::group::Fetching repos"
           repo init --quiet --groups default --depth 1 -u https://github.com/compnerd/swift-build -b $branch_name
           repo sync --quiet --no-clone-bundle --no-tags --jobs $(nproc --all)
-
+          echo "::endgroup::"
+          
           if [[ "${{ inputs.swift_tag }}" != "" ]] ; then
             tee -a "${GITHUB_OUTPUT}" <<-EOF
           indexstore_db_revision=refs/tags/${{ inputs.swift_tag }}
@@ -78,6 +98,8 @@ jobs:
           swift_corelibs_xctest_revision=refs/tags/${{ inputs.swift_tag }}
           swift_crypto_revision=refs/tags/3.0.0
           swift_driver_revision=refs/tags/${{ inputs.swift_tag }}
+          swift_docc_revision=refs/tags/${{ inputs.swift_tag }}
+          swift_docc_symbolkit_revision=refs/tags/${{ inputs.swift_tag }}
           swift_experimental_string_processing_revision=refs/tags/${{ inputs.swift_tag }}
           swift_format_revision=refs/heads/main
           swift_foundation_revison=refs/heads/main
@@ -112,44 +134,330 @@ jobs:
     needs: [context]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout curl
+        uses: actions/checkout@v4
         with:
           repository: curl/curl
-          ref: ${{ inputs.curl_revision }}
-          path: ${{ github.workspace }}/SourceCache/curl
+          ref: ${{ needs.context.outputs.curl_revision }}
+          path: ${{ github.workspace }}/s/curl
+          fetch-depth: 1
           show-progress: false
-      - uses: actions/checkout@v4
+      - name: Checkout indexstore-db
+        uses: actions/checkout@v4
         with:
           repository: swiftlang/indexstore-db
-          ref: ${{ inputs.indexstore_db_revision }}
-          path: ${{ github.workspace }}/SourceCache/indexstore-db
+          ref: ${{ needs.context.outputs.indexstore_db_revision }}
+          path: ${{ github.workspace }}/s/indexstore-db
+          fetch-depth: 1
           show-progress: false
-      - uses: actions/checkout@v4
+      - name: Checkout libxml2
+        uses: actions/checkout@v4
         with:
           repository: gnome/libxml2
-          ref: ${{ inputs.libxml2_revision }}
-          path: ${{ github.workspace }}/SourceCache/libxml2
+          ref: ${{ needs.context.outputs.libxml2_revision }}
+          path: ${{ github.workspace }}/s/libxml2
+          fetch-depth: 1
           show-progress: false
-      - uses: actions/checkout@v4
+      - name: Checkout llvm-project
+        uses: actions/checkout@v4
         with:
           repository: swiftlang/llvm-project
-          ref: ${{ inputs.llvm_project_revision }}
-          path: ${{ github.workspace }}/SourceCache/llvm-project
+          ref: ${{ needs.context.outputs.llvm_project_revision }}
+          path: ${{ github.workspace }}/s/llvm-project
+          fetch-depth: 1
           show-progress: false
-      - uses: actions/checkout@v4
+      - name: Checkout mimalloc
+        uses: actions/checkout@v4
         with:
           repository: microsoft/mimalloc
-          ref: ${{ inputs.mimalloc_revision }}
-          path: ${{ github.workspace }}/SourceCache/mimalloc
-      - uses: actions/checkout@v4
+          ref: ${{ needs.context.outputs.mimalloc_revision }}
+          path: ${{ github.workspace }}/s/mimalloc
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout sourcekit-lsp
+        uses: actions/checkout@v4
         with:
           repository: swiftlang/sourcekit-lsp
-          ref: ${{ inputs.sourcekit_lsp_revision }}
-          path: ${{ github.workspace }}/SourceCache/sourcekit-lsp
+          ref: ${{ needs.context.outputs.sourcekit_lsp_revision }}
+          path: ${{ github.workspace }}/s/sourcekit-lsp
+          fetch-depth: 1
           show-progress: false
-      - uses: actions/checkout@v4
+      - name: Checkout swift-argument-parser
+        uses: actions/checkout@v4
         with:
           repository: apple/swift-argument-parser
-          ref: ${{ inputs.swift_argument_parser_revision }}
-          path: ${{ github.workspace }}/SourceCache/swift-argument-parser
+          ref: ${{ needs.context.outputs.swift_argument_parser_revision }}
+          path: ${{ github.workspace }}/s/swift-argument-parser
+          fetch-depth: 1
           show-progress: false
+      - name: Checkout swift-asn1
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-asn1
+          ref: ${{ needs.context.outputs.swift_asn1_revision }}
+          path: ${{ github.workspace }}/s/swift-asn1
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-atomics
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-atomics
+          ref: ${{ needs.context.outputs.swift_atomics_revision }}
+          path: ${{ github.workspace }}/s/swift-atomics
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-certificates
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-certificates
+          ref: ${{ needs.context.outputs.swift_certificates_revision }}
+          path: ${{ github.workspace }}/s/swift-certificates
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-cmark
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-cmark
+          ref: ${{ needs.context.outputs.swift_cmark_revision }}
+          path: ${{ github.workspace }}/s/cmark
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-collections
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-collections
+          ref: ${{ needs.context.outputs.swift_collections_revision }}
+          path: ${{ github.workspace }}/s/swift-collections
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-corelibs-foundation
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-foundation
+          ref: ${{ needs.context.outputs.swift_corelibs_foundation_revision }}
+          path: ${{ github.workspace }}/s/swift-corelibs-foundation
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-corelibs-libdispatch
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-libdispatch
+          ref: ${{ needs.context.outputs.swift_corelibs_libdispatch_revision }}
+          path: ${{ github.workspace }}/s/swift-corelibs-libdispatch
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-corelibs-xctest
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-corelibs-xctest
+          ref: ${{ needs.context.outputs.swift_corelibs_xctest_revision }}
+          path: ${{ github.workspace }}/s/swift-corelibs-xctest
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-crypto
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-crypto
+          ref: ${{ needs.context.outputs.swift_crypto_revision }}
+          path: ${{ github.workspace }}/s/swift-crypto
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-driver
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-driver
+          ref: ${{ needs.context.outputs.swift_driver_revision }}
+          path: ${{ github.workspace }}/s/swift-driver
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc
+          ref: ${{ needs.context.outputs.swift_docc_revision }}
+          path: ${{ github.workspace }}/s/swift-docc
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc-render-artifact
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc-render-artifact
+          ref: ${{ needs.context.outputs.swift_docc_render_artifact_revision }}
+          path: ${{ github.workspace }}/s/swift-docc-render-artifact
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-docc-symbolkit
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-docc-symbolkit
+          ref: ${{ needs.context.outputs.swift_docc_symbolkit_revision }}
+          path: ${{ github.workspace }}/s/swift-docc-symbolkit
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-experimental-string-processing
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-experimental-string-processing
+          ref: ${{ needs.context.outputs.swift_experimental_string_processing_revision }}
+          path: ${{ github.workspace }}/s/swift-experimental-string-processing
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-format
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-format
+          ref: ${{ needs.context.outputs.swift_format_revision }}
+          path: ${{ github.workspace }}/s/swift-format
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-foundation
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-foundation
+          ref: ${{ needs.context.outputs.swift_foundation_revision }}
+          path: ${{ github.workspace }}/s/swift-foundation
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-foundation-icu
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-foundation-icu
+          ref: ${{ needs.context.outputs.swift_foundation_icu_revision }}
+          path: ${{ github.workspace }}/s/swift-foundation-icu
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-installer-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-installer-scripts
+          ref: ${{ needs.context.outputs.swift_installer_scripts_revision }}
+          path: ${{ github.workspace }}/s/swift-installer-scripts
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-llbuild
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-llbuild
+          ref: ${{ needs.context.outputs.swift_llbuild_revision }}
+          path: ${{ github.workspace }}/s/llbuild
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-lmdb
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-lmdb
+          ref: ${{ needs.context.outputs.swift_lmdb_revision }}
+          path: ${{ github.workspace }}/s/swift-lmdb
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-nio
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-nio
+          ref: ${{ needs.context.outputs.swift_nio_revision }}
+          path: ${{ github.workspace }}/s/swift-nio
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-markdown
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-markdown
+          ref: ${{ needs.context.outputs.swift_markdown_revision }}
+          path: ${{ github.workspace }}/s/swift-markdown
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-package-manager
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-package-manager
+          ref: ${{ needs.context.outputs.swift_package_manager_revision }}
+          path: ${{ github.workspace }}/s/swift-package-manager
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift
+          ref: ${{ needs.context.outputs.swift_revision }}
+          path: ${{ github.workspace }}/s/swift
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-syntax
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-syntax
+          ref: ${{ needs.context.outputs.swift_syntax_revision }}
+          path: ${{ github.workspace }}/s/swift-syntax
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-system
+        uses: actions/checkout@v4
+        with:
+          repository: apple/swift-system
+          ref: ${{ needs.context.outputs.swift_system_revision }}
+          path: ${{ github.workspace }}/s/swift-system
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-testing
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-testing
+          ref: ${{ needs.context.outputs.swift_testing_revision }}
+          path: ${{ github.workspace }}/s/swift-testing
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-toolchain-sqlite
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-toolchain-sqlite
+          ref: ${{ needs.context.outputs.swift_toolchain_sqlite_revision }}
+          path: ${{ github.workspace }}/s/swift-toolchain-sqlite
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout swift-tools-support-core
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-tools-support-core
+          ref: ${{ needs.context.outputs.swift_tools_support_core_revision }}
+          path: ${{ github.workspace }}/s/swift-tools-support-core
+          fetch-depth: 1
+          show-progress: false
+      - name: Checkout zlib
+        uses: actions/checkout@v4
+        with:
+          repository: madler/zlib
+          ref: ${{ needs.context.outputs.zlib_revision }}
+          path: ${{ github.workspace }}/s/zlib
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Compute workspace hash
+        id: workspace_hash
+        shell: pwsh
+        run: |
+          $stringAsStream = [System.IO.MemoryStream]::new()
+          $writer = [System.IO.StreamWriter]::new($stringAsStream)
+          $writer.write("${{ github.workspace }}")
+          $writer.Flush()
+          $stringAsStream.Position = 0
+          $hash = (Get-FileHash -Algorithm SHA256 -InputStream $stringAsStream).Hash
+          echo "hash=$hash" >> $env:GITHUB_OUTPUT
+
+      - name: Setup sccache
+        uses: hendrikmuhs/ccache-action@2e0e89e8d74340a03f75d58d02aae4c5ee1b15c6
+        with:
+          max-size: 1024M
+          key: ${{ steps.workspace_hash.outputs.hash }}-build-script
+          variant: sccache
+
+      - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "3.29.2"
+          ninjaVersion: "1.12.1"
+
+      - name: Prepare build root
+        run: |
+          subst S: ${{ github.workspace }}
+
+      - run: |
+          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\s\swift\utils\build.ps1 -SourceCache S:\s -WindowsSDKs x64 -EnableCaching
