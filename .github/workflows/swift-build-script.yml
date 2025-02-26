@@ -420,6 +420,14 @@ jobs:
           path: ${{ github.workspace }}/s/swift-tools-support-core
           fetch-depth: 1
           show-progress: false
+      - name: Checkout Yams
+        uses: actions/checkout@v4
+        with:
+          repository: jpsim/Yams
+          ref: ${{ needs.context.outputs.yams_revision }}
+          path: ${{ github.workspace }}/s/Yams
+          fetch-depth: 1
+          show-progress: false
       - name: Checkout zlib
         uses: actions/checkout@v4
         with:
