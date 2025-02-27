@@ -73,7 +73,7 @@ jobs:
           fi
 
           echo "::group::Fetching repos from ${{ github.repository }} ($branch_name)"
-          repo init --quiet --groups default --depth 1 -u https://github.com/${{ github.repository }} -b $branch_name
+          repo init --quiet --groups default --depth 1 -u https://github.com/compnerd/swift-build -b $branch_name
           repo sync --quiet --no-clone-bundle --no-tags --jobs $(nproc --all)
           echo "::endgroup::"
           
