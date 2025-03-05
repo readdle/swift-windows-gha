@@ -458,4 +458,4 @@ jobs:
           subst S: ${{ github.workspace }}
 
       - run: |
-          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\s\swift\utils\build.ps1 -SourceCache S:\s -WindowsSDKs x64 -EnableCaching
+          powershell.exe -ExecutionPolicy RemoteSigned -File ${{ github.workspace }}\s\swift\utils\build.ps1 -SourceCache S:\s -WindowsSDKs x64 -EnableCaching -WinSDKVersion 10.0.22621.0
