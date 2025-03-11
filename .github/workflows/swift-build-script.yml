@@ -137,9 +137,8 @@ jobs:
           $vsInstallerPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe"
           $latestVcToolsetId = "Microsoft.VisualStudio.Component.VC.Tools.x86.x64,Microsoft.VisualStudio.Component.VC.ATL"
           $desiredVcToolsetId = "Microsoft.VisualStudio.Component.VC.14.42.17.12.x86.x64,Microsoft.VisualStudio.Component.VC.14.42.17.12.ATL"
-          & $vsInstallerPath 
 
-          $process = Start-Process -FilePath $vsInstallerPath -ArgumentList "modify --installPath --remove $latestVcToolsetId --add $desiredVcToolsetId --norestart --wait --passive" -PassThru
+          $process = Start-Process -FilePath $vsInstallerPath -ArgumentList "modify", "--installPath", "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise", "--remove", $latestVcToolsetId, "--add", $desiredVcToolsetId, "--norestart", "--wait", "--passive" -PassThru
           Wait-Process -Id $process.Id
           Write-Host "Installer process finished: $($process.ExitCode)"
 
