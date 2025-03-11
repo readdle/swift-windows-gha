@@ -134,8 +134,14 @@ jobs:
     steps:
       - name: Setup VS
         run: |
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" export --installPath "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise" --config ${{ github.workspace }}\exp.vsconfig --quiet
+          $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
+            "export",`
+            "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
+            "--config ${{ github.workspace }}\exp.vsconfi",`
+            "--quiet"
+          Wait-Process -Id $process.Id
           Get-Content ${{ github.workspace }}\exp.vsconfig
+          
           Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
           $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
             "modify",`
