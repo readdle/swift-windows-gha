@@ -137,7 +137,11 @@ jobs:
           $vsInstallerPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe"
           $latestVcToolsetId = "Microsoft.VisualStudio.Component.VC.Tools.x86.x64,Microsoft.VisualStudio.Component.VC.ATL"
           $desiredVcToolsetId = "Microsoft.VisualStudio.Component.VC.14.42.17.12.x86.x64,Microsoft.VisualStudio.Component.VC.14.42.17.12.ATL"
-          & $vsInstallerPath modify --installPath  --remove $latestVcToolsetId --add $desiredVcToolsetId --norestart --wait --passive
+          & $vsInstallerPath 
+
+          $process = Start-Process -FilePath $vsInstallerPath -ArgumentList "modify --installPath --remove $latestVcToolsetId --add $desiredVcToolsetId --norestart --wait --passive" -PassThru
+          Wait-Process -Id $process.Id
+          Write-Host "Installer process finished: $($process.ExitCode)"
 
       - name: Checkout curl
         uses: actions/checkout@v4
