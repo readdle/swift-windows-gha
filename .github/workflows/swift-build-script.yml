@@ -137,7 +137,7 @@ jobs:
           $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
             "export",`
             "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
-            "--config ${{ github.workspace }}\exp.vsconfi",`
+            "--config ${{ github.workspace }}\exp.vsconfig",`
             "--quiet" -PassThru
           Wait-Process -Id $process.Id
           Get-Content ${{ github.workspace }}\exp.vsconfig
