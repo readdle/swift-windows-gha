@@ -138,7 +138,7 @@ jobs:
             "export",`
             "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
             "--config ${{ github.workspace }}\exp.vsconfi",`
-            "--quiet"
+            "--quiet" -PassThru
           Wait-Process -Id $process.Id
           Get-Content ${{ github.workspace }}\exp.vsconfig
           
