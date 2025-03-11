@@ -134,13 +134,14 @@ jobs:
     steps:
       - name: Setup VS
         run: |
-          $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "modify`
-            --channelID VisualStudio.17.Release`
-            --installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"`
-            --remove Microsoft.VisualStudio.Component.VC.Tools.x86.x64`
-            --add Microsoft.VisualStudio.Component.VC.14.42.17.12.x86.x64`
-            --norestart`
-            --passive" -PassThru
+          $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
+            "modify",`
+            "--channelID VisualStudio.17.Release",`
+            "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
+            "--remove Microsoft.VisualStudio.Component.VC.Tools.x86.x64,Microsoft.VisualStudio.Component.VC.ATL",`
+            "--add Microsoft.VisualStudio.Component.VC.14.42.17.12.x86.x64,Microsoft.VisualStudio.Component.VC.14.42.17.12.ATL",`
+            "--norestart",`
+            "--passive" -PassThru
 
           Wait-Process -Id $process.Id
           Write-Host "Installer process finished: $($process.ExitCode)"
