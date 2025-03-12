@@ -141,23 +141,42 @@ jobs:
             "--quiet" -PassThru
           Wait-Process -Id $process.Id
           Get-Content ${{ github.workspace }}\exp.vsconfig
-          
           Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
+          
           $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
             "modify",`
             "--channelID VisualStudio.17.Release",`
             "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
             "--remove Microsoft.VisualStudio.Component.VC.Tools.x86.x64",`
             "--remove Microsoft.VisualStudio.Component.VC.ATL",`
+            "--remove Microsoft.VisualStudio.Component.VC.Tools.ARM64EC",`
+            "--remove Microsoft.VisualStudio.Component.VC.Tools.ARM64",`
+            "--remove Microsoft.VisualStudio.Component.VC.Tools.ARM",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATLMFC",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATL.ARM",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATL.ARM64",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATL.Spectre",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATL.ARM.Spectre",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATL.ARM64.Spectre",`
+            "--remove Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre",`
+            "--remove Microsoft.VisualStudio.Component.VC.Modules.x86.x64",`
             "--add Microsoft.VisualStudio.Component.VC.14.42.17.12.x86.x64",`
             "--add Microsoft.VisualStudio.Component.VC.14.42.17.12.ATL",`
             "--norestart",`
             "--passive" -PassThru
-
+          
           Wait-Process -Id $process.Id
           Write-Host "Installer process finished: $($process.ExitCode)"
-          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
           
+          $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
+            "export",`
+            "--installPath `"${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise`"",`
+            "--config ${{ github.workspace }}\exp.vsconfig",`
+            "--quiet" -PassThru
+          Wait-Process -Id $process.Id
+          Get-Content ${{ github.workspace }}\exp.vsconfig
+          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
+
       - name: Checkout curl
         uses: actions/checkout@v4
         with:
