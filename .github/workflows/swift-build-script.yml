@@ -146,6 +146,8 @@ jobs:
           Wait-Process -Id $process.Id
           Write-Host "Installer process finished: $($process.ExitCode)"
           Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
+          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
+          Get-Content "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.txt"
           Set-Content -Path "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.txt" -Value="14.42.34433"
 
       - name: Checkout curl
