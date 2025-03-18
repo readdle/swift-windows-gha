@@ -150,6 +150,11 @@ jobs:
           Get-Content "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.txt"
           Set-Content -Path "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.txt" -Value="14.42.34433"
 
+      - shell: cmd
+        run: |
+          %ProgramFiles(x86)%\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.cmd -arch=amd64
+          set
+          
       - name: Checkout curl
         uses: actions/checkout@v4
         with:
