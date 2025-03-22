@@ -154,7 +154,7 @@ jobs:
 
       - shell: cmd
         run: |
-          "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.cmd" -arch=amd64"
+          "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=amd64"
           set
           
       - name: Checkout curl
