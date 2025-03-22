@@ -1,0 +1,32 @@
+diff --git a/utils/build.ps1 b/utils/build.ps1
+index 8107be13c61..5e6246f4e85 100644
+--- a/utils/build.ps1
++++ b/utils/build.ps1
+@@ -66,6 +66,8 @@ The version number of the Windows SDK to be used.
+ Overrides the value resolved by the Visual Studio command prompt.
+ If no such Windows SDK is installed, it will be downloaded from nuget.
+ 
++.PARAMETER VCVarsVersion
++
+ .PARAMETER IncludeDS2
+ Include the ds2 remote debug server in the SDK.
+ This component is currently only supported in Android builds.
+@@ -146,6 +148,7 @@ param
+   [string] $AndroidNDKVersion = "r27c",
+   [ValidatePattern("^\d+\.\d+\.\d+(?:-\w+)?")]
+   [string] $WinSDKVersion = "",
++  [string] $VCVarsVersion = "",
+   [switch] $Android = $false,
+   [switch] $SkipBuild = $false,
+   [switch] $SkipPackaging = $false,
+@@ -769,6 +772,10 @@ function Invoke-VsDevShell($Arch) {
+     $DevCmdArguments += " -winsdk=$WinSDKVersion"
+   }
+ 
++  if ($VCVarsVersion) {
++    $DevCmdArguments += " -vcvars_ver=$VCVarsVersion"
++  }
++
+   if ($ToBatch) {
+     Write-Output "call `"$VSInstallRoot\Common7\Tools\VsDevCmd.bat`" $DevCmdArguments"
+   } else {
