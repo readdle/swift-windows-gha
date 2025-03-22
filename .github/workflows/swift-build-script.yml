@@ -134,6 +134,8 @@ jobs:
     steps:
       - name: Setup VS
         run: |
+          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
+          
           $process = Start-Process -FilePath "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList `
             "modify",`
             "--channelID VisualStudio.17.Release",`
