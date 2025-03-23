@@ -154,7 +154,12 @@ jobs:
         run: |
           "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=amd64
           set
-          
+
+      - name: Checkout 
+        uses: actions/checkout@v2
+        with:
+          path: ${{ github.workspace }}/s/swift-windows-gha
+
       - name: Checkout curl
         uses: actions/checkout@v4
         with:
@@ -453,7 +458,7 @@ jobs:
           show-progress: false
       - name: Apply patch
         run: |
-          git -C ${{ github.workspace }}\s\swift apply ${{ github.workspace }}\vcvarsver.patch
+          git -C ${{ github.workspace }}\s\swift apply ${{ github.workspace }}\s\swift-windows-gha\vcvarsver.patch
 
       - name: Compute workspace hash
         id: workspace_hash
