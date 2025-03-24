@@ -147,8 +147,12 @@ jobs:
           
           Wait-Process -Id $process.Id
           Write-Host "Installer process finished: $($process.ExitCode)"
-          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
-          Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
+
+          $Win10SdkRoot = Get-ItemPropertyValue `
+             -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Kits\Installed Roots" `
+             -Name "KitsRoot10"
+          Remove-Item -Path "${Win10SdkRoot}\Lib\10.0.26100.0" -Recurse -Force -ErrorAction Ignore
+          Remove-Item -Path "${Win10SdkRoot}\Include\10.0.26100.0" -Recurse -Force -ErrorAction Ignore
 
       - shell: cmd
         run: |
