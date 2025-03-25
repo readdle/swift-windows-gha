@@ -1,5 +1,5 @@
 diff --git a/utils/build.ps1 b/utils/build.ps1
-index 8107be13c61..5e6246f4e85 100644
+index 8107be13c61..688bfe3c4a4 100644
 --- a/utils/build.ps1
 +++ b/utils/build.ps1
 @@ -66,6 +66,8 @@ The version number of the Windows SDK to be used.
@@ -30,3 +30,19 @@ index 8107be13c61..5e6246f4e85 100644
    if ($ToBatch) {
      Write-Output "call `"$VSInstallRoot\Common7\Tools\VsDevCmd.bat`" $DevCmdArguments"
    } else {
+@@ -1845,9 +1852,12 @@ function Build-mimalloc() {
+     }
+   }
+ 
+-  Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-lib.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Arch.LLVMTarget)\mimalloc\mimalloc\"
+-  Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-override-dll.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Arch.LLVMTarget)\mimalloc\mimalloc-override-dll\"
+-
++  Invoke-IsolatingEnvVars {
++    Invoke-VsDevShell $Arch
++    Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-lib.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Arch.LLVMTarget)\mimalloc\mimalloc\"
++    Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-override-dll.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Arch.LLVMTarget)\mimalloc\mimalloc-override-dll\"
++  }
++  
+   $HostSuffix = if ($Arch -eq $ArchX64) { "" } else { "-arm64" }
+   $BuildSuffix = if ($BuildArch -eq $ArchX64) { "" } else { "-arm64" }
+ 
