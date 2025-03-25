@@ -236,6 +236,14 @@ jobs:
           path: ${{ github.workspace }}/s/swift-atomics
           fetch-depth: 1
           show-progress: false
+      - name: Checkout swift-build
+        uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift-build
+          ref: ${{ needs.context.outputs.swift_build_revision }}
+          path: ${{ github.workspace }}/s/swift-build
+          fetch-depth: 1
+          show-progress: false
       - name: Checkout swift-certificates
         uses: actions/checkout@v4
         with:
