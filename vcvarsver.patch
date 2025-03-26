@@ -37,7 +37,7 @@ index b6a610bd453..b08783e8ccd 100644
 -  Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-lib.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Platform.Triple)\mimalloc\mimalloc\"
 -  Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-override-dll.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Platform.Triple)\mimalloc\mimalloc-override-dll\"
 +  Invoke-IsolatingEnvVars {
-+    Invoke-VsDevShell $Arch
++    Invoke-VsDevShell $Platform
 +    Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-lib.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Platform.Triple)\mimalloc\mimalloc\"
 +    Invoke-Program $msbuild "$SourceCache\mimalloc\ide\vs2022\mimalloc-override-dll.vcxproj" @MSBuildArgs "-p:IntDir=$BinaryCache\$($Platform.Triple)\mimalloc\mimalloc-override-dll\"
 +  }
