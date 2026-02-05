@@ -2,6 +2,9 @@
 ![Swift on Windows](doc/img/swift-windows-cover.png)
 _Based on [//swift/build](https://github.com/compnerd/swift-build) project_
 
+> [!IMPORTANT]  
+> Build scripts in this repo are **obsolete** and are not used for building snapshots anymore. We're going to update the whole process soon to make it consistent with how [release snapshots](https://github.com/readdle/swift-windows-gha/releases) are actually built.
+
 ### Project Goals
 Swift is a large project consisting of many parts. When it comes to changing or investigating the project, it is crucial to have a comfortable way to tweak the build process.
 
